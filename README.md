@@ -3,11 +3,9 @@
 **AI-Powered GitHub Analytics Platform**
 
 en-git transforms your GitHub data into actionable insights with advanced analytics, gamification, AI-powered career advice, and beautiful visualizations.
-
-[![GitHub](https://img.shields.io/badge/GitHub-TejasS1233-blue?logo=github)](https://github.com/TejasS1233)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
-[![React](https://img.shields.io/badge/react-18.3.1-61DAFB?logo=react)](https://reactjs.org/)
+<p align="center">
+    <img src="https://skillicons.dev/icons?i=react,vite,tailwind,nodejs,express,mongodb,git,github,vercel,postman&perline=10" />
+</p>
 
 ## ✨ Features
 
