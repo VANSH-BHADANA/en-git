@@ -1,4 +1,5 @@
-# en-git 🚀
+<img width="200" height="80" alt="Screenshot 2025-10-19 134029-Photoroom" src="https://github.com/user-attachments/assets/8805d023-5923-4b37-8e8c-101a431e65c8" />
+
 
 **AI-Powered GitHub Analytics Platform**
 
@@ -6,6 +7,22 @@ en-git transforms your GitHub data into actionable insights with advanced analyt
 <p align="center">
     <img src="https://skillicons.dev/icons?i=react,vite,tailwind,nodejs,express,mongodb,git,github,vercel,postman&perline=10" />
 </p>
+
+
+Get your personalized developer badge — show off your skills, top languages, and activity with a clean, shareable card.
+
+<img width="1279" height="678" alt="image" src="https://github.com/user-attachments/assets/8df56508-ab2c-49b2-b67d-73e90f14ea6a" />
+Engage smarter, grow faster — let data guide your next project and highlight what matters most.
+
+<img width="1919" height="994" alt="image" src="https://github.com/user-attachments/assets/09126b5e-7c6f-44fc-a06e-bae24ee12e0d" />
+
+
+Compare with peers — analyze profiles side-by-side to track your growth and benchmark your progress.
+
+<img width="1888" height="913" alt="image" src="https://github.com/user-attachments/assets/6428e18e-3f50-40a8-bd59-fc77088eaa43" />
+
+
+
 
 ## ✨ Features
 
@@ -120,23 +137,6 @@ REFRESH_TOKEN_EXPIRY=7d
 # Optional: GitHub token for higher rate limits (5000/hr vs 60/hr)
 GITHUB_TOKEN=ghp_YourPersonalAccessToken
 
-# Razorpay
-RAZORPAY_KEY_ID=your_key
-RAZORPAY_KEY_SECRET=your_secret
-
-# Cloudinary
-CLOUDINARY_CLOUD_NAME=your_name
-CLOUDINARY_API_KEY=your_key
-CLOUDINARY_API_SECRET=your_secret
-
-# Twilio (optional)
-TWILIO_ACCOUNT_SID=your_sid
-TWILIO_AUTH_TOKEN=your_token
-TWILIO_PHONE_NUMBER=your_number
-
-# Nodemailer (optional)
-EMAIL_USER=your_email
-EMAIL_PASS=your_password
 ```
 
 Create `client/.env`:
