@@ -13,54 +13,42 @@ en-git transforms your GitHub data into actionable insights with advanced analyt
 
 ### 📊 Core Analytics
 
-- � **Language Analysis** - Top 3 programming languages with usage percentages
-- 🏆 **Repository Insights** - Most starred & active repositories
-- � **Contribution Calendar** - Interactive heatmap of your coding activity
-- � **Activity Patterns** - Weekly & hourly contribution charts
-- 🧑‍� **Coding Profile** - Early bird vs night coder detection
-- � **Topics & Tags** - Popular technologies in your projects
-- 🎯 **Domain Detection** - Skill classification (Web Dev, AI/ML, DevOps, Mobile, etc.)
+-  **Language Analysis** - Top 3 programming languages with usage percentages
+-  **Repository Insights** - Most starred & active repositories
+-  **Contribution Calendar** - Interactive heatmap of your coding activity
+-  **Activity Patterns** - Weekly & hourly contribution charts
+-  **Coding Profile** - Early bird vs night coder detection
+-  **Topics & Tags** - Popular technologies in your projects
+-  **Domain Detection** - Skill classification (Web Dev, AI/ML, DevOps, Mobile, etc.)
 
 ### 🎮 Gamification & Achievements
 
-- 🏅 **Achievement Badges** - Unlock badges based on your activity
-  - 🌐 Polyglot (Bronze/Silver/Gold)
-  - 🦉 Night Owl / 🐦 Early Bird
-  - ⭐ Open Source Hero
-  - � Consistent Coder
-  - ✨ Star Collector
-  - 🚀 Early Adopter
-  - 🤝 Collaborator
-  - 🎯 Issue Hunter
-- � **Skill Radar Chart** - 6-dimensional visualization of technical expertise
-- � **Tech Stack Badges** - Auto-generated shields.io badges for your README
+- **Achievement Badges** - Unlock badges based on your activity
+  -  Polyglot (Bronze/Silver/Gold)
+  -  Night Owl / 🐦 Early Bird
+  -  Open Source Hero
+  -  Consistent Coder
+  -  Star Collector
+  -  Early Adopter
+  -  Collaborator
+  -  Issue Hunter
+-  **Skill Radar Chart** - 6-dimensional visualization of technical expertise
+-  **Tech Stack Badges** - Auto-generated shields.io badges for your README
 
 ### 🤖 AI-Powered Features
 
-- � **Career Insights** - Personalized career advice from Google Gemini AI
-- 📚 **6-Month Learning Roadmap** - Customized skill development plan
-- 🎯 **Strengths & Growth Areas** - Identify what you excel at and where to improve
-- � **Project Recommendations** - AI-suggested projects to build next
-- 💼 **Career Paths** - Job titles and specializations matched to your profile
+-  **Career Insights** - Personalized career advice from Google Gemini AI
+-  **6-Month Learning Roadmap** - Customized skill development plan
+-  **Strengths & Growth Areas** - Identify what you excel at and where to improve
+-  **Project Recommendations** - AI-suggested projects to build next
+-  **Career Paths** - Job titles and specializations matched to your profile
 
 ### 🎨 Social & Sharing
 
-- � **Share Cards** - Generate beautiful 1200x630 images for social media
-- 🔖 **Bookmarks** - Save favorite profiles for quick access
-- 📜 **Search History** - Track recently viewed profiles
-- 📄 **PDF Export** - Download comprehensive reports
-
-**How it works:**
-
-1. Enter any GitHub username on the `/github-insights` page
-2. Backend fetches public repos, languages, commits, issues, PRs from GitHub API
-3. Analyzes data to compute language distribution, top repos, commit timing
-4. Scrapes GitHub trending to suggest relevant projects to contribute to
-5. Infers primary domain/skill based on languages and topics
-6. Displays insights in beautiful charts and cards (recharts + shadcn/ui)
-
----
-
+-  **Share Cards** - Generate beautiful 1200x630 images for social media
+-  **Bookmarks** - Save favorite profiles for quick access
+-  **Search History** - Track recently viewed profiles
+-  **PDF Export** - Download comprehensive reports
 ## 🛠️ Tech Stack
 
 **Frontend:**
@@ -216,75 +204,6 @@ npm run dev
 
 ---
 
-## 🧰 API Endpoints (GitHub)
-
-### `GET /api/v1/github/insights/:username`
-
-Fetch comprehensive analytics for a GitHub user.
-
-**Response:**
-
-```json
-{
-  "status": 200,
-  "message": "Insights",
-  "data": {
-    "user": { ... },
-    "reposCount": 42,
-    "languages": {
-      "top3": [["JavaScript", 45.2], ["Python", 30.1], ["TypeScript", 15.3]],
-      "percentages": [...],
-      "totals": {...}
-    },
-    "topics": [["react", 10], ["nodejs", 8], ...],
-    "topStarred": [{ name: "...", stargazers_count: 500, ... }],
-    "topActive": [...],
-    "commitTimes": {
-      "hours": [0, 1, 2, ...],
-      "profile": "night-coder"
-    },
-    "weekly": [["2025-W40", 15], ...],
-    "domain": {
-      "domain": "Web Development",
-      "scores": {...}
-    }
-  }
-}
-```
-
-### `GET /api/v1/github/recommendations/:username`
-
-Get personalized project recommendations.
-
-**Response:**
-
-```json
-{
-  "status": 200,
-  "message": "Recommendations",
-  "data": {
-    "user": { "login": "...", "avatar_url": "..." },
-    "trendingMatches": [{ "fullName": "owner/repo", "description": "...", "stars": 123, ... }],
-    "personalIdeas": [{ "title": "...", "description": "...", "tag": "react" }],
-    "trendingSample": [...]
-  }
-}
-```
-
----
-
-## 🔮 Future Enhancements (Planned)
-
-- [ ] **Skill Growth Graph**: track language usage over time (historical commits)
-- [ ] **OpenAI Integration**: GPT-powered recommendations and repo summaries
-- [ ] **Multi-user Dashboard**: leaderboard, compare profiles
-- [ ] **Email/Discord Notifications**: alerts for new trending projects in your domain
-- [ ] **Export as PDF**: resume + GitHub stats report
-- [ ] **Advanced Filtering**: filter trending by language, date, framework
-- [ ] **Contribution Calendar**: heatmap of activity
-- [ ] **Repository Deep Dive**: analyze specific repo commits, contributors, issues
-
----
 
 ## 🧩 Project Structure
 
@@ -312,87 +231,3 @@ Github/
 
 ---
 
-## � Security
-
-### Environment Variables
-
-**NEVER commit `.env` files to Git!** All sensitive configuration is stored in `.env` files which are excluded via `.gitignore`.
-
-Required environment variables are documented in:
-- `server/.env.example` - Backend configuration template
-- `client/.env.example` - Frontend configuration template
-
-### Before Pushing to GitHub
-
-1. ✅ Verify `.gitignore` files are in place
-2. ✅ Check no `.env` files are tracked: `git ls-files "*.env"`
-3. ✅ Remove any accidentally committed secrets:
-   ```bash
-   git rm --cached server/.env
-   git commit -m "Remove .env file"
-   ```
-
-### GitHub Repository Setup
-
-Use the provided scripts for safe setup:
-
-**PowerShell (Windows):**
-```powershell
-.\setup-git.ps1
-```
-
-**Bash (Linux/Mac):**
-```bash
-chmod +x setup-git.sh
-./setup-git.sh
-```
-
-**Manual Setup:**
-```bash
-# 1. Check for sensitive files
-git status
-
-# 2. Initialize and commit
-git init
-git add .
-git commit -m "Initial commit"
-
-# 3. Add remote and push
-git branch -M main
-git remote add origin https://github.com/TejasS1233/en-git.git
-git push -u origin main
-```
-
----
-
-## �📄 License
-
-MIT License - feel free to use this project for learning and personal projects!
-
----
-
-## 🙌 Credits
-
-Built with ❤️ using:
-
-- [shadcn/ui](https://ui.shadcn.com/)
-- [Recharts](https://recharts.org/)
-- [GitHub API](https://docs.github.com/en/rest)
-- [Cheerio](https://cheerio.js.org/) (trending scrape)
-
----
-
-## 🐛 Troubleshooting
-
-**"API rate limit exceeded"**  
-→ Add `GITHUB_TOKEN` to `server/.env` (get one from GitHub Settings → Developer Settings → Personal Access Tokens)
-
-**Charts not rendering**  
-→ Ensure `recharts` is installed: `cd client && npm install recharts`
-
-**No trending results**  
-→ GitHub trending page structure may change; scraper may need adjustment in `services/github.service.js`
-
----
-
-Enjoy building! 🚀
