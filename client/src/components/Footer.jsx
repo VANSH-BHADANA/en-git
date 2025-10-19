@@ -58,13 +58,17 @@ const Footer = () => {
               </span>
             </div>
             <p className="mt-3 text-sm text-muted-foreground max-w-xs">
-              Analyze GitHub profiles, compare users, and get AI-powered insights to level up your development journey.
+              Analyze GitHub profiles, compare users, and get AI-powered insights to level up your
+              development journey.
             </p>
 
             <ul className="mt-6 flex items-center gap-3 sm:gap-4 flex-wrap text-sm">
               {footerLinks.map(({ title, href }) => (
                 <li key={title}>
-                  <a href={href} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <a
+                    href={href}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
                     {title}
                   </a>
                 </li>
@@ -74,7 +78,10 @@ const Footer = () => {
 
           <div className="max-w-xs w-full">
             <h6 className="font-semibold text-base sm:text-lg">Stay up to date</h6>
-            <form onSubmit={handleSubmit} className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <form
+              onSubmit={handleSubmit}
+              className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-2"
+            >
               <Input
                 type="email"
                 placeholder="Enter your email"
@@ -101,10 +108,20 @@ const Footer = () => {
           </span>
 
           <div className="flex items-center gap-5 text-muted-foreground">
-            <a href="https://github.com/TejasS1233" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a
+              href="https://github.com/TejasS1233"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
               <GithubIcon className="h-5 w-5" />
             </a>
-            <a href="https://twitter.com/TejasS1233" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a
+              href="https://twitter.com/TejasS1233"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
               <TwitterIcon className="h-5 w-5" />
             </a>
           </div>

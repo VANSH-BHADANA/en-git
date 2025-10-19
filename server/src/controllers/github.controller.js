@@ -190,7 +190,7 @@ export const getAIInsights = asyncHandler(async (req, res) => {
 
     // Generate AI insights
     let aiInsights, learningPath;
-    
+
     try {
       aiInsights = await generateCareerInsights(insights, commits);
       learningPath = await generateLearningPath(
@@ -199,64 +199,60 @@ export const getAIInsights = asyncHandler(async (req, res) => {
       );
     } catch (aiError) {
       console.error("AI Generation Error:", aiError.message);
-      
+
       // Fallback insights if AI fails
       aiInsights = {
         summary: `${insights.user.name || insights.user.login} is a ${domain.domain} developer with expertise in ${languages.top3.map(([l]) => l).join(", ")}. With ${insights.reposCount} public repositories, they demonstrate strong technical skills and consistent contribution patterns.`,
         strengths: [
           `Proficient in ${languages.top3[0]?.[0] || "multiple languages"} with ${languages.top3[0]?.[1] || 0}% usage`,
           `Active in ${domain.domain} domain with ${insights.topStarred?.length || 0} starred projects`,
-          `Consistent coder with ${insights.commitTimes?.profile || "regular"} activity pattern`
+          `Consistent coder with ${insights.commitTimes?.profile || "regular"} activity pattern`,
         ],
         growthAreas: [
           "Explore trending technologies and frameworks",
           "Contribute to open-source projects",
-          "Expand skill set to complementary domains"
+          "Expand skill set to complementary domains",
         ],
         projects: [
           `Build a full-stack application using ${languages.top3[0]?.[0] || "your primary language"}`,
           `Create a portfolio project showcasing ${domain.domain} expertise`,
-          "Develop a tool that solves a real-world problem"
+          "Develop a tool that solves a real-world problem",
         ],
-        careerPaths: [
-          `${domain.domain} Engineer`,
-          "Full Stack Developer",
-          "Software Architect"
-        ],
-        note: "⚠️ AI insights unavailable. Using fallback analysis. Please configure GOOGLE_API_KEY for AI-powered insights."
+        careerPaths: [`${domain.domain} Engineer`, "Full Stack Developer", "Software Architect"],
+        note: "⚠️ AI insights unavailable. Using fallback analysis. Please configure GOOGLE_API_KEY for AI-powered insights.",
       };
-      
+
       learningPath = {
         phases: [
           {
             months: "Month 1-2: Foundation",
-            skills: ["Advanced " + (languages.top3[0]?.[0] || "programming"), "System Design", "Best Practices"],
-            project: "Build a personal project using current skills"
+            skills: [
+              "Advanced " + (languages.top3[0]?.[0] || "programming"),
+              "System Design",
+              "Best Practices",
+            ],
+            project: "Build a personal project using current skills",
           },
           {
             months: "Month 3-4: Expansion",
             skills: ["New Framework", "Testing", "CI/CD"],
-            project: "Contribute to open source"
+            project: "Contribute to open source",
           },
           {
             months: "Month 5-6: Specialization",
             skills: [domain.domain + " Advanced", "Performance", "Security"],
-            project: "Create a production-ready application"
-          }
-        ]
+            project: "Create a production-ready application",
+          },
+        ],
       };
     }
 
     return res.status(200).json(
-      new ApiResponse(
-        200,
-        "AI insights generated successfully",
-        {
-          insights: aiInsights,
-          learningPath,
-          generatedAt: new Date().toISOString(),
-        }
-      )
+      new ApiResponse(200, "AI insights generated successfully", {
+        insights: aiInsights,
+        learningPath,
+        generatedAt: new Date().toISOString(),
+      })
     );
   } catch (error) {
     console.error("AI Insights Error:", error);

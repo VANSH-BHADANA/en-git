@@ -119,26 +119,27 @@ export async function generateShareCard(insights) {
   // Badges Section
   const badges = [];
   const domain = insights.domain?.domain || "Developer";
-  
+
   // Domain badge
   badges.push({ label: domain, color: "#667eea", icon: "🎯" });
-  
+
   // Coding style badge
   if (insights.commitTimes?.profile === "night-coder") {
     badges.push({ label: "Night Coder", color: "#7c3aed", icon: "🌙" });
   } else {
     badges.push({ label: "Early Bird", color: "#f59e0b", icon: "🌅" });
   }
-  
+
   // Activity level badge
   if (insights.reposCount > 50) {
     badges.push({ label: "Prolific", color: "#10b981", icon: "🚀" });
   } else if (insights.reposCount > 20) {
     badges.push({ label: "Active", color: "#3b82f6", icon: "⚡" });
   }
-  
+
   // Star badge
-  const totalStars = insights.topStarred?.reduce((sum, r) => sum + (r.stargazers_count || 0), 0) || 0;
+  const totalStars =
+    insights.topStarred?.reduce((sum, r) => sum + (r.stargazers_count || 0), 0) || 0;
   if (totalStars > 100) {
     badges.push({ label: `${totalStars}★`, color: "#fbbf24", icon: "⭐" });
   }
@@ -224,10 +225,10 @@ export async function generateShareCard(insights) {
   ctx.fillStyle = "#a0aec0";
   ctx.font = "bold 20px sans-serif";
   ctx.fillText("en-git", 100, 540);
-  
+
   ctx.font = "14px sans-serif";
   ctx.fillText("AI-driven GitHub Analytics • Created by TejasS1233", 100, 565);
-  
+
   // Add a subtle "Verified" style checkmark
   ctx.fillStyle = "#667eea";
   ctx.font = "20px sans-serif";

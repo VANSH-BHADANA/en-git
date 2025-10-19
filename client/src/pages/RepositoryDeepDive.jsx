@@ -45,7 +45,7 @@ const COLORS = ["#667eea", "#f59e0b", "#10b981", "#ef4444", "#8b5cf6", "#ec4899"
 export default function RepositoryDeepDive() {
   const { owner, repo } = useParams();
   const navigate = useNavigate();
-  
+
   const [ownerInput, setOwnerInput] = useState(owner || "");
   const [repoInput, setRepoInput] = useState(repo || "");
   const [loading, setLoading] = useState(false);
@@ -147,7 +147,16 @@ export default function RepositoryDeepDive() {
     );
   }
 
-  const { repository, languages, commits, contributors, issues, pullRequests, healthScore, commitFrequency } = data;
+  const {
+    repository,
+    languages,
+    commits,
+    contributors,
+    issues,
+    pullRequests,
+    healthScore,
+    commitFrequency,
+  } = data;
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
@@ -189,14 +198,15 @@ export default function RepositoryDeepDive() {
                   <AlertCircle className="h-3 w-3 mr-1" />
                   {repository.open_issues_count} open issues
                 </Badge>
-                {repository.license && (
-                  <Badge variant="outline">{repository.license.name}</Badge>
-                )}
+                {repository.license && <Badge variant="outline">{repository.license.name}</Badge>}
               </div>
               {repository.topics?.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-3">
                   {repository.topics.map((topic) => (
-                    <Badge key={topic} className="bg-blue-500/10 text-blue-600 hover:bg-blue-500/20">
+                    <Badge
+                      key={topic}
+                      className="bg-blue-500/10 text-blue-600 hover:bg-blue-500/20"
+                    >
                       {topic}
                     </Badge>
                   ))}
@@ -238,7 +248,7 @@ export default function RepositoryDeepDive() {
               </div>
             </div>
           </div>
-          
+
           {/* Improvement Suggestions */}
           {healthScore.score < 100 && (
             <div className="mt-6 pt-6 border-t">
@@ -252,7 +262,9 @@ export default function RepositoryDeepDive() {
                     <AlertCircle className="h-4 w-4 text-orange-500 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-medium text-orange-600">Add a description</p>
-                      <p className="text-muted-foreground mt-1">Help others understand what your project does (+10 pts)</p>
+                      <p className="text-muted-foreground mt-1">
+                        Help others understand what your project does (+10 pts)
+                      </p>
                     </div>
                   </div>
                 )}
@@ -261,7 +273,9 @@ export default function RepositoryDeepDive() {
                     <AlertCircle className="h-4 w-4 text-orange-500 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-medium text-orange-600">Add a license</p>
-                      <p className="text-muted-foreground mt-1">Choose a license to clarify usage rights (+10 pts)</p>
+                      <p className="text-muted-foreground mt-1">
+                        Choose a license to clarify usage rights (+10 pts)
+                      </p>
                     </div>
                   </div>
                 )}
@@ -270,43 +284,62 @@ export default function RepositoryDeepDive() {
                     <AlertCircle className="h-4 w-4 text-orange-500 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-medium text-orange-600">Add topics</p>
-                      <p className="text-muted-foreground mt-1">Tag your repo to improve discoverability (+10 pts)</p>
+                      <p className="text-muted-foreground mt-1">
+                        Tag your repo to improve discoverability (+10 pts)
+                      </p>
                     </div>
                   </div>
                 )}
-                {repository.topics && repository.topics.length > 0 && repository.topics.length < 5 && (
-                  <div className="flex items-start gap-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                    <TrendingUp className="h-4 w-4 text-blue-500 mt-0.5" />
-                    <div className="text-sm">
-                      <p className="font-medium text-blue-600">Add more topics</p>
-                      <p className="text-muted-foreground mt-1">You have {repository.topics.length} topics. Add more for better discoverability!</p>
+                {repository.topics &&
+                  repository.topics.length > 0 &&
+                  repository.topics.length < 5 && (
+                    <div className="flex items-start gap-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                      <TrendingUp className="h-4 w-4 text-blue-500 mt-0.5" />
+                      <div className="text-sm">
+                        <p className="font-medium text-blue-600">Add more topics</p>
+                        <p className="text-muted-foreground mt-1">
+                          You have {repository.topics.length} topics. Add more for better
+                          discoverability!
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )}
-                {((Date.now() - new Date(repository.pushed_at)) / (1000 * 60 * 60 * 24)) > 90 && (
+                  )}
+                {(Date.now() - new Date(repository.pushed_at)) / (1000 * 60 * 60 * 24) > 90 && (
                   <div className="flex items-start gap-2 p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
                     <Clock className="h-4 w-4 text-orange-500 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-medium text-orange-600">Update more frequently</p>
-                      <p className="text-muted-foreground mt-1">Last updated {Math.floor((Date.now() - new Date(repository.pushed_at)) / (1000 * 60 * 60 * 24))} days ago (+10-20 pts)</p>
+                      <p className="text-muted-foreground mt-1">
+                        Last updated{" "}
+                        {Math.floor(
+                          (Date.now() - new Date(repository.pushed_at)) / (1000 * 60 * 60 * 24)
+                        )}{" "}
+                        days ago (+10-20 pts)
+                      </p>
                     </div>
                   </div>
                 )}
-                {((Date.now() - new Date(repository.pushed_at)) / (1000 * 60 * 60 * 24)) > 7 && ((Date.now() - new Date(repository.pushed_at)) / (1000 * 60 * 60 * 24)) <= 90 && (
-                  <div className="flex items-start gap-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                    <Clock className="h-4 w-4 text-blue-500 mt-0.5" />
-                    <div className="text-sm">
-                      <p className="font-medium text-blue-600">Keep your momentum</p>
-                      <p className="text-muted-foreground mt-1">Update within a week to maintain your +20 pts bonus</p>
+                {(Date.now() - new Date(repository.pushed_at)) / (1000 * 60 * 60 * 24) > 7 &&
+                  (Date.now() - new Date(repository.pushed_at)) / (1000 * 60 * 60 * 24) <= 90 && (
+                    <div className="flex items-start gap-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                      <Clock className="h-4 w-4 text-blue-500 mt-0.5" />
+                      <div className="text-sm">
+                        <p className="font-medium text-blue-600">Keep your momentum</p>
+                        <p className="text-muted-foreground mt-1">
+                          Update within a week to maintain your +20 pts bonus
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
                 {issues.closeRate >= 50 && issues.closeRate < 80 && issues.total > 0 && (
                   <div className="flex items-start gap-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
                     <CheckCircle2 className="h-4 w-4 text-blue-500 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-medium text-blue-600">Improve issue close rate</p>
-                      <p className="text-muted-foreground mt-1">Current: {issues.closeRate}%. Get to 80%+ for full points (+{20 - Math.floor(issues.closeRate * 0.2)} more pts available)</p>
+                      <p className="text-muted-foreground mt-1">
+                        Current: {issues.closeRate}%. Get to 80%+ for full points (+
+                        {20 - Math.floor(issues.closeRate * 0.2)} more pts available)
+                      </p>
                     </div>
                   </div>
                 )}
@@ -315,25 +348,34 @@ export default function RepositoryDeepDive() {
                     <AlertCircle className="h-4 w-4 text-orange-500 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-medium text-orange-600">Close more issues</p>
-                      <p className="text-muted-foreground mt-1">Current close rate: {issues.closeRate}% (target: 50%+ for +20 pts)</p>
+                      <p className="text-muted-foreground mt-1">
+                        Current close rate: {issues.closeRate}% (target: 50%+ for +20 pts)
+                      </p>
                     </div>
                   </div>
                 )}
-                {pullRequests.mergeRate >= 50 && pullRequests.mergeRate < 80 && pullRequests.total > 0 && (
-                  <div className="flex items-start gap-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                    <GitPullRequest className="h-4 w-4 text-blue-500 mt-0.5" />
-                    <div className="text-sm">
-                      <p className="font-medium text-blue-600">Improve PR merge rate</p>
-                      <p className="text-muted-foreground mt-1">Current: {pullRequests.mergeRate}%. Get to 80%+ for full points (+{20 - Math.floor(pullRequests.mergeRate * 0.2)} more pts available)</p>
+                {pullRequests.mergeRate >= 50 &&
+                  pullRequests.mergeRate < 80 &&
+                  pullRequests.total > 0 && (
+                    <div className="flex items-start gap-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                      <GitPullRequest className="h-4 w-4 text-blue-500 mt-0.5" />
+                      <div className="text-sm">
+                        <p className="font-medium text-blue-600">Improve PR merge rate</p>
+                        <p className="text-muted-foreground mt-1">
+                          Current: {pullRequests.mergeRate}%. Get to 80%+ for full points (+
+                          {20 - Math.floor(pullRequests.mergeRate * 0.2)} more pts available)
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
                 {pullRequests.mergeRate < 50 && pullRequests.total > 0 && (
                   <div className="flex items-start gap-2 p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
                     <GitPullRequest className="h-4 w-4 text-orange-500 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-medium text-orange-600">Merge more pull requests</p>
-                      <p className="text-muted-foreground mt-1">Current merge rate: {pullRequests.mergeRate}% (target: 50%+ for +20 pts)</p>
+                      <p className="text-muted-foreground mt-1">
+                        Current merge rate: {pullRequests.mergeRate}% (target: 50%+ for +20 pts)
+                      </p>
                     </div>
                   </div>
                 )}
@@ -342,7 +384,10 @@ export default function RepositoryDeepDive() {
                     <Code className="h-4 w-4 text-blue-500 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-medium text-blue-600">Increase commit activity</p>
-                      <p className="text-muted-foreground mt-1">{commits.total} commits. Reach 50+ for maximum points (+5 more pts available)</p>
+                      <p className="text-muted-foreground mt-1">
+                        {commits.total} commits. Reach 50+ for maximum points (+5 more pts
+                        available)
+                      </p>
                     </div>
                   </div>
                 )}
@@ -351,7 +396,9 @@ export default function RepositoryDeepDive() {
                     <Code className="h-4 w-4 text-orange-500 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-medium text-orange-600">Increase commit activity</p>
-                      <p className="text-muted-foreground mt-1">{commits.total} commits (target: 20+ for +5 pts, 50+ for +10 pts)</p>
+                      <p className="text-muted-foreground mt-1">
+                        {commits.total} commits (target: 20+ for +5 pts, 50+ for +10 pts)
+                      </p>
                     </div>
                   </div>
                 )}
@@ -360,7 +407,9 @@ export default function RepositoryDeepDive() {
                     <Award className="h-4 w-4 text-green-500 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-medium text-green-600">Excellent repository health! 🎉</p>
-                      <p className="text-muted-foreground mt-1">Keep up the great work maintaining this project!</p>
+                      <p className="text-muted-foreground mt-1">
+                        Keep up the great work maintaining this project!
+                      </p>
                     </div>
                   </div>
                 )}
@@ -372,11 +421,21 @@ export default function RepositoryDeepDive() {
 
       <Tabs defaultValue="languages" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1">
-          <TabsTrigger value="languages" className="text-xs sm:text-sm">Languages</TabsTrigger>
-          <TabsTrigger value="commits" className="text-xs sm:text-sm">Commits</TabsTrigger>
-          <TabsTrigger value="contributors" className="text-xs sm:text-sm">Contributors</TabsTrigger>
-          <TabsTrigger value="issues" className="text-xs sm:text-sm">Issues & PRs</TabsTrigger>
-          <TabsTrigger value="activity" className="text-xs sm:text-sm">Activity</TabsTrigger>
+          <TabsTrigger value="languages" className="text-xs sm:text-sm">
+            Languages
+          </TabsTrigger>
+          <TabsTrigger value="commits" className="text-xs sm:text-sm">
+            Commits
+          </TabsTrigger>
+          <TabsTrigger value="contributors" className="text-xs sm:text-sm">
+            Contributors
+          </TabsTrigger>
+          <TabsTrigger value="issues" className="text-xs sm:text-sm">
+            Issues & PRs
+          </TabsTrigger>
+          <TabsTrigger value="activity" className="text-xs sm:text-sm">
+            Activity
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="languages">
@@ -486,7 +545,10 @@ export default function RepositoryDeepDive() {
             <CardContent>
               <div className="space-y-3">
                 {commits.recentCommits.map((commit) => (
-                  <div key={commit.sha} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
+                  <div
+                    key={commit.sha}
+                    className="flex items-start gap-3 p-3 rounded-lg bg-muted/50"
+                  >
                     <Badge variant="outline" className="font-mono">
                       {commit.sha}
                     </Badge>
@@ -612,7 +674,12 @@ export default function RepositoryDeepDive() {
               <CardContent>
                 <div className="h-[250px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={commits.hourDistribution.map((count, hour) => ({ hour: `${hour}:00`, count }))}>
+                    <BarChart
+                      data={commits.hourDistribution.map((count, hour) => ({
+                        hour: `${hour}:00`,
+                        count,
+                      }))}
+                    >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="hour" />
                       <YAxis />
@@ -631,10 +698,12 @@ export default function RepositoryDeepDive() {
               <CardContent>
                 <div className="h-[250px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={commits.dayDistribution.map((count, day) => ({ 
-                      day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][day], 
-                      count 
-                    }))}>
+                    <BarChart
+                      data={commits.dayDistribution.map((count, day) => ({
+                        day: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][day],
+                        count,
+                      }))}
+                    >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="day" />
                       <YAxis />
@@ -656,21 +725,27 @@ export default function RepositoryDeepDive() {
                     <Calendar className="h-8 w-8 text-purple-500" />
                     <div>
                       <p className="text-sm text-muted-foreground">Created</p>
-                      <p className="font-medium">{new Date(repository.created_at).toLocaleDateString()}</p>
+                      <p className="font-medium">
+                        {new Date(repository.created_at).toLocaleDateString()}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <Clock className="h-8 w-8 text-blue-500" />
                     <div>
                       <p className="text-sm text-muted-foreground">Last Updated</p>
-                      <p className="font-medium">{new Date(repository.updated_at).toLocaleDateString()}</p>
+                      <p className="font-medium">
+                        {new Date(repository.updated_at).toLocaleDateString()}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <TrendingUp className="h-8 w-8 text-green-500" />
                     <div>
                       <p className="text-sm text-muted-foreground">Last Push</p>
-                      <p className="font-medium">{new Date(repository.pushed_at).toLocaleDateString()}</p>
+                      <p className="font-medium">
+                        {new Date(repository.pushed_at).toLocaleDateString()}
+                      </p>
                     </div>
                   </div>
                 </div>

@@ -76,24 +76,12 @@ export function ShareCard({ insights, username }) {
             </div>
 
             <div className="flex gap-2">
-              <Button
-                onClick={handleDownload}
-                className="flex-1"
-                variant="default"
-              >
+              <Button onClick={handleDownload} className="flex-1" variant="default">
                 <Download className="h-4 w-4 mr-2" />
                 Download Card
               </Button>
-              <Button
-                onClick={handleGenerate}
-                variant="outline"
-                disabled={generating}
-              >
-                {generating ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  "Regenerate"
-                )}
+              <Button onClick={handleGenerate} variant="outline" disabled={generating}>
+                {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : "Regenerate"}
               </Button>
             </div>
 

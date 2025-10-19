@@ -35,7 +35,7 @@ import {
 export default function CompareUsers() {
   const { user1: urlUser1, user2: urlUser2 } = useParams();
   const navigate = useNavigate();
-  
+
   const [user1Input, setUser1Input] = useState(urlUser1 || "");
   const [user2Input, setUser2Input] = useState(urlUser2 || "");
   const [user1Data, setUser1Data] = useState(null);
@@ -61,14 +61,14 @@ export default function CompareUsers() {
         getGithubInsights(username1),
         getGithubInsights(username2),
       ]);
-      
+
       setUser1Data(data1.data);
       setUser2Data(data2.data);
-      
+
       // Calculate winner
       const scores = calculateScores(data1.data, data2.data);
       setWinner(scores);
-      
+
       toast.success("Comparison loaded!");
     } catch (err) {
       console.error(err);
@@ -151,8 +151,10 @@ export default function CompareUsers() {
   function getRadarData() {
     if (!user1Data || !user2Data) return [];
 
-    const stars1 = user1Data.topStarred?.reduce((sum, r) => sum + (r.stargazers_count || 0), 0) || 0;
-    const stars2 = user2Data.topStarred?.reduce((sum, r) => sum + (r.stargazers_count || 0), 0) || 0;
+    const stars1 =
+      user1Data.topStarred?.reduce((sum, r) => sum + (r.stargazers_count || 0), 0) || 0;
+    const stars2 =
+      user2Data.topStarred?.reduce((sum, r) => sum + (r.stargazers_count || 0), 0) || 0;
 
     const maxRepos = Math.max(user1Data.reposCount, user2Data.reposCount);
     const maxStars = Math.max(stars1, stars2);
@@ -185,8 +187,14 @@ export default function CompareUsers() {
       },
       {
         metric: "Following",
-        [user1Data.user.login]: ((user1Data.user.following || 0) / Math.max(user1Data.user.following || 0, user2Data.user.following || 0)) * 100,
-        [user2Data.user.login]: ((user2Data.user.following || 0) / Math.max(user1Data.user.following || 0, user2Data.user.following || 0)) * 100,
+        [user1Data.user.login]:
+          ((user1Data.user.following || 0) /
+            Math.max(user1Data.user.following || 0, user2Data.user.following || 0)) *
+          100,
+        [user2Data.user.login]:
+          ((user2Data.user.following || 0) /
+            Math.max(user1Data.user.following || 0, user2Data.user.following || 0)) *
+          100,
       },
     ];
   }
@@ -273,7 +281,8 @@ export default function CompareUsers() {
                   {winner.user1 > winner.user2 ? user1Data.user.login : user2Data.user.login} Wins!
                 </h2>
                 <p className="text-muted-foreground">
-                  Score: {Math.max(winner.user1, winner.user2)} - {Math.min(winner.user1, winner.user2)}
+                  Score: {Math.max(winner.user1, winner.user2)} -{" "}
+                  {Math.min(winner.user1, winner.user2)}
                 </p>
               </div>
               <Trophy className="h-12 w-12 text-yellow-500" />
@@ -369,10 +378,18 @@ export default function CompareUsers() {
 
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
-          <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
-          <TabsTrigger value="languages" className="text-xs sm:text-sm">Languages</TabsTrigger>
-          <TabsTrigger value="activity" className="text-xs sm:text-sm">Activity</TabsTrigger>
-          <TabsTrigger value="radar" className="text-xs sm:text-sm">Radar</TabsTrigger>
+          <TabsTrigger value="overview" className="text-xs sm:text-sm">
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="languages" className="text-xs sm:text-sm">
+            Languages
+          </TabsTrigger>
+          <TabsTrigger value="activity" className="text-xs sm:text-sm">
+            Activity
+          </TabsTrigger>
+          <TabsTrigger value="radar" className="text-xs sm:text-sm">
+            Radar
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -473,7 +490,11 @@ export default function CompareUsers() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Coding Style</span>
-                  <span>{user1Data.commitTimes?.profile === "night-coder" ? "🌙 Night Coder" : "🌅 Early Bird"}</span>
+                  <span>
+                    {user1Data.commitTimes?.profile === "night-coder"
+                      ? "🌙 Night Coder"
+                      : "🌅 Early Bird"}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Top Repo</span>
@@ -494,7 +515,11 @@ export default function CompareUsers() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Coding Style</span>
-                  <span>{user2Data.commitTimes?.profile === "night-coder" ? "🌙 Night Coder" : "🌅 Early Bird"}</span>
+                  <span>
+                    {user2Data.commitTimes?.profile === "night-coder"
+                      ? "🌙 Night Coder"
+                      : "🌅 Early Bird"}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Top Repo</span>

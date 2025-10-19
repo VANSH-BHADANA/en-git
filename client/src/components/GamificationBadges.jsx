@@ -4,27 +4,27 @@ import { Trophy, Award, Star, Zap } from "lucide-react";
 import { calculateBadges, getScoreFromBadges } from "../lib/gamification";
 
 const BADGE_ICONS = {
-  "Polyglot": "🌐",
+  Polyglot: "🌐",
   "Night Owl": "🦉",
   "Early Bird": "🐦",
   "Open Source Hero": "⭐",
   "Consistent Coder": "🔥",
   "Star Collector": "✨",
   "Early Adopter": "🚀",
-  "Collaborator": "🤝",
-  "Issue Hunter": "🎯"
+  Collaborator: "🤝",
+  "Issue Hunter": "🎯",
 };
 
 const TIER_COLORS = {
   Bronze: "bg-amber-700/20 text-amber-600 border-amber-600/30",
   Silver: "bg-slate-400/20 text-slate-300 border-slate-400/30",
-  Gold: "bg-yellow-500/20 text-yellow-500 border-yellow-500/30"
+  Gold: "bg-yellow-500/20 text-yellow-500 border-yellow-500/30",
 };
 
 const TIER_ICONS = {
   Bronze: "🥉",
   Silver: "🥈",
-  Gold: "🥇"
+  Gold: "🥇",
 };
 
 export function GamificationBadges({ insights }) {
@@ -45,7 +45,8 @@ export function GamificationBadges({ insights }) {
               Achievements Unlocked
             </CardTitle>
             <CardDescription>
-              Earned {badges.length} badge{badges.length !== 1 ? 's' : ''} • Total Score: {totalScore}
+              Earned {badges.length} badge{badges.length !== 1 ? "s" : ""} • Total Score:{" "}
+              {totalScore}
             </CardDescription>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20">
@@ -61,29 +62,20 @@ export function GamificationBadges({ insights }) {
               key={idx}
               className="flex items-start gap-3 p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
             >
-              <div className="text-3xl flex-shrink-0">
-                {BADGE_ICONS[badge.name] || "🏆"}
-              </div>
+              <div className="text-3xl flex-shrink-0">{BADGE_ICONS[badge.name] || "🏆"}</div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <h4 className="font-semibold text-sm truncate">{badge.name}</h4>
                   {badge.tier && (
-                    <Badge
-                      variant="outline"
-                      className={`text-xs ${TIER_COLORS[badge.tier] || ""}`}
-                    >
+                    <Badge variant="outline" className={`text-xs ${TIER_COLORS[badge.tier] || ""}`}>
                       {TIER_ICONS[badge.tier]} {badge.tier}
                     </Badge>
                   )}
                 </div>
-                <p className="text-xs text-muted-foreground line-clamp-2">
-                  {badge.description}
-                </p>
+                <p className="text-xs text-muted-foreground line-clamp-2">{badge.description}</p>
                 <div className="flex items-center gap-1 mt-2">
                   <Award className="h-3 w-3 text-yellow-600" />
-                  <span className="text-xs font-medium text-yellow-600">
-                    +{badge.points} pts
-                  </span>
+                  <span className="text-xs font-medium text-yellow-600">+{badge.points} pts</span>
                 </div>
               </div>
             </div>

@@ -37,9 +37,10 @@ export function AIInsights({ username, onInsightsGenerated }) {
       }
     } catch (err) {
       console.error("Failed to fetch AI insights:", err);
-      const errorMsg = err.response?.data?.message 
-        || err.message 
-        || "Failed to generate AI insights. The AI service might be temporarily unavailable.";
+      const errorMsg =
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to generate AI insights. The AI service might be temporarily unavailable.";
       setError(errorMsg);
     } finally {
       setLoading(false);

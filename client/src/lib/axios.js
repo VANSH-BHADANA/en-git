@@ -15,7 +15,10 @@ axiosInstance.interceptors.response.use(
       if (message.includes("expired") || message.includes("Session expired")) {
         localStorage.removeItem("user");
         // Only redirect if not already on login/signup page
-        if (!window.location.pathname.includes("/login") && !window.location.pathname.includes("/signup")) {
+        if (
+          !window.location.pathname.includes("/login") &&
+          !window.location.pathname.includes("/signup")
+        ) {
           window.location.href = "/login?expired=true";
         }
       }

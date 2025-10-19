@@ -34,9 +34,7 @@ const ContactPage = () => (
   <div className="flex items-center justify-center py-17">
     <div className="w-full max-w-screen-xl mx-auto px-6 xl:px-0">
       <b className="text-muted-foreground">Contact Me</b>
-      <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight">
-        Let&apos;s Connect!
-      </h2>
+      <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight">Let&apos;s Connect!</h2>
       <p className="mt-3 text-base sm:text-lg">
         I&apos;d love to hear from you. Feel free to reach out via email, Discord, or GitHub!
       </p>

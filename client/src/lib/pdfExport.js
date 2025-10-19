@@ -161,7 +161,7 @@ export async function exportToPDF(insights, recommendations, aiInsights = null) 
         pdf.addPage();
         yPos = 20;
       }
-      
+
       pdf.setFontSize(12);
       pdf.setFont(undefined, "bold");
       pdf.setTextColor(34, 197, 94); // Green
@@ -288,7 +288,7 @@ export async function exportToPDF(insights, recommendations, aiInsights = null) 
         }
 
         pdf.setFont(undefined, "bold");
-        pdf.text(`Phase ${idx + 1}: ${phase.months || phase.title || ''}`, 25, yPos);
+        pdf.text(`Phase ${idx + 1}: ${phase.months || phase.title || ""}`, 25, yPos);
         yPos += 6;
 
         pdf.setFont(undefined, "normal");

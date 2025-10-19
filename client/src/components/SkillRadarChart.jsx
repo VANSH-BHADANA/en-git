@@ -1,6 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";
+import {
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  ResponsiveContainer,
+} from "recharts";
 import { Target } from "lucide-react";
 import { calculateSkillRadar, getPrimarySkill } from "../lib/skillRadar";
 
@@ -23,7 +30,10 @@ export function SkillRadarChart({ insights }) {
           Your technical expertise across different domains
           {primarySkill && (
             <span className="ml-2">
-              • Primary: <Badge variant="secondary" className="ml-1">{primarySkill}</Badge>
+              • Primary:{" "}
+              <Badge variant="secondary" className="ml-1">
+                {primarySkill}
+              </Badge>
             </span>
           )}
         </CardDescription>
@@ -69,8 +79,8 @@ export function SkillRadarChart({ insights }) {
 
         <div className="mt-4 p-3 rounded-lg bg-muted/50">
           <p className="text-xs text-muted-foreground">
-            💡 Skill scores are calculated based on your language usage and project topics.
-            Scores range from 0-100 representing expertise level.
+            💡 Skill scores are calculated based on your language usage and project topics. Scores
+            range from 0-100 representing expertise level.
           </p>
         </div>
       </CardContent>

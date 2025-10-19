@@ -11,7 +11,7 @@ export function ContributionHeatmap({ insights }) {
   }
 
   // Filter out invalid weeks
-  const validWeeks = insights.weekly.filter(week => {
+  const validWeeks = insights.weekly.filter((week) => {
     const date = new Date(week.week);
     return !isNaN(date.getTime());
   });
@@ -24,7 +24,7 @@ export function ContributionHeatmap({ insights }) {
   const heatmapData = validWeeks.flatMap((week) => {
     // Create 7 days of data for each week
     const weekStart = new Date(week.week);
-    
+
     return Array.from({ length: 7 }, (_, i) => {
       const date = new Date(weekStart);
       date.setDate(date.getDate() + i);
@@ -48,11 +48,9 @@ export function ContributionHeatmap({ insights }) {
   let currentStreak = 0;
   let maxStreak = 0;
   let tempStreak = 0;
-  
-  const sortedWeeks = [...validWeeks].sort((a, b) => 
-    new Date(b.week) - new Date(a.week)
-  );
-  
+
+  const sortedWeeks = [...validWeeks].sort((a, b) => new Date(b.week) - new Date(a.week));
+
   for (const week of sortedWeeks) {
     if (week.commits > 0) {
       tempStreak++;
@@ -72,9 +70,7 @@ export function ContributionHeatmap({ insights }) {
           <Calendar className="h-5 w-5 text-green-500" />
           Contribution Calendar
         </CardTitle>
-        <CardDescription>
-          Your coding activity over the past year
-        </CardDescription>
+        <CardDescription>Your coding activity over the past year</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-3 gap-4">
@@ -165,9 +161,7 @@ export function ContributionHeatmap({ insights }) {
           <div className="p-3 rounded-lg bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20">
             <p className="text-sm flex items-center gap-2">
               <span className="text-xl">🔥</span>
-              <span>
-                Amazing {currentStreak}-week streak! Keep the momentum going!
-              </span>
+              <span>Amazing {currentStreak}-week streak! Keep the momentum going!</span>
             </p>
           </div>
         )}

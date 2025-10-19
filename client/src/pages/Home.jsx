@@ -118,7 +118,9 @@ const Home = () => {
                       {tx.currency} {tx.amount}
                     </Badge>
                   </TableCell>
-                  <TableCell className="font-mono text-xs hidden sm:table-cell">{tx.razorpay_payment_id}</TableCell>
+                  <TableCell className="font-mono text-xs hidden sm:table-cell">
+                    {tx.razorpay_payment_id}
+                  </TableCell>
                   <TableCell className="hidden md:table-cell">{formatDate(tx.createdAt)}</TableCell>
                   <TableCell className="font-mono text-xs break-all hidden lg:table-cell">
                     <a

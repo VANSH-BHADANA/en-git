@@ -16,6 +16,8 @@ export async function getAIInsights(username) {
 }
 
 export async function getRepositoryInsights(owner, repo) {
-  const { data } = await api.get(`/repository/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`);
+  const { data } = await api.get(
+    `/repository/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`
+  );
   return data;
 }

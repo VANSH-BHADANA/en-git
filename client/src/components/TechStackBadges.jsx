@@ -4,7 +4,11 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Code2, Copy, Check } from "lucide-react";
-import { generateTechStackBadges, generateMarkdownBadges, generateHTMLBadges } from "../lib/techStackBadges";
+import {
+  generateTechStackBadges,
+  generateMarkdownBadges,
+  generateHTMLBadges,
+} from "../lib/techStackBadges";
 import { toast } from "sonner";
 
 export function TechStackBadges({ insights }) {
@@ -31,9 +35,7 @@ export function TechStackBadges({ insights }) {
           <Code2 className="h-5 w-5 text-indigo-500" />
           Tech Stack Badges
         </CardTitle>
-        <CardDescription>
-          Auto-generated badges for your README or website
-        </CardDescription>
+        <CardDescription>Auto-generated badges for your README or website</CardDescription>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="preview" className="w-full">
@@ -46,13 +48,7 @@ export function TechStackBadges({ insights }) {
           <TabsContent value="preview" className="space-y-4">
             <div className="flex flex-wrap gap-2 p-4 rounded-lg border bg-muted/30">
               {badges.map((badge, idx) => (
-                <img
-                  key={idx}
-                  src={badge.url}
-                  alt={badge.name}
-                  className="h-5"
-                  loading="lazy"
-                />
+                <img key={idx} src={badge.url} alt={badge.name} className="h-5" loading="lazy" />
               ))}
             </div>
             <div className="flex items-center gap-2">
@@ -112,7 +108,16 @@ export function TechStackBadges({ insights }) {
 
         <div className="mt-4 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
           <p className="text-xs text-blue-600 dark:text-blue-400">
-            💡 These badges are powered by <a href="https://shields.io" target="_blank" rel="noopener noreferrer" className="underline">shields.io</a> and will always show live stats
+            💡 These badges are powered by{" "}
+            <a
+              href="https://shields.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              shields.io
+            </a>{" "}
+            and will always show live stats
           </p>
         </div>
       </CardContent>

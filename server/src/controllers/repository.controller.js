@@ -57,52 +57,53 @@ export const getRepositoryInsights = asyncHandler(async (req, res) => {
     const prStats = analyzePullRequests(pullRequests.data);
 
     // Calculate health score
-    const healthScore = calculateHealthScore(repository, commits.data, issues.data, pullRequests.data);
+    const healthScore = calculateHealthScore(
+      repository,
+      commits.data,
+      issues.data,
+      pullRequests.data
+    );
 
     // Get commit frequency (weekly)
     const commitFrequency = getCommitFrequency(commits.data);
 
     return res.status(200).json(
-      new ApiResponse(
-        200,
-        "Repository insights fetched successfully",
-        {
-          repository: {
-            name: repository.name,
-            full_name: repository.full_name,
-            description: repository.description,
-            owner: {
-              login: repository.owner.login,
-              avatar_url: repository.owner.avatar_url,
-            },
-            html_url: repository.html_url,
-            homepage: repository.homepage,
-            created_at: repository.created_at,
-            updated_at: repository.updated_at,
-            pushed_at: repository.pushed_at,
-            size: repository.size,
-            stargazers_count: repository.stargazers_count,
-            watchers_count: repository.watchers_count,
-            forks_count: repository.forks_count,
-            open_issues_count: repository.open_issues_count,
-            default_branch: repository.default_branch,
-            topics: repository.topics,
-            license: repository.license,
-            has_issues: repository.has_issues,
-            has_projects: repository.has_projects,
-            has_wiki: repository.has_wiki,
-            has_pages: repository.has_pages,
-            has_downloads: repository.has_downloads,
+      new ApiResponse(200, "Repository insights fetched successfully", {
+        repository: {
+          name: repository.name,
+          full_name: repository.full_name,
+          description: repository.description,
+          owner: {
+            login: repository.owner.login,
+            avatar_url: repository.owner.avatar_url,
           },
-          languages: languageBreakdown,
-          commits: commitAnalysis,
-          contributors: contributorStats,
-          issues: issueStats,
-          pullRequests: prStats,
-          healthScore,
-          commitFrequency,
-        }
-      )
+          html_url: repository.html_url,
+          homepage: repository.homepage,
+          created_at: repository.created_at,
+          updated_at: repository.updated_at,
+          pushed_at: repository.pushed_at,
+          size: repository.size,
+          stargazers_count: repository.stargazers_count,
+          watchers_count: repository.watchers_count,
+          forks_count: repository.forks_count,
+          open_issues_count: repository.open_issues_count,
+          default_branch: repository.default_branch,
+          topics: repository.topics,
+          license: repository.license,
+          has_issues: repository.has_issues,
+          has_projects: repository.has_projects,
+          has_wiki: repository.has_wiki,
+          has_pages: repository.has_pages,
+          has_downloads: repository.has_downloads,
+        },
+        languages: languageBreakdown,
+        commits: commitAnalysis,
+        contributors: contributorStats,
+        issues: issueStats,
+        pullRequests: prStats,
+        healthScore,
+        commitFrequency,
+      })
     );
   } catch (error) {
     console.error("Repository Insights Error:", error);
@@ -150,7 +151,10 @@ function analyzeCommits(commits) {
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10),
-    conventionalCommitPercentage: ((conventionalCommits.length / commitMessages.length) * 100).toFixed(2),
+    conventionalCommitPercentage: (
+      (conventionalCommits.length / commitMessages.length) *
+      100
+    ).toFixed(2),
     avgMessageLength: avgMessageLength.toFixed(0),
     hourDistribution,
     dayDistribution,
@@ -181,7 +185,8 @@ function analyzeIssues(issues) {
     total: actualIssues.length,
     open: openIssues.length,
     closed: closedIssues.length,
-    closeRate: actualIssues.length > 0 ? ((closedIssues.length / actualIssues.length) * 100).toFixed(2) : 0,
+    closeRate:
+      actualIssues.length > 0 ? ((closedIssues.length / actualIssues.length) * 100).toFixed(2) : 0,
     avgTimeToCloseDays: (avgTimeToClose / (1000 * 60 * 60 * 24)).toFixed(1),
   };
 }
@@ -248,7 +253,10 @@ function calculateHealthScore(repo, commits, issues, prs) {
     const closeRate = closedIssues.length / actualIssues.length;
     const issuePoints = Math.round(closeRate * 20);
     score += issuePoints;
-    factors.push({ factor: `${(closeRate * 100).toFixed(0)}% issue close rate`, points: issuePoints });
+    factors.push({
+      factor: `${(closeRate * 100).toFixed(0)}% issue close rate`,
+      points: issuePoints,
+    });
   }
 
   // PR management (20 points)
@@ -280,14 +288,14 @@ function calculateHealthScore(repo, commits, issues, prs) {
 
 function getCommitFrequency(commits) {
   const weeks = {};
-  
+
   commits.forEach((commit) => {
     const date = new Date(commit.commit.author.date);
     const weekStart = new Date(date);
     weekStart.setDate(date.getDate() - date.getDay());
     weekStart.setHours(0, 0, 0, 0);
     const weekKey = weekStart.toISOString().split("T")[0];
-    
+
     weeks[weekKey] = (weeks[weekKey] || 0) + 1;
   });
 
