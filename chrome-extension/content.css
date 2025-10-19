@@ -1,0 +1,19 @@
+/* Styles for content script injected elements */
+
+.en-git-analyze-btn button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.en-git-analyze-btn button:active {
+  transform: translateY(0);
+}
+
+.en-git-repo-btn:hover {
+  background: #4f46e5 !important;
+  transform: scale(1.05);
+}
+
+.en-git-repo-btn:active {
+  transform: scale(0.95);
+}

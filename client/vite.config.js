@@ -3,14 +3,35 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+export default defineConfig(({ mode }) => {
+  const isExtension = mode === "extension";
+
+  return {
+    plugins: [react(), tailwindcss()],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
     },
-  },
-  server: {
-    port: 3000,
-  },
+    server: {
+      port: 3000,
+    },
+    build: isExtension
+      ? {
+          outDir: "../chrome-extension",
+          rollupOptions: {
+            input: {
+              popup: path.resolve(__dirname, "src/popup.jsx"),
+            },
+            output: {
+              entryFileNames: "popup.js",
+              chunkFileNames: "chunks/[name].js",
+              assetFileNames: "assets/[name].[ext]",
+            },
+          },
+          minify: true,
+          sourcemap: false,
+        }
+      : undefined,
+  };
 });

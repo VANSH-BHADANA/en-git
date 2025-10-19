@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -50,6 +50,26 @@ export default function RepositoryDeepDive() {
   const [repoInput, setRepoInput] = useState(repo || "");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
+
+  // Auto-fetch when URL params are present
+  useEffect(() => {
+    if (owner && repo) {
+      fetchRepositoryWithParams(owner, repo);
+    }
+  }, [owner, repo]);
+
+  async function fetchRepositoryWithParams(ownerParam, repoParam) {
+    setLoading(true);
+    try {
+      const response = await getRepositoryInsights(ownerParam, repoParam);
+      setData(response.data);
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || "Failed to fetch repository data");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function fetchRepository() {
     if (!ownerInput || !repoInput) {

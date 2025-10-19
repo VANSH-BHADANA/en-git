@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "en-git - GitHub Analytics & Career Insights",
+  "version": "1.0.0",
+  "description": "AI-powered GitHub analytics with career insights, user comparison, and repository deep dive",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://api.github.com/*",
+    "https://github.com/*",
+    "https://en-git.onrender.com/*",
+    "https://en-git-6fjm.vercel.app/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.svg",
+      "48": "icons/icon48.svg",
+      "128": "icons/icon128.svg"
+    },
+    "default_title": "en-git - Analyze GitHub Profile"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.svg",
+    "48": "icons/icon48.svg",
+    "128": "icons/icon128.svg"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

@@ -13,42 +13,56 @@ en-git transforms your GitHub data into actionable insights with advanced analyt
 
 ### 📊 Core Analytics
 
--  **Language Analysis** - Top 3 programming languages with usage percentages
--  **Repository Insights** - Most starred & active repositories
--  **Contribution Calendar** - Interactive heatmap of your coding activity
--  **Activity Patterns** - Weekly & hourly contribution charts
--  **Coding Profile** - Early bird vs night coder detection
--  **Topics & Tags** - Popular technologies in your projects
--  **Domain Detection** - Skill classification (Web Dev, AI/ML, DevOps, Mobile, etc.)
+- **Language Analysis** - Top 3 programming languages with usage percentages
+- **Repository Insights** - Most starred & active repositories
+- **Contribution Calendar** - Interactive heatmap of your coding activity
+- **Activity Patterns** - Weekly & hourly contribution charts
+- **Coding Profile** - Early bird vs night coder detection
+- **Topics & Tags** - Popular technologies in your projects
+- **Domain Detection** - Skill classification (Web Dev, AI/ML, DevOps, Mobile, etc.)
 
 ### 🎮 Gamification & Achievements
 
 - **Achievement Badges** - Unlock badges based on your activity
-  -  Polyglot (Bronze/Silver/Gold)
-  -  Night Owl / 🐦 Early Bird
-  -  Open Source Hero
-  -  Consistent Coder
-  -  Star Collector
-  -  Early Adopter
-  -  Collaborator
-  -  Issue Hunter
--  **Skill Radar Chart** - 6-dimensional visualization of technical expertise
--  **Tech Stack Badges** - Auto-generated shields.io badges for your README
+  - Polyglot (Bronze/Silver/Gold)
+  - Night Owl / 🐦 Early Bird
+  - Open Source Hero
+  - Consistent Coder
+  - Star Collector
+  - Early Adopter
+  - Collaborator
+  - Issue Hunter
+- **Skill Radar Chart** - 6-dimensional visualization of technical expertise
+- **Tech Stack Badges** - Auto-generated shields.io badges for your README
 
 ### 🤖 AI-Powered Features
 
--  **Career Insights** - Personalized career advice from Google Gemini AI
--  **6-Month Learning Roadmap** - Customized skill development plan
--  **Strengths & Growth Areas** - Identify what you excel at and where to improve
--  **Project Recommendations** - AI-suggested projects to build next
--  **Career Paths** - Job titles and specializations matched to your profile
+- **Career Insights** - Personalized career advice from Google Gemini AI
+- **6-Month Learning Roadmap** - Customized skill development plan
+- **Strengths & Growth Areas** - Identify what you excel at and where to improve
+- **Project Recommendations** - AI-suggested projects to build next
+- **Career Paths** - Job titles and specializations matched to your profile
 
 ### 🎨 Social & Sharing
 
--  **Share Cards** - Generate beautiful 1200x630 images for social media
--  **Bookmarks** - Save favorite profiles for quick access
--  **Search History** - Track recently viewed profiles
--  **PDF Export** - Download comprehensive reports
+- **Share Cards** - Generate beautiful 1200x630 images for social media
+- **Bookmarks** - Save favorite profiles for quick access
+
+### 🎨 Social & Sharing
+
+- **Share Cards** - Generate beautiful 1200x630 images for social media
+- **Bookmarks** - Save favorite profiles for quick access
+- **Search History** - Track recently viewed profiles
+- **PDF Export** - Download comprehensive reports
+
+### 🔌 Browser Extension
+
+- **Chrome Extension** - Analyze profiles directly from GitHub pages
+- **One-Click Analysis** - Quick access from any GitHub profile or repo
+- **Context Menu Integration** - Right-click any GitHub link to analyze
+- **Smart Detection** - Auto-detects usernames from current page
+- **Recent History** - Quick access to recently analyzed profiles
+
 ## 🛠️ Tech Stack
 
 **Frontend:**
@@ -204,6 +218,34 @@ npm run dev
 
 ---
 
+## 🔌 Chrome Extension
+
+### Quick Setup
+
+1. **Build the extension:**
+
+   ```bash
+   cd client
+   npm run build:extension
+   ```
+
+2. **Load in Chrome:**
+
+   - Open `chrome://extensions/`
+   - Enable **Developer mode** (top-right toggle)
+   - Click **Load unpacked**
+   - Select the `chrome-extension` folder
+   - Extension loaded! 🎉
+
+3. **Use it:**
+   - Click extension icon to analyze any GitHub username
+   - Visit GitHub profiles → See "Analyze with en-git" button
+   - Visit repos → See "Deep Dive" button
+   - Right-click GitHub links → "Analyze with en-git"
+
+📖 **Full documentation:** See `chrome-extension/SETUP.md`
+
+---
 
 ## 🧩 Project Structure
 
@@ -230,4 +272,3 @@ Github/
 ```
 
 ---
-
