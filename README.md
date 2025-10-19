@@ -234,6 +234,7 @@ npm run dev
    - Click **Load unpacked**
    - Select the `chrome-extension` folder
    - Extension loaded! 🎉
+<img width="1919" height="1142" alt="image" src="https://github.com/user-attachments/assets/7972bec7-a806-419f-add9-c79e5e77fe4f" />
 
 3. **Use it:**
    - Click extension icon to analyze any GitHub username
