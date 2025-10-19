@@ -22,9 +22,10 @@ export default defineConfig(({ mode }) => {
           rollupOptions: {
             input: {
               popup: path.resolve(__dirname, "src/popup.jsx"),
+              settings: path.resolve(__dirname, "src/settings.jsx"),
             },
             output: {
-              entryFileNames: "popup.js",
+              entryFileNames: "[name].js",
               chunkFileNames: "chunks/[name].js",
               assetFileNames: "assets/[name].[ext]",
             },

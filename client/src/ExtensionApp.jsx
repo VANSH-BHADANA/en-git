@@ -11,6 +11,7 @@ import {
   BookOpen,
   Loader2,
   Code,
+  Settings as SettingsIcon,
 } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
@@ -175,6 +176,12 @@ function ExtensionApp() {
     });
   };
 
+  const openSettings = () => {
+    chrome.tabs.create({
+      url: chrome.runtime.getURL("settings.html"),
+    });
+  };
+
   return (
     <div className="w-full min-h-screen bg-background text-foreground">
       {/* Header */}
@@ -184,10 +191,16 @@ function ExtensionApp() {
             <Github className="h-6 w-6 text-white" />
             <h1 className="text-xl font-bold text-white">en-git</h1>
           </div>
-          <Button onClick={openDashboard} size="sm" variant="secondary" className="gap-1">
-            <ExternalLink className="h-3 w-3" />
-            Full App
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button onClick={openSettings} size="sm" variant="secondary" className="gap-1">
+              <SettingsIcon className="h-3 w-3" />
+              Settings
+            </Button>
+            <Button onClick={openDashboard} size="sm" variant="secondary" className="gap-1">
+              <ExternalLink className="h-3 w-3" />
+              Full App
+            </Button>
+          </div>
         </div>
         <p className="text-xs text-white/80 mt-1">Quick GitHub Stats</p>
       </div>

@@ -17,7 +17,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "analyzeProfile") {
     const username = request.username;
     chrome.tabs.create({
-      url: `https://en-git-6fjm.vercel.app/insights/${username}`,
+      url: `https://en-git-6fjm.vercel.app/stats/${username}`,
     });
     sendResponse({ success: true });
   }
@@ -57,7 +57,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (pathParts.length >= 1) {
       const username = pathParts[0];
       chrome.tabs.create({
-        url: `https://en-git-6fjm.vercel.app/insights/${username}`,
+        url: `https://en-git-6fjm.vercel.app/stats/${username}`,
       });
     }
   }
