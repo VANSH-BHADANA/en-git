@@ -14,7 +14,8 @@ const httpServer = createServer(app);
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
-  process.env.CORS_ORIGIN,
+  "http://localhost:5173",
+  ...(process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : []),
 ].filter(Boolean);
 
 const io = new SocketIOServer(httpServer, {
