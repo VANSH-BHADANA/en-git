@@ -24,22 +24,41 @@ function ExtensionApp() {
   const [username, setUsername] = useState("");
   const [username2, setUsername2] = useState("");
   const [currentPageUser, setCurrentPageUser] = useState(null);
+  const [currentRepo, setCurrentRepo] = useState(null); // { owner, repo }
   const [recentAnalyses, setRecentAnalyses] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Get username from current GitHub page if applicable
+    // Get username or repo from current GitHub page if applicable
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs[0]?.url?.includes("github.com")) {
         const url = tabs[0].url;
-        const match = url.match(/github\.com\/([^\/\?]+)/);
-        if (match && match[1] !== "orgs" && match[1] !== "marketplace" && match[1] !== "trending") {
-          const detectedUser = match[1];
+        const pathname = new URL(url).pathname;
+        const parts = pathname.split("/").filter(Boolean);
+
+        // Check if it's a repository page (has at least 2 parts: owner/repo)
+        if (
+          parts.length >= 2 &&
+          parts[0] !== "orgs" &&
+          parts[0] !== "marketplace" &&
+          parts[0] !== "trending"
+        ) {
+          // It's a repo page - store repo info
+          setCurrentRepo({ owner: parts[0], repo: parts[1] });
+          setCurrentPageUser(null); // Clear user detection
+          setUsername(parts[0]);
+        } else if (
+          parts.length === 1 &&
+          parts[0] !== "orgs" &&
+          parts[0] !== "marketplace" &&
+          parts[0] !== "trending"
+        ) {
+          // It's a user profile page - auto-fetch stats
+          const detectedUser = parts[0];
           setCurrentPageUser(detectedUser);
           setUsername(detectedUser);
-          // Auto-fetch stats for current page user
           fetchQuickStats(detectedUser);
         }
       }
@@ -132,7 +151,14 @@ function ExtensionApp() {
     if (!username.trim()) return;
     saveToRecent(username);
     chrome.tabs.create({
-      url: `https://en-git-6fjm.vercel.app/insights/${username}`,
+      url: `https://en-git-6fjm.vercel.app/stats/${username}`,
+    });
+  };
+
+  const analyzeRepository = () => {
+    if (!currentRepo) return;
+    chrome.tabs.create({
+      url: `https://en-git-6fjm.vercel.app/repo/${currentRepo.owner}/${currentRepo.repo}`,
     });
   };
 
@@ -167,6 +193,45 @@ function ExtensionApp() {
       </div>
 
       <div className="p-4 space-y-4">
+        {/* Repository Context */}
+        {currentRepo && !loading && !stats && (
+          <Card className="border-purple-500/20">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2">
+                <BookOpen className="h-5 w-5 text-purple-500" />
+                <div>
+                  <CardTitle className="text-base">Repository Detected</CardTitle>
+                  <CardDescription className="text-xs">
+                    {currentRepo.owner}/{currentRepo.repo}
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Button onClick={analyzeRepository} className="w-full" size="sm">
+                <Sparkles className="h-3 w-3 mr-1" />
+                Analyze Repository
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Profile Context */}
+        {currentPageUser && !loading && !stats && (
+          <Card className="border-blue-500/20">
+            <CardContent className="pt-4">
+              <p className="text-sm text-muted-foreground mb-2">
+                Detected GitHub profile:{" "}
+                <span className="font-semibold text-foreground">@{currentPageUser}</span>
+              </p>
+              <Button onClick={() => fetchQuickStats(currentPageUser)} size="sm" className="w-full">
+                <Sparkles className="h-3 w-3 mr-1" />
+                Load Stats
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Loading State */}
         {loading && (
           <Card>
