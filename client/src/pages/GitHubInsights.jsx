@@ -49,6 +49,22 @@ import { TechStackBadges } from "@/components/TechStackBadges";
 import { ShareCard } from "@/components/ShareCard";
 import { ContributionHeatmap } from "@/components/ContributionHeatmap";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { HistoricalChart } from "@/components/HistoricalChart";
+import { TrendsComparison } from "@/components/TrendsComparison";
+import { ProgressReport } from "@/components/ProgressReport";
+import {
+  createStatsSnapshot,
+  getStatsComparison,
+  getStatsTrends,
+  getProgressReport,
+} from "@/lib/statsHistory";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#82ca9d"];
 
@@ -63,6 +79,11 @@ export default function GitHubInsightsPage() {
   const [bookmarked, setBookmarked] = useState(false);
   const [bookmarks, setBookmarks] = useState([]);
   const [searchHistory, setSearchHistory] = useState([]);
+  const [comparison, setComparison] = useState(null);
+  const [trends, setTrends] = useState(null);
+  const [progressReport, setProgressReport] = useState(null);
+  const [timePeriod, setTimePeriod] = useState("month");
+  const [loadingHistory, setLoadingHistory] = useState(false);
 
   useEffect(() => {
     setBookmarks(getBookmarks());
@@ -73,6 +94,7 @@ export default function GitHubInsightsPage() {
     if (urlUsername) {
       fetchData(urlUsername);
       setBookmarked(isBookmarked(urlUsername));
+      loadHistoricalData(urlUsername);
     }
   }, [urlUsername]);
 
@@ -137,6 +159,37 @@ export default function GitHubInsightsPage() {
     e?.preventDefault();
     if (!username.trim()) return toast.error("Please enter a GitHub username");
     navigate(`/stats/${username.trim()}`);
+  }
+
+  async function loadHistoricalData(user) {
+    setLoadingHistory(true);
+    try {
+      const [comparisonData, trendsData, reportData] = await Promise.all([
+        getStatsComparison(user, timePeriod).catch(() => null),
+        getStatsTrends(user, timePeriod, ["followers", "repos", "stars"]).catch(() => null),
+        getProgressReport(user, timePeriod).catch(() => null),
+      ]);
+
+      setComparison(comparisonData?.data);
+      setTrends(trendsData?.data);
+      setProgressReport(reportData?.data);
+    } catch (error) {
+      console.error("Failed to load historical data:", error);
+    } finally {
+      setLoadingHistory(false);
+    }
+  }
+
+  async function handleCreateSnapshot() {
+    if (!insights) return;
+    toast.promise(createStatsSnapshot(insights.user.login), {
+      loading: "Creating snapshot...",
+      success: () => {
+        loadHistoricalData(insights.user.login);
+        return "Snapshot created successfully!";
+      },
+      error: "Failed to create snapshot",
+    });
   }
 
   return (
@@ -279,10 +332,11 @@ export default function GitHubInsightsPage() {
             />
 
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="grid w-full grid-cols-5">
+              <TabsList className="grid w-full grid-cols-6">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="activity">Activity</TabsTrigger>
                 <TabsTrigger value="skills">Skills</TabsTrigger>
+                <TabsTrigger value="history">History</TabsTrigger>
                 <TabsTrigger value="ai">AI Insights</TabsTrigger>
                 <TabsTrigger value="share">Share</TabsTrigger>
               </TabsList>
@@ -308,6 +362,67 @@ export default function GitHubInsightsPage() {
               <TabsContent value="skills" className="space-y-6 mt-6">
                 <SkillRadarChart insights={insights} />
                 <TechStackBadges insights={insights} />
+              </TabsContent>
+
+              <TabsContent value="history" className="space-y-6 mt-6">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-2xl font-bold">Historical Stats</h2>
+                  <div className="flex gap-2">
+                    <Select value={timePeriod} onValueChange={(value) => {
+                      setTimePeriod(value);
+                      if (insights) loadHistoricalData(insights.user.login);
+                    }}>
+                      <SelectTrigger className="w-[150px]">
+                        <SelectValue placeholder="Time period" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="week">Last Week</SelectItem>
+                        <SelectItem value="month">Last Month</SelectItem>
+                        <SelectItem value="3months">Last 3 Months</SelectItem>
+                        <SelectItem value="6months">Last 6 Months</SelectItem>
+                        <SelectItem value="year">Last Year</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button onClick={handleCreateSnapshot} variant="outline">
+                      Capture Snapshot
+                    </Button>
+                  </div>
+                </div>
+
+                {loadingHistory && <div className="text-center py-8">Loading historical data...</div>}
+
+                {!loadingHistory && comparison && (
+                  <TrendsComparison comparison={comparison} period={timePeriod} />
+                )}
+
+                {!loadingHistory && trends && (
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {trends.followers?.length > 0 && (
+                      <HistoricalChart
+                        data={trends.followers}
+                        metricName="Followers"
+                        color="#8884d8"
+                      />
+                    )}
+                    {trends.repos?.length > 0 && (
+                      <HistoricalChart data={trends.repos} metricName="Repositories" color="#82ca9d" />
+                    )}
+                    {trends.stars?.length > 0 && (
+                      <HistoricalChart data={trends.stars} metricName="Total Stars" color="#ffc658" />
+                    )}
+                  </div>
+                )}
+
+                {!loadingHistory && progressReport && <ProgressReport report={progressReport} />}
+
+                {!loadingHistory && !comparison && !trends && (
+                  <Card>
+                    <CardContent className="text-center py-12">
+                      <p className="text-muted-foreground mb-4">No historical data available yet.</p>
+                      <Button onClick={handleCreateSnapshot}>Create First Snapshot</Button>
+                    </CardContent>
+                  </Card>
+                )}
               </TabsContent>
 
               <TabsContent value="ai" className="space-y-6">

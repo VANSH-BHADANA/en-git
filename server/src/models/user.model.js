@@ -49,6 +49,19 @@ const userSchema = new Schema(
     refreshToken: {
       type: String,
     },
+    githubUsername: {
+      type: String,
+      trim: true,
+      index: true,
+    },
+    lastSnapshotDate: {
+      type: Date,
+    },
+    snapshotFrequency: {
+      type: String,
+      enum: ["daily", "weekly", "monthly"],
+      default: "weekly",
+    },
   },
   {
     timestamps: true,
