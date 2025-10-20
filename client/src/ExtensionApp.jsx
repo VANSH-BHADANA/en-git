@@ -212,11 +212,11 @@ function ExtensionApp() {
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <Github className="h-6 w-6 text-white" />
-            <h1 className="text-xl font-bold text-white">en-git</h1>
+            <h1 className="text-xl font-bold text-white whitespace-nowrap">en-git</h1>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             {/* Theme Toggle Button*/}
             <Button onClick={toggleTheme} size="sm" variant="secondary" className="gap-1">
               {theme === "light" ? "Dark" : "Light"}
