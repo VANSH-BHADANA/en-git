@@ -44,6 +44,7 @@ import { exportToPDF } from "@/lib/pdfExport";
 import { InsightsLoadingSkeleton } from "@/components/ui/skeleton-components";
 import { AIInsights } from "@/components/AIInsights";
 import { GamificationBadges } from "@/components/GamificationBadges";
+import { toast } from "sonner";
 import { SkillRadarChart } from "@/components/SkillRadarChart";
 import { TechStackBadges } from "@/components/TechStackBadges";
 import { ShareCard } from "@/components/ShareCard";
