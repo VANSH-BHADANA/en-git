@@ -36,6 +36,26 @@ export default function UserProfile() {
 
   const capitalize = (word) => (word ? word.charAt(0).toUpperCase() + word.slice(1) : "");
 
+  const getExplorerUrl = (chainId, txHash) => {
+    if (!chainId || !txHash) return "#";
+    
+    const explorerMap = {
+      "1": "https://etherscan.io", // Ethereum Mainnet
+      "11155111": "https://sepolia.etherscan.io", // Sepolia Testnet
+      "137": "https://polygonscan.com", // Polygon Mainnet
+      "80001": "https://mumbai.polygonscan.com", // Polygon Mumbai Testnet
+      "56": "https://bscscan.com", // BSC Mainnet
+      "97": "https://testnet.bscscan.com", // BSC Testnet
+      "42161": "https://arbiscan.io", // Arbitrum One
+      "421614": "https://sepolia.arbiscan.io", // Arbitrum Sepolia
+      "10": "https://optimistic.etherscan.io", // Optimism
+      "420": "https://sepolia-optimism.etherscan.io", // Optimism Sepolia
+    };
+    
+    const baseUrl = explorerMap[chainId] || "https://etherscan.io";
+    return `${baseUrl}/tx/${txHash}`;
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -211,7 +231,7 @@ export default function UserProfile() {
                 </div>
                 <a
                   className="text-primary underline text-xs"
-                  href={`https://etherscan.io/tx/${b.txHash}`}
+                  href={getExplorerUrl(b.chainId, b.txHash)}
                   target="_blank"
                   rel="noreferrer"
                 >

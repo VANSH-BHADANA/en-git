@@ -65,7 +65,14 @@ const userSchema = new Schema(
     walletAddress: {
       type: String,
       trim: true,
-      lowercase: true,
+      validate: {
+        validator: function(v) {
+          if (!v) return true; // Allow empty wallet address
+          // Basic Ethereum address validation (42 chars, starts with 0x)
+          return /^0x[a-fA-F0-9]{40}$/.test(v);
+        },
+        message: 'Invalid Ethereum wallet address format'
+      },
       index: true,
     },
     credentialBadges: [

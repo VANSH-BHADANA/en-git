@@ -12,6 +12,12 @@ export const mintBadge = asyncHandler(async (req, res) => {
   if (!user) throw new ApiError("User not found", 404);
   if (!user.walletAddress) throw new ApiError("User walletAddress not set", 400);
 
+  // Check if user already has this badge
+  const existingBadge = user.credentialBadges?.find(badge => badge.badgeId === badgeId);
+  if (existingBadge) {
+    throw new ApiError("User already has this badge", 409);
+  }
+
   const result = await mintCredentialBadge({
     toAddress: user.walletAddress,
     badgeId,
@@ -26,7 +32,7 @@ export const mintBadge = asyncHandler(async (req, res) => {
     chainId: result.chainId,
     metadataURI: metadataURI || "",
   });
-  await user.save({ validateBeforeSave: false });
+  await user.save();
 
   return res
     .status(200)

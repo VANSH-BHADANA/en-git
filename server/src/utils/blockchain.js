@@ -180,6 +180,31 @@ const BADGE_CONTRACT_ABI = [
     stateMutability: "view",
     type: "function",
   },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "Transfer",
+    type: "event",
+  },
 ];
 
 const {
@@ -207,15 +232,39 @@ export async function mintCredentialBadge({ toAddress, badgeId, metadataURI }) {
     const { contract } = getBadgeContract();
     const tx = await contract.mintBadge(toAddress, badgeId, metadataURI);
     const receipt = await tx.wait();
-    const tokenId = receipt?.logs?.[0]?.topics?.[3]
-      ? ethers.toNumber(receipt.logs[0].topics[3])
-      : undefined;
+    
+    // Parse Transfer event to get tokenId
+    let tokenId = undefined;
+    if (receipt?.logs) {
+      // Find Transfer event (from 0x0 to recipient)
+      const transferEvent = receipt.logs.find(log => {
+        try {
+          const parsed = contract.interface.parseLog(log);
+          return parsed && parsed.name === 'Transfer' && 
+                 parsed.args.from === ethers.ZeroAddress && 
+                 parsed.args.to.toLowerCase() === toAddress.toLowerCase();
+        } catch (e) {
+          return false;
+        }
+      });
+      
+      if (transferEvent) {
+        try {
+          const parsed = contract.interface.parseLog(transferEvent);
+          tokenId = parsed.args.tokenId.toString();
+        } catch (e) {
+          console.warn('Failed to parse Transfer event:', e.message);
+        }
+      }
+    }
+    
     return {
       txHash: tx.hash,
-      tokenId: tokenId?.toString(),
+      tokenId: tokenId,
       chainId: BADGE_CHAIN_ID || "",
     };
   } catch (error) {
+    console.error('Error minting credential badge:', error);
     throw new ApiError(500, "Error minting credential badge", error);
   }
 }
