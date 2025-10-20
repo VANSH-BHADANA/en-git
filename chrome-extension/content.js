@@ -16,8 +16,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "applySettings") {
     settings = request.settings;
     applySettings(settings);
+    sendResponse({ success: true });
+    return true;
   }
-  return true;
+  return false; // Don't keep channel open if we're not handling the message
 });
 
 // Apply custom theme and enhancements
@@ -395,10 +397,23 @@ function addAnalyzeButton() {
 
   // Click handler
   button.onclick = () => {
-    chrome.runtime.sendMessage({
-      action: "analyzeProfile",
-      username: username,
-    });
+    // Check if extension context is valid before sending message
+    if (chrome.runtime?.id) {
+      chrome.runtime.sendMessage(
+        {
+          action: "analyzeProfile",
+          username: username,
+        },
+        (response) => {
+          // Handle response or ignore errors if extension was reloaded
+          if (chrome.runtime.lastError) {
+            console.log("Extension context invalidated, please refresh the page");
+          }
+        }
+      );
+    } else {
+      alert("Please reload the page - extension was updated");
+    }
   };
 
   buttonContainer.appendChild(button);
@@ -450,11 +465,24 @@ function addRepoDiveButton() {
   `;
 
   diveButton.onclick = () => {
-    chrome.runtime.sendMessage({
-      action: "analyzeRepo",
-      owner: repoInfo.owner,
-      repo: repoInfo.repo,
-    });
+    // Check if extension context is valid before sending message
+    if (chrome.runtime?.id) {
+      chrome.runtime.sendMessage(
+        {
+          action: "analyzeRepo",
+          owner: repoInfo.owner,
+          repo: repoInfo.repo,
+        },
+        (response) => {
+          // Handle response or ignore errors if extension was reloaded
+          if (chrome.runtime.lastError) {
+            console.log("Extension context invalidated, please refresh the page");
+          }
+        }
+      );
+    } else {
+      alert("Please reload the page - extension was updated");
+    }
   };
 
   // Create Bookmark button

@@ -41,12 +41,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   return true; // Keep message channel open for async response
 });
 
-// Context menu integration
-chrome.contextMenus.create({
-  id: "analyze-github-profile",
-  title: "Analyze with en-git",
-  contexts: ["link"],
-  targetUrlPatterns: ["https://github.com/*/*"],
+// Context menu integration - only create on install/update to avoid duplicates
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.contextMenus.removeAll(() => {
+    chrome.contextMenus.create({
+      id: "analyze-github-profile",
+      title: "Analyze with en-git",
+      contexts: ["link"],
+      targetUrlPatterns: ["https://github.com/*/*"],
+    });
+  });
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
