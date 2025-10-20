@@ -70,13 +70,18 @@ Compare with peers — analyze profiles side-by-side to track your growth and be
 - **Search History** - Track recently viewed profiles
 - **PDF Export** - Download comprehensive reports
 
-### 🔌 Browser Extension
+### 🔌 Chrome Extension
 
-- **Chrome Extension** - Analyze profiles directly from GitHub pages
-- **One-Click Analysis** - Quick access from any GitHub profile or repo
-- **Context Menu Integration** - Right-click any GitHub link to analyze
-- **Smart Detection** - Auto-detects usernames from current page
-- **Recent History** - Quick access to recently analyzed profiles
+- **One-Click Analysis** - Analyze profiles & repos directly from GitHub
+- **Custom Themes** - Personalize GitHub with custom colors (primary, accent, background, text)
+  <img width="1919" height="990" alt="image" src="https://github.com/user-attachments/assets/b5bc7cbf-5731-4f4a-b10b-1017ce775386" />
+<img width="1916" height="991" alt="image" src="https://github.com/user-attachments/assets/eedc042a-67c6-4575-acf8-7a68db6baf4f" />
+
+- **Custom Fonts** - Choose your preferred code font (Fira Code, JetBrains Mono, etc.)
+- **Keyboard Shortcuts** - Navigate faster (Ctrl+K search, Ctrl+Shift+N new repo, Ctrl+Shift+I issues)
+- **Repository Bookmarks** - Save and organize favorite repos
+- **Visual Enhancements** - Enhanced contribution graphs, repo cards, and profile pages
+- **Settings Page** - Full control with tabs for themes, editor, shortcuts, and bookmarks
 
 ## 🛠️ Tech Stack
 
