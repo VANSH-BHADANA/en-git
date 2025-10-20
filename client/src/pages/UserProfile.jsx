@@ -16,6 +16,7 @@ export default function UserProfile() {
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({});
   const [uploading, setUploading] = useState(false);
+  const [minting, setMinting] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -161,6 +162,16 @@ export default function UserProfile() {
               disabled={!editMode}
             />
           </div>
+          <div className="md:col-span-2">
+            <Label>Wallet Address (for blockchain credentials)</Label>
+            <Input
+              name="walletAddress"
+              value={formData.walletAddress || ""}
+              onChange={handleChange}
+              disabled={!editMode}
+              placeholder="0x..."
+            />
+          </div>
           <div>
             <Label>Role</Label>
             <Input value={capitalize(user.role)} disabled />
@@ -186,6 +197,31 @@ export default function UserProfile() {
           )}
         </div>
       </div>
+      {/* Credential Badges Section */}
+      {user?.credentialBadges?.length ? (
+        <div className="border rounded-lg p-6 bg-background shadow-sm">
+          <h3 className="text-lg font-medium mb-4">Blockchain Credentials</h3>
+          <div className="space-y-3">
+            {user.credentialBadges.map((b, i) => (
+              <div key={i} className="text-sm flex items-center justify-between gap-4 p-3 border rounded">
+                <div className="truncate">
+                  <div className="font-medium">{b.badgeId}</div>
+                  <div className="text-muted-foreground truncate">Token: {b.tokenId || "-"}</div>
+                  <div className="text-muted-foreground truncate">Tx: {b.txHash || "-"}</div>
+                </div>
+                <a
+                  className="text-primary underline text-xs"
+                  href={`https://etherscan.io/tx/${b.txHash}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

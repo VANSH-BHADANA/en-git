@@ -62,6 +62,22 @@ const userSchema = new Schema(
       enum: ["daily", "weekly", "monthly"],
       default: "weekly",
     },
+    walletAddress: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      index: true,
+    },
+    credentialBadges: [
+      {
+        badgeId: { type: String, required: true },
+        tokenId: { type: String },
+        txHash: { type: String },
+        chainId: { type: String },
+        metadataURI: { type: String },
+        mintedAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   {
     timestamps: true,

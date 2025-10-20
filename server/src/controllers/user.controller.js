@@ -197,7 +197,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 });
 
 const updateCurrentUser = asyncHandler(async (req, res) => {
-  const { fullname, email, countryCode, phoneNumber, address } = req.body;
+  const { fullname, email, countryCode, phoneNumber, address, walletAddress } = req.body;
 
   if (!fullname || !email || !countryCode || !phoneNumber || !address) {
     throw new ApiError("Please provide all required fields", 400);
@@ -212,6 +212,7 @@ const updateCurrentUser = asyncHandler(async (req, res) => {
         countryCode,
         phoneNumber,
         address,
+        ...(walletAddress ? { walletAddress } : {}),
       },
     },
     { new: true }
