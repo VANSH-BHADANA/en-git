@@ -25,13 +25,20 @@ async function cachedGet(key, url, { params = {}, ttl, refresh = false } = {}) {
     const hit = cache.get(key);
     // If we have a valid cache hit, return its data and timestamp
     if (hit && hit.data) {
+      console.log(`Cache HIT for ${key}`);
       return [hit.data, hit.lastUpdated];
     }
   }
 
   try {
+    console.log(`Fetching from GitHub API: ${url}`, params);
     const { data } = await gh.get(url, { params, headers: authHeader() });
     const lastUpdated = new Date().toISOString();
+    console.log(`API Response for ${key}:`, {
+      isArray: Array.isArray(data),
+      length: data?.length,
+      type: typeof data,
+    });
     // Set cache only if data is valid
     if (data) {
       cache.set(key, { data, lastUpdated }, ttl);
@@ -39,6 +46,9 @@ async function cachedGet(key, url, { params = {}, ttl, refresh = false } = {}) {
     return [data, lastUpdated];
   } catch (error) {
     console.error(`GitHub API fetch failed for ${url}:`, error.message);
+    if (error.response) {
+      console.error(`Status: ${error.response.status}, Data:`, error.response.data);
+    }
     // On error, return null data and a current timestamp to prevent caching bad results
     return [null, new Date().toISOString()];
   }

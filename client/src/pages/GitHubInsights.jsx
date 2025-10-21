@@ -7,7 +7,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, PieChart, Pie, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 import {
   Loader2,
   TrendingUp,
@@ -70,7 +82,14 @@ export default function GitHubInsightsPage() {
   const [bookmarks, setBookmarks] = useState([]);
   const [searchHistory, setSearchHistory] = useState([]);
   const [lastUpdated, setLastUpdated] = useState("");
-  const [error, setError] = useState(null); // Add error state
+  const [error, setError] = useState(null);
+
+  // Historical data states
+  const [timePeriod, setTimePeriod] = useState("month");
+  const [loadingHistory, setLoadingHistory] = useState(false);
+  const [comparison, setComparison] = useState(null);
+  const [trends, setTrends] = useState(null);
+  const [progressReport, setProgressReport] = useState(null);
 
   useEffect(() => {
     setBookmarks(getBookmarks());
@@ -94,20 +113,23 @@ export default function GitHubInsightsPage() {
         getGithubRecommendations(user, refresh),
       ]);
 
-      if (!insResponse?.data || !recResponse?.data) {
+      if (!insResponse?.data?.data || !recResponse?.data?.data) {
         throw new Error("Received incomplete data from the server.");
       }
 
-      setInsights(insResponse.data);
-      setRecommendations(recResponse.data);
+      setInsights(insResponse.data.data);
+      setRecommendations(recResponse.data.data);
 
-      const insTime = new Date(insResponse.lastUpdated);
-      const recTime = new Date(recResponse.lastUpdated);
+      const insTime = new Date(insResponse.data.lastUpdated);
+      const recTime = new Date(recResponse.data.lastUpdated);
       setLastUpdated(insTime > recTime ? insTime.toLocaleString() : recTime.toLocaleString());
 
       // Add to search history
-      addToSearchHistory(user, insResponse.data.user);
+      addToSearchHistory(user, insResponse.data.data.user);
       setSearchHistory(getSearchHistory());
+
+      // Load historical data
+      loadHistoricalData(user);
 
       toast.success("Insights loaded!");
     } catch (err) {
@@ -157,6 +179,56 @@ export default function GitHubInsightsPage() {
     e?.preventDefault();
     if (!username.trim()) return toast.error("Please enter a GitHub username");
     navigate(`/stats/${username.trim()}`);
+  }
+
+  async function loadHistoricalData(user) {
+    setLoadingHistory(true);
+    try {
+      const [comparisonData, trendsData, progressData] = await Promise.all([
+        getStatsComparison(user, timePeriod).catch((err) => {
+          console.error("Comparison fetch error:", err);
+          return null;
+        }),
+        getStatsTrends(user, timePeriod).catch((err) => {
+          console.error("Trends fetch error:", err);
+          return null;
+        }),
+        getProgressReport(user).catch((err) => {
+          console.error("Progress report fetch error:", err);
+          return null;
+        }),
+      ]);
+
+      console.log("Historical data received:", { comparisonData, trendsData, progressData });
+
+      // Extract data from response structure
+      setComparison(comparisonData?.data || comparisonData);
+      setTrends(trendsData?.data || trendsData);
+      setProgressReport(progressData?.data || progressData);
+    } catch (err) {
+      console.error("Failed to load historical data:", err);
+      toast.error("Failed to load historical data");
+    } finally {
+      setLoadingHistory(false);
+    }
+  }
+
+  async function handleCreateSnapshot() {
+    if (!insights) {
+      toast.error("No insights data to snapshot");
+      return;
+    }
+
+    try {
+      const response = await createStatsSnapshot(insights.user.login, insights);
+      console.log("Snapshot created:", response);
+      toast.success("Snapshot created successfully!");
+      // Reload historical data to include the new snapshot
+      await loadHistoricalData(insights.user.login);
+    } catch (err) {
+      console.error("Failed to create snapshot:", err);
+      toast.error(err.response?.data?.message || "Failed to create snapshot");
+    }
   }
 
   return (
@@ -250,9 +322,13 @@ export default function GitHubInsightsPage() {
         {/* Action Buttons */}
         {insights && (
           <div className="flex justify-center items-center gap-3">
-            <Button variant="outline" onClick={() => fetchData(insights.user.login, true)} disabled={loading}>
+            <Button
+              variant="outline"
+              onClick={() => fetchData(insights.user.login, true)}
+              disabled={loading}
+            >
               <History className="h-4 w-4 mr-2" />
-              {loading ? 'Refreshing...' : 'Refresh'}
+              {loading ? "Refreshing..." : "Refresh"}
             </Button>
             <Button variant="outline" onClick={toggleBookmark} disabled={loading}>
               <Bookmark className={`h-4 w-4 mr-2 ${bookmarked ? "fill-current" : ""}`} />
@@ -401,12 +477,15 @@ export default function GitHubInsightsPage() {
   );
 }
 
-function ProfileSummary({ user, reposCount, domain, lastUpdated }) { // Add lastUpdated prop
+function ProfileSummary({ user, reposCount, domain, lastUpdated }) {
+  // Add lastUpdated prop
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between items-start">
         <CardTitle>Profile Summary</CardTitle>
-        {lastUpdated && <p className="text-sm text-muted-foreground">Last updated: {lastUpdated}</p>}
+        {lastUpdated && (
+          <p className="text-sm text-muted-foreground">Last updated: {lastUpdated}</p>
+        )}
       </CardHeader>
       <CardContent className="flex items-start gap-6">
         <Avatar className="h-24 w-24">
@@ -438,8 +517,74 @@ function ProfileSummary({ user, reposCount, domain, lastUpdated }) { // Add last
 }
 
 function LanguagesChart({ languages }) {
+  console.log("LanguagesChart received:", languages);
+  
+  // Add defensive checks
+  if (!languages) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Top Programming Languages</CardTitle>
+          <CardDescription>Distribution based on repository code</CardDescription>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[250px] text-muted-foreground">
+          No language data available
+        </CardContent>
+      </Card>
+    );
+  }
+
   const { top3, percentages } = languages;
-  const chartData = percentages.slice(0, 10).map(([name, value]) => ({ name, value }));
+  
+  // Convert percentages array to chart data format
+  let chartData = [];
+  if (Array.isArray(percentages)) {
+    chartData = percentages.map(([name, value]) => ({ 
+      name, 
+      value: typeof value === 'number' ? value : parseFloat(value) || 0 
+    }));
+  } else if (typeof percentages === 'object') {
+    // Handle object format
+    chartData = Object.entries(percentages)
+      .map(([name, value]) => ({ 
+        name, 
+        value: typeof value === 'number' ? value : parseFloat(value) || 0 
+      }));
+  }
+
+  // Group small languages into "Other" (anything below 2%)
+  const THRESHOLD = 2.0;
+  const mainLanguages = chartData.filter(d => d.value >= THRESHOLD).slice(0, 7);
+  const smallLanguages = chartData.filter(d => d.value < THRESHOLD);
+  
+  // Add "Other" category if there are small languages
+  if (smallLanguages.length > 0) {
+    const otherTotal = smallLanguages.reduce((sum, d) => sum + d.value, 0);
+    if (otherTotal > 0) {
+      mainLanguages.push({ 
+        name: "Other", 
+        value: otherTotal,
+        tooltip: `${smallLanguages.length} languages: ${smallLanguages.map(l => l.name).join(', ')}`
+      });
+    }
+  }
+  
+  const finalChartData = mainLanguages;
+
+  // If no data or all zeros, show a message
+  if (!finalChartData.length || finalChartData.every(d => d.value === 0)) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Top Programming Languages</CardTitle>
+          <CardDescription>Distribution based on repository code</CardDescription>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[250px] text-muted-foreground">
+          No language data available
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
@@ -449,27 +594,42 @@ function LanguagesChart({ languages }) {
       </CardHeader>
       <CardContent>
         <div className="flex gap-4 mb-4 flex-wrap">
-          {top3.map(([lang, pct], i) => (
-            <Badge key={i} style={{ backgroundColor: COLORS[i] }} className="text-white">
-              {lang}: {pct}%
-            </Badge>
-          ))}
+          {top3 && Array.isArray(top3) &&
+            top3.map(([lang, pct], i) => (
+              <Badge key={i} style={{ backgroundColor: COLORS[i] }} className="text-white">
+                {lang}: {pct}%
+              </Badge>
+            ))}
         </div>
-        <ChartContainer
-          config={Object.fromEntries(
-            chartData.map(({ name }, i) => [name, { label: name, color: COLORS[i] }])
-          )}
-          className="h-[250px] w-full"
-        >
-          <PieChart>
-            <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}>
-              {chartData.map((_, idx) => (
-                <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
-              ))}
-            </Pie>
-            <ChartTooltip content={<ChartTooltipContent />} />
-          </PieChart>
-        </ChartContainer>
+        <div className="w-full h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={finalChartData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                label={({ name, value }) => value >= 3 ? `${name}: ${value.toFixed(1)}%` : ''}
+                labelLine={({ value }) => value >= 3}
+              >
+                {finalChartData.map((_, idx) => (
+                  <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip 
+                formatter={(value, name, props) => {
+                  if (props.payload.tooltip) {
+                    return [`${value.toFixed(1)}%`, props.payload.tooltip];
+                  }
+                  return [`${value.toFixed(1)}%`, name];
+                }}
+              />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
@@ -554,8 +714,51 @@ function TopicsCloud({ topics }) {
 }
 
 function CommitTimingChart({ commitTimes }) {
+  console.log("CommitTimingChart received:", commitTimes);
+  
+  // Add defensive checks
+  if (!commitTimes || !commitTimes.hours || !Array.isArray(commitTimes.hours)) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            Commit Activity by Hour (UTC)
+          </CardTitle>
+          <CardDescription>No recent commit activity found</CardDescription>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[200px] text-muted-foreground">
+          No commit data available
+        </CardContent>
+      </Card>
+    );
+  }
+
   const { hours, profile } = commitTimes;
-  const chartData = hours.map((count, h) => ({ hour: `${h}:00`, count }));
+  const chartData = hours.map((count, h) => ({ 
+    hour: `${h}:00`, 
+    count: typeof count === 'number' ? count : parseInt(count) || 0 
+  }));
+
+  // Check if there's any data
+  const hasData = hours.some((count) => count > 0);
+
+  if (!hasData) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            Commit Activity by Hour (UTC)
+          </CardTitle>
+          <CardDescription>No recent commit activity found</CardDescription>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[200px] text-muted-foreground">
+          No commit data available
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
@@ -565,32 +768,73 @@ function CommitTimingChart({ commitTimes }) {
           Commit Activity by Hour (UTC)
         </CardTitle>
         <CardDescription>
-          You're a <Badge variant="secondary">{profile}</Badge>
+          You're a <Badge variant="secondary">{profile || "developer"}</Badge>
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer
-          config={{ count: { label: "Commits", color: "#8884d8" } }}
-          className="h-[200px] w-full"
-        >
-          <BarChart data={chartData} margin={{ top: 5, right: 20, left: 5, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="hour" tick={{ fontSize: 10 }} />
-            <YAxis />
-            <ChartTooltip
-              content={<ChartTooltipContent />}
-              cursor={{ fill: "rgba(136, 132, 216, 0.1)" }}
-            />
-            <Bar dataKey="count" fill="#8884d8" />
-          </BarChart>
-        </ChartContainer>
+        <div className="w-full h-[250px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 70 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="hour"
+                tick={{ fontSize: 11 }}
+                interval={2}
+                angle={-45}
+                textAnchor="end"
+              />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Bar dataKey="count" fill="#8884d8" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
 }
 
 function WeeklyActivityChart({ weekly }) {
-  const chartData = weekly.slice(-12).map(([week, count]) => ({ week, count }));
+  console.log("WeeklyActivityChart received:", weekly);
+  
+  // Add defensive checks
+  if (!weekly || !Array.isArray(weekly)) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Weekly Activity</CardTitle>
+          <CardDescription>No recent activity found</CardDescription>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[250px] text-muted-foreground">
+          No weekly activity data available
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const chartData = weekly.slice(-12).map(([week, count]) => ({ 
+    week, 
+    count: typeof count === 'number' ? count : parseInt(count) || 0 
+  }));
+  
+  console.log("WeeklyActivityChart chartData:", chartData);
+
+  // Check if there's any data
+  const hasData = chartData.length > 0 && chartData.some((d) => d.count > 0);
+
+  if (!hasData) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Weekly Activity</CardTitle>
+          <CardDescription>No recent activity found</CardDescription>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[250px] text-muted-foreground">
+          No weekly activity data available
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
@@ -599,18 +843,17 @@ function WeeklyActivityChart({ weekly }) {
         <CardDescription>Public events over recent weeks</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer
-          config={{ count: { label: "Events", color: "#82ca9d" } }}
-          className="h-[250px] w-full"
-        >
-          <BarChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="week" />
-            <YAxis />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <Bar dataKey="count" fill="#82ca9d" />
-          </BarChart>
-        </ChartContainer>
+        <div className="w-full h-[250px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 70 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="week" tick={{ fontSize: 11 }} angle={-45} textAnchor="end" />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Bar dataKey="count" fill="#82ca9d" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
