@@ -79,7 +79,7 @@ export async function fetchUserRepos(username, per_page = 100, refresh = false) 
   // Filter out null results from failed fetches before processing
   const validResults = results.filter(([data]) => data !== null);
   const combinedData = validResults.map(([data]) => data).flat();
-  
+
   const lastUpdated = validResults.reduce((latest, [, timestamp]) => {
     const currentTime = new Date(timestamp);
     return currentTime > latest ? currentTime : latest;

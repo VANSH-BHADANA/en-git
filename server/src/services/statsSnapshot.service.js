@@ -169,7 +169,10 @@ export async function generateTrendData(username, period = "month", metricTypes)
     }));
   }
 
-  console.log("Generated trends:", Object.keys(trends).map(k => `${k}: ${trends[k].length} points`));
+  console.log(
+    "Generated trends:",
+    Object.keys(trends).map((k) => `${k}: ${trends[k].length} points`)
+  );
 
   return trends;
 }

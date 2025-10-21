@@ -518,7 +518,7 @@ function ProfileSummary({ user, reposCount, domain, lastUpdated }) {
 
 function LanguagesChart({ languages }) {
   console.log("LanguagesChart received:", languages);
-  
+
   // Add defensive checks
   if (!languages) {
     return (
@@ -535,44 +535,43 @@ function LanguagesChart({ languages }) {
   }
 
   const { top3, percentages } = languages;
-  
+
   // Convert percentages array to chart data format
   let chartData = [];
   if (Array.isArray(percentages)) {
-    chartData = percentages.map(([name, value]) => ({ 
-      name, 
-      value: typeof value === 'number' ? value : parseFloat(value) || 0 
+    chartData = percentages.map(([name, value]) => ({
+      name,
+      value: typeof value === "number" ? value : parseFloat(value) || 0,
     }));
-  } else if (typeof percentages === 'object') {
+  } else if (typeof percentages === "object") {
     // Handle object format
-    chartData = Object.entries(percentages)
-      .map(([name, value]) => ({ 
-        name, 
-        value: typeof value === 'number' ? value : parseFloat(value) || 0 
-      }));
+    chartData = Object.entries(percentages).map(([name, value]) => ({
+      name,
+      value: typeof value === "number" ? value : parseFloat(value) || 0,
+    }));
   }
 
   // Group small languages into "Other" (anything below 2%)
   const THRESHOLD = 2.0;
-  const mainLanguages = chartData.filter(d => d.value >= THRESHOLD).slice(0, 7);
-  const smallLanguages = chartData.filter(d => d.value < THRESHOLD);
-  
+  const mainLanguages = chartData.filter((d) => d.value >= THRESHOLD).slice(0, 7);
+  const smallLanguages = chartData.filter((d) => d.value < THRESHOLD);
+
   // Add "Other" category if there are small languages
   if (smallLanguages.length > 0) {
     const otherTotal = smallLanguages.reduce((sum, d) => sum + d.value, 0);
     if (otherTotal > 0) {
-      mainLanguages.push({ 
-        name: "Other", 
+      mainLanguages.push({
+        name: "Other",
         value: otherTotal,
-        tooltip: `${smallLanguages.length} languages: ${smallLanguages.map(l => l.name).join(', ')}`
+        tooltip: `${smallLanguages.length} languages: ${smallLanguages.map((l) => l.name).join(", ")}`,
       });
     }
   }
-  
+
   const finalChartData = mainLanguages;
 
   // If no data or all zeros, show a message
-  if (!finalChartData.length || finalChartData.every(d => d.value === 0)) {
+  if (!finalChartData.length || finalChartData.every((d) => d.value === 0)) {
     return (
       <Card>
         <CardHeader>
@@ -594,7 +593,8 @@ function LanguagesChart({ languages }) {
       </CardHeader>
       <CardContent>
         <div className="flex gap-4 mb-4 flex-wrap">
-          {top3 && Array.isArray(top3) &&
+          {top3 &&
+            Array.isArray(top3) &&
             top3.map(([lang, pct], i) => (
               <Badge key={i} style={{ backgroundColor: COLORS[i] }} className="text-white">
                 {lang}: {pct}%
@@ -611,14 +611,14 @@ function LanguagesChart({ languages }) {
                 cx="50%"
                 cy="50%"
                 outerRadius={100}
-                label={({ name, value }) => value >= 3 ? `${name}: ${value.toFixed(1)}%` : ''}
+                label={({ name, value }) => (value >= 3 ? `${name}: ${value.toFixed(1)}%` : "")}
                 labelLine={({ value }) => value >= 3}
               >
                 {finalChartData.map((_, idx) => (
                   <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip 
+              <Tooltip
                 formatter={(value, name, props) => {
                   if (props.payload.tooltip) {
                     return [`${value.toFixed(1)}%`, props.payload.tooltip];
@@ -715,7 +715,7 @@ function TopicsCloud({ topics }) {
 
 function CommitTimingChart({ commitTimes }) {
   console.log("CommitTimingChart received:", commitTimes);
-  
+
   // Add defensive checks
   if (!commitTimes || !commitTimes.hours || !Array.isArray(commitTimes.hours)) {
     return (
@@ -735,9 +735,9 @@ function CommitTimingChart({ commitTimes }) {
   }
 
   const { hours, profile } = commitTimes;
-  const chartData = hours.map((count, h) => ({ 
-    hour: `${h}:00`, 
-    count: typeof count === 'number' ? count : parseInt(count) || 0 
+  const chartData = hours.map((count, h) => ({
+    hour: `${h}:00`,
+    count: typeof count === "number" ? count : parseInt(count) || 0,
   }));
 
   // Check if there's any data
@@ -796,7 +796,7 @@ function CommitTimingChart({ commitTimes }) {
 
 function WeeklyActivityChart({ weekly }) {
   console.log("WeeklyActivityChart received:", weekly);
-  
+
   // Add defensive checks
   if (!weekly || !Array.isArray(weekly)) {
     return (
@@ -812,11 +812,11 @@ function WeeklyActivityChart({ weekly }) {
     );
   }
 
-  const chartData = weekly.slice(-12).map(([week, count]) => ({ 
-    week, 
-    count: typeof count === 'number' ? count : parseInt(count) || 0 
+  const chartData = weekly.slice(-12).map(([week, count]) => ({
+    week,
+    count: typeof count === "number" ? count : parseInt(count) || 0,
   }));
-  
+
   console.log("WeeklyActivityChart chartData:", chartData);
 
   // Check if there's any data

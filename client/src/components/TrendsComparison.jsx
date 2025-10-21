@@ -4,7 +4,7 @@ import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 
 export function TrendsComparison({ comparison, period }) {
   console.log("TrendsComparison received:", comparison);
-  
+
   if (!comparison || !comparison.current) {
     return (
       <Card>

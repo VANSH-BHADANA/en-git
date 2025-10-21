@@ -48,7 +48,7 @@ export const getUserInsights = asyncHandler(async (req, res) => {
       console.error("fetchUserEvents error:", err.message);
       return [[], new Date().toISOString()];
     });
-    
+
     console.log(`Events data for ${username}:`, {
       isArray: Array.isArray(eventsData),
       length: eventsData?.length,
