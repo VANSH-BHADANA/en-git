@@ -20,7 +20,6 @@ import {
   X,
   History,
 } from "lucide-react";
-// ...existing code...
 import {
   getBookmarks,
   addBookmark,
@@ -70,11 +69,8 @@ export default function GitHubInsightsPage() {
   const [bookmarked, setBookmarked] = useState(false);
   const [bookmarks, setBookmarks] = useState([]);
   const [searchHistory, setSearchHistory] = useState([]);
-  const [comparison, setComparison] = useState(null);
-  const [trends, setTrends] = useState(null);
-  const [progressReport, setProgressReport] = useState(null);
-  const [timePeriod, setTimePeriod] = useState("month");
-  const [loadingHistory, setLoadingHistory] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState("");
+  const [error, setError] = useState(null); // Add error state
 
   useEffect(() => {
     setBookmarks(getBookmarks());
@@ -85,28 +81,39 @@ export default function GitHubInsightsPage() {
     if (urlUsername) {
       fetchData(urlUsername);
       setBookmarked(isBookmarked(urlUsername));
-      loadHistoricalData(urlUsername);
     }
   }, [urlUsername]);
 
-  async function fetchData(user) {
+  async function fetchData(user, refresh = false) {
     setLoading(true);
+    setError(null); // Clear previous errors
+    setLastUpdated("");
     try {
-      const [ins, rec] = await Promise.all([
-        getGithubInsights(user),
-        getGithubRecommendations(user),
+      const [insResponse, recResponse] = await Promise.all([
+        getGithubInsights(user, refresh),
+        getGithubRecommendations(user, refresh),
       ]);
-      setInsights(ins.data);
-      setRecommendations(rec.data);
+
+      if (!insResponse?.data || !recResponse?.data) {
+        throw new Error("Received incomplete data from the server.");
+      }
+
+      setInsights(insResponse.data);
+      setRecommendations(recResponse.data);
+
+      const insTime = new Date(insResponse.lastUpdated);
+      const recTime = new Date(recResponse.lastUpdated);
+      setLastUpdated(insTime > recTime ? insTime.toLocaleString() : recTime.toLocaleString());
 
       // Add to search history
-      addToSearchHistory(user, ins.data.user);
+      addToSearchHistory(user, insResponse.data.user);
       setSearchHistory(getSearchHistory());
 
       toast.success("Insights loaded!");
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to fetch insights");
+      setError("Failed to load insights. Please try again later.");
+      toast.error("Failed to load insights.");
     } finally {
       setLoading(false);
     }
@@ -150,37 +157,6 @@ export default function GitHubInsightsPage() {
     e?.preventDefault();
     if (!username.trim()) return toast.error("Please enter a GitHub username");
     navigate(`/stats/${username.trim()}`);
-  }
-
-  async function loadHistoricalData(user) {
-    setLoadingHistory(true);
-    try {
-      const [comparisonData, trendsData, reportData] = await Promise.all([
-        getStatsComparison(user, timePeriod).catch(() => null),
-        getStatsTrends(user, timePeriod, ["followers", "repos", "stars"]).catch(() => null),
-        getProgressReport(user, timePeriod).catch(() => null),
-      ]);
-
-      setComparison(comparisonData?.data);
-      setTrends(trendsData?.data);
-      setProgressReport(reportData?.data);
-    } catch (error) {
-      console.error("Failed to load historical data:", error);
-    } finally {
-      setLoadingHistory(false);
-    }
-  }
-
-  async function handleCreateSnapshot() {
-    if (!insights) return;
-    toast.promise(createStatsSnapshot(insights.user.login), {
-      loading: "Creating snapshot...",
-      success: () => {
-        loadHistoricalData(insights.user.login);
-        return "Snapshot created successfully!";
-      },
-      error: "Failed to create snapshot",
-    });
   }
 
   return (
@@ -273,8 +249,12 @@ export default function GitHubInsightsPage() {
 
         {/* Action Buttons */}
         {insights && (
-          <div className="flex justify-center gap-3">
-            <Button variant="outline" onClick={toggleBookmark}>
+          <div className="flex justify-center items-center gap-3">
+            <Button variant="outline" onClick={() => fetchData(insights.user.login, true)} disabled={loading}>
+              <History className="h-4 w-4 mr-2" />
+              {loading ? 'Refreshing...' : 'Refresh'}
+            </Button>
+            <Button variant="outline" onClick={toggleBookmark} disabled={loading}>
               <Bookmark className={`h-4 w-4 mr-2 ${bookmarked ? "fill-current" : ""}`} />
               {bookmarked ? "Bookmarked" : "Bookmark Profile"}
             </Button>
@@ -286,33 +266,7 @@ export default function GitHubInsightsPage() {
         )}
 
         {loading && <InsightsLoadingSkeleton />}
-
-        {!insights && !loading && (
-          <div className="text-center space-y-6 py-16">
-            <h2 className="text-3xl font-bold">Discover Your GitHub Story</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Enter any GitHub username above to unlock detailed analytics, skill classifications,
-              trending project recommendations, and personalized insights about coding patterns.
-            </p>
-            <div className="flex gap-4 justify-center flex-wrap mt-8">
-              <Badge variant="outline" className="text-sm py-2 px-4">
-                Language Analytics
-              </Badge>
-              <Badge variant="outline" className="text-sm py-2 px-4">
-                Top Repositories
-              </Badge>
-              <Badge variant="outline" className="text-sm py-2 px-4">
-                Coding Patterns
-              </Badge>
-              <Badge variant="outline" className="text-sm py-2 px-4">
-                Smart Recommendations
-              </Badge>
-              <Badge variant="outline" className="text-sm py-2 px-4">
-                Skill Classification
-              </Badge>
-            </div>
-          </div>
-        )}
+        {error && <div className="text-red-500 text-center my-4">{error}</div>}
 
         {insights && !loading && (
           <>
@@ -320,6 +274,7 @@ export default function GitHubInsightsPage() {
               user={insights.user}
               reposCount={insights.reposCount}
               domain={insights.domain}
+              lastUpdated={lastUpdated} // Pass timestamp to summary component
             />
 
             <Tabs defaultValue="overview" className="w-full">
@@ -446,11 +401,12 @@ export default function GitHubInsightsPage() {
   );
 }
 
-function ProfileSummary({ user, reposCount, domain }) {
+function ProfileSummary({ user, reposCount, domain, lastUpdated }) { // Add lastUpdated prop
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row justify-between items-start">
         <CardTitle>Profile Summary</CardTitle>
+        {lastUpdated && <p className="text-sm text-muted-foreground">Last updated: {lastUpdated}</p>}
       </CardHeader>
       <CardContent className="flex items-start gap-6">
         <Avatar className="h-24 w-24">

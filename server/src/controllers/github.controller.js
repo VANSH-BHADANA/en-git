@@ -19,6 +19,7 @@ import {
 import pLimit from "p-limit";
 import { inferDomain } from "../utils/skillDomain.js";
 import { generateCareerInsights, generateLearningPath } from "../services/ai.service.js";
+import { getGithubInsights as getInsightsService } from "../services/ai.service.js";
 
 export const getUserInsights = asyncHandler(async (req, res) => {
   const { username } = req.params;
@@ -268,3 +269,19 @@ export const getAIInsights = asyncHandler(async (req, res) => {
     throw new ApiError(500, error.message || "Failed to generate AI insights");
   }
 });
+
+const getGithubInsights = asyncHandler(async (req, res) => {
+  const { username } = req.params;
+  // Correctly parse the 'refresh' query parameter from the request
+  const refresh = req.query.refresh === 'true';
+
+  // Pass the refresh flag to the service layer
+  const { insightsData, lastUpdated } = await getInsightsService(username, refresh);
+
+  // The controller's job is to format the final API response
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { data: insightsData, lastUpdated }, "Insights fetched successfully"));
+});
+
+export { getGithubInsights };
