@@ -48,11 +48,11 @@ export default function Navbar() {
   };
 
   return (
-    <div className="flex justify-center w-full">
+    <div className="flex justify-center w-full fixed top-0 left-0 right-0 z-[999] bg-background border-b border-border px-6">
       <nav
         id="main-nav"
-        className="fixed left-1/2 -translate-x-1/2 z-[1000] bg-background/80 border border-l-0 border-r-0 border-border backdrop-blur-xl
-   w-[90%] max-w-6xl rounded shadow-lg h-16"
+        className="z-[1000]
+   w-full max-w-6xl h-16"
       >
         <div className="flex items-center justify-between p-3">
           <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">

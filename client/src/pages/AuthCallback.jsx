@@ -20,7 +20,7 @@ export default function AuthCallback() {
         const data = await res.json();
         setUser(data.user);
         toast.success("Login successful!");
-        navigate("/dashboard");
+        navigate("/"); // Redirect to home page
       } catch (err) {
         toast.error(err.message);
         navigate("/login");

@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
   const addPadding = !hideLayout && !noPaddingRoutes.includes(location.pathname);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background">
       <Toaster position="top-center" richColors />
       {!hideLayout && <Navbar />}
       <main className={`flex-1 ${addPadding ? "pt-24" : ""}`}>{children}</main>

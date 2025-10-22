@@ -24,6 +24,15 @@ import {
 import { getGithubInsights } from "@/lib/github";
 import { toast } from "sonner";
 import { validateGithubUsername } from "@/lib/utils";
+import {
+  ResponsiveContainer,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  Legend,
+} from "recharts";
 
 export default function CompareUsers() {
   const { user1: urlUser1, user2: urlUser2 } = useParams();
@@ -70,16 +79,16 @@ export default function CompareUsers() {
       ]);
 
       // Check for valid data in both responses
-      if (!res1?.data || !res2?.data) {
+      if (!res1?.data?.data || !res2?.data?.data) {
         throw new Error("Could not fetch data for one or both users.");
       }
 
-      setUser1Data(res1.data);
-      setUser2Data(res2.data);
-      setUser1LastUpdated(new Date(res1.lastUpdated).toLocaleString());
-      setUser2LastUpdated(new Date(res2.lastUpdated).toLocaleString());
+      setUser1Data(res1.data.data);
+      setUser2Data(res2.data.data);
+      setUser1LastUpdated(new Date(res1.data.lastUpdated).toLocaleString());
+      setUser2LastUpdated(new Date(res2.data.lastUpdated).toLocaleString());
 
-      const scores = calculateScores(res1.data, res2.data);
+      const scores = calculateScores(res1.data.data, res2.data.data);
       setWinner(scores);
 
       toast.success("Comparison complete!");
@@ -136,8 +145,8 @@ export default function CompareUsers() {
     if (scores.categories.stars.winner === 2) scores.user2++;
 
     // Followers
-    const followers1 = data1.user.followers || 0;
-    const followers2 = data2.user.followers || 0;
+    const followers1 = data1?.user?.followers || 0;
+    const followers2 = data2?.user?.followers || 0;
     scores.categories.followers = {
       user1: followers1,
       user2: followers2,
@@ -181,7 +190,7 @@ export default function CompareUsers() {
 
     const maxRepos = Math.max(user1Data.reposCount, user2Data.reposCount);
     const maxStars = Math.max(stars1, stars2);
-    const maxFollowers = Math.max(user1Data.user.followers || 0, user2Data.user.followers || 0);
+    const maxFollowers = Math.max(user1Data?.user?.followers || 0, user2Data?.user?.followers || 0);
     const maxLangs = Math.max(
       user1Data.languages?.percentages?.size || 0,
       user2Data.languages?.percentages?.size || 0
@@ -190,39 +199,43 @@ export default function CompareUsers() {
     return [
       {
         metric: "Repos",
-        [user1Data.user.login]: (user1Data.reposCount / maxRepos) * 100,
-        [user2Data.user.login]: (user2Data.reposCount / maxRepos) * 100,
+        [user1Data?.user?.login || "User 1"]: (user1Data.reposCount / maxRepos) * 100,
+        [user2Data?.user?.login || "User 2"]: (user2Data.reposCount / maxRepos) * 100,
       },
       {
         metric: "Stars",
-        [user1Data.user.login]: (stars1 / maxStars) * 100,
-        [user2Data.user.login]: (stars2 / maxStars) * 100,
+        [user1Data?.user?.login || "User 1"]: (stars1 / maxStars) * 100,
+        [user2Data?.user?.login || "User 2"]: (stars2 / maxStars) * 100,
       },
       {
         metric: "Followers",
-        [user1Data.user.login]: ((user1Data.user.followers || 0) / maxFollowers) * 100,
-        [user2Data.user.login]: ((user2Data.user.followers || 0) / maxFollowers) * 100,
+        [user1Data?.user?.login || "User 1"]:
+          ((user1Data?.user?.followers || 0) / maxFollowers) * 100,
+        [user2Data?.user?.login || "User 2"]:
+          ((user2Data?.user?.followers || 0) / maxFollowers) * 100,
       },
       {
         metric: "Languages",
-        [user1Data.user.login]: ((user1Data.languages?.percentages?.size || 0) / maxLangs) * 100,
-        [user2Data.user.login]: ((user2Data.languages?.percentages?.size || 0) / maxLangs) * 100,
+        [user1Data?.user?.login || "User 1"]:
+          ((user1Data.languages?.percentages?.size || 0) / maxLangs) * 100,
+        [user2Data?.user?.login || "User 2"]:
+          ((user2Data.languages?.percentages?.size || 0) / maxLangs) * 100,
       },
       {
         metric: "Following",
-        [user1Data.user.login]:
-          ((user1Data.user.following || 0) /
-            Math.max(user1Data.user.following || 0, user2Data.user.following || 0)) *
+        [user1Data?.user?.login || "User 1"]:
+          ((user1Data?.user?.following || 0) /
+            Math.max(user1Data?.user?.following || 0, user2Data?.user?.following || 0)) *
           100,
-        [user2Data.user.login]:
-          ((user2Data.user.following || 0) /
-            Math.max(user1Data.user.following || 0, user2Data.user.following || 0)) *
+        [user2Data?.user?.login || "User 2"]:
+          ((user2Data?.user?.following || 0) /
+            Math.max(user1Data?.user?.following || 0, user2Data?.user?.following || 0)) *
           100,
       },
     ];
   }
 
-  if (!user1Data || !user2Data) {
+  if (!user1Data || !user2Data || !user1Data.user || !user2Data.user) {
     return (
       <div className="container mx-auto px-4 py-8">
         <Button variant="ghost" onClick={() => navigate("/")} className="mb-6">

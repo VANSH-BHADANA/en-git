@@ -2,8 +2,8 @@
   "name": "server",
   "version": "1.0.0",
   "license": "ISC",
-  "author": "Omar Rakhe",
-  "description": "The Express.js backend for the MERN Hackathon Starter Template, featuring JWT authentication, file uploads, and various API integrations.",
+  "author": "Tejas",
+  "description": "backend for en-git",
   "type": "module",
   "main": "src/index.js",
   "scripts": {

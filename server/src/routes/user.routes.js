@@ -35,10 +35,7 @@ router.get("/profile/:id", getUserProfile);
 // -------------------- OAUTH LOGIN --------------------
 
 // --- Google OAuth ---
-router.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 // --- Google OAuth Callback ---
 router.get(
@@ -54,15 +51,12 @@ router.get(
         sameSite: "lax",
         maxAge: 24 * 60 * 60 * 1000,
       })
-      .redirect("http://localhost:5173/auth/callback");
+      .redirect(`${process.env.CLIENT_URL}/auth/callback`);
   }
 );
 
 // --- GitHub OAuth ---
-router.get(
-  "/auth/github",
-  passport.authenticate("github", { scope: ["user:email"] })
-);
+router.get("/auth/github", passport.authenticate("github", { scope: ["user:email"] }));
 
 // --- GitHub OAuth Callback ---
 router.get(
@@ -78,7 +72,7 @@ router.get(
         sameSite: "lax",
         maxAge: 24 * 60 * 60 * 1000,
       })
-      .redirect("http://localhost:5173/auth/callback");
+      .redirect(`${process.env.CLIENT_URL}/auth/callback`);
   }
 );
 
