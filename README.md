@@ -1,13 +1,27 @@
 <img width="200" height="80" alt="Screenshot 2025-10-19 134029-Photoroom" src="https://github.com/user-attachments/assets/8805d023-5923-4b37-8e8c-101a431e65c8" />
 
-**AI-Powered GitHub Analytics Platform**
+# **AI-Powered GitHub Analytics Platform**
 
 en-git transforms your GitHub data into actionable insights with advanced analytics, gamification, AI-powered career advice, and beautiful visualizations.
 
 <p align="center">
     <img src="https://skillicons.dev/icons?i=react,vite,tailwind,nodejs,express,mongodb,git,github,vercel,postman&perline=10" />
 </p>
-
+<p align="center">
+  <h3><b>Love this project? Please leave a star ⭐ to show your support!</b></h3>
+    <div align="center">
+  <a href="https://github.com/TejasS1233/en-git/stargazers">
+    <img 
+      src="https://img.shields.io/github/stars/TejasS1233/en-git?style=for-the-badge" 
+      alt="GitHub Stars" 
+      height="100"
+    />
+  </a>
+</div>
+  </a>
+  <br />
+  
+</p>
 Get your personalized developer badge — show off your skills, top languages, and activity with a clean, shareable card.
 
 <img width="1279" height="678" alt="image" src="https://github.com/user-attachments/assets/8df56508-ab2c-49b2-b67d-73e90f14ea6a" />
