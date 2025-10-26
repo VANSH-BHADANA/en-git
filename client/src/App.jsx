@@ -14,11 +14,8 @@ import Dashboard from "@/pages/Dashboard";
 import GitHubInsights from "@/pages/GitHubInsights";
 import CompareUsers from "@/pages/CompareUsers";
 import RepositoryDeepDive from "@/pages/RepositoryDeepDive";
- main
 import CICDPipeline from "@/pages/CICDPipeline";
-
 import AuthCallback from "@/pages/AuthCallback"; // <-- import the new AuthCallback page
- main
 
 const hiddenLayoutRoutes = ["/login", "/signup", "/dashboard", "/auth/callback"];
 

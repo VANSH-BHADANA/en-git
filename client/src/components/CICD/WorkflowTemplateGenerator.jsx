@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Textarea } from '../ui/textarea';
-import { Checkbox } from '../ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Alert, AlertDescription } from '../ui/alert';
-import { 
-  Download, 
-  Copy, 
-  Play, 
-  Settings, 
-  Code, 
+import React, { useState, useEffect } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { Checkbox } from "../ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Alert, AlertDescription } from "../ui/alert";
+import {
+  Download,
+  Copy,
+  Play,
+  Settings,
+  Code,
   CheckCircle,
   AlertTriangle,
   Zap,
   FileText,
   Github,
-  Docker,
+  Container,
   Shield,
-  Clock
-} from 'lucide-react';
+  Clock,
+} from "lucide-react";
 
 const WorkflowTemplateGenerator = ({ pipeline }) => {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
-  const [generatedWorkflow, setGeneratedWorkflow] = useState('');
+  const [generatedWorkflow, setGeneratedWorkflow] = useState("");
   const [customizationOptions, setCustomizationOptions] = useState({
-    nodeVersion: '18',
-    os: 'ubuntu-latest',
+    nodeVersion: "18",
+    os: "ubuntu-latest",
     includeTests: true,
     includeSecurity: true,
     includePerformance: false,
@@ -38,7 +38,7 @@ const WorkflowTemplateGenerator = ({ pipeline }) => {
     cacheDependencies: true,
     parallelJobs: false,
     notifications: true,
-    customSteps: []
+    customSteps: [],
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -46,78 +46,89 @@ const WorkflowTemplateGenerator = ({ pipeline }) => {
   // Predefined workflow templates
   const workflowTemplates = [
     {
-      id: 'basic-ci',
-      name: 'Basic CI Pipeline',
-      description: 'Essential CI workflow with linting, building, and testing',
+      id: "basic-ci",
+      name: "Basic CI Pipeline",
+      description: "Essential CI workflow with linting, building, and testing",
       icon: <Code className="h-5 w-5" />,
-      features: ['Linting', 'Building', 'Testing', 'Caching'],
-      estimatedTime: '5-10 minutes',
-      complexity: 'Low',
-      cost: 'Low'
+      features: ["Linting", "Building", "Testing", "Caching"],
+      estimatedTime: "5-10 minutes",
+      complexity: "Low",
+      cost: "Low",
     },
     {
-      id: 'full-ci-cd',
-      name: 'Full CI/CD Pipeline',
-      description: 'Complete pipeline with CI, CD, security scanning, and deployment',
+      id: "full-ci-cd",
+      name: "Full CI/CD Pipeline",
+      description: "Complete pipeline with CI, CD, security scanning, and deployment",
       icon: <Github className="h-5 w-5" />,
-      features: ['CI/CD', 'Security Scanning', 'Performance Testing', 'Deployment', 'Notifications'],
-      estimatedTime: '15-25 minutes',
-      complexity: 'High',
-      cost: 'High'
+      features: [
+        "CI/CD",
+        "Security Scanning",
+        "Performance Testing",
+        "Deployment",
+        "Notifications",
+      ],
+      estimatedTime: "15-25 minutes",
+      complexity: "High",
+      cost: "High",
     },
     {
-      id: 'security-focused',
-      name: 'Security-Focused Pipeline',
-      description: 'Pipeline optimized for security scanning and compliance',
+      id: "security-focused",
+      name: "Security-Focused Pipeline",
+      description: "Pipeline optimized for security scanning and compliance",
       icon: <Shield className="h-5 w-5" />,
-      features: ['Dependency Scanning', 'Code Analysis', 'Container Scanning', 'License Check'],
-      estimatedTime: '10-15 minutes',
-      complexity: 'Medium',
-      cost: 'Medium'
+      features: ["Dependency Scanning", "Code Analysis", "Container Scanning", "License Check"],
+      estimatedTime: "10-15 minutes",
+      complexity: "Medium",
+      cost: "Medium",
     },
     {
-      id: 'performance-optimized',
-      name: 'Performance-Optimized Pipeline',
-      description: 'Pipeline designed for maximum performance and efficiency',
+      id: "performance-optimized",
+      name: "Performance-Optimized Pipeline",
+      description: "Pipeline designed for maximum performance and efficiency",
       icon: <Zap className="h-5 w-5" />,
-      features: ['Parallel Jobs', 'Advanced Caching', 'Resource Optimization', 'Performance Testing'],
-      estimatedTime: '8-12 minutes',
-      complexity: 'Medium',
-      cost: 'Medium'
+      features: [
+        "Parallel Jobs",
+        "Advanced Caching",
+        "Resource Optimization",
+        "Performance Testing",
+      ],
+      estimatedTime: "8-12 minutes",
+      complexity: "Medium",
+      cost: "Medium",
     },
     {
-      id: 'docker-based',
-      name: 'Docker-Based Pipeline',
-      description: 'Containerized workflow with Docker build and push',
-      icon: <Docker className="h-5 w-5" />,
-      features: ['Docker Build', 'Container Registry', 'Multi-Platform', 'Container Security'],
-      estimatedTime: '12-18 minutes',
-      complexity: 'High',
-      cost: 'High'
+      id: "docker-based",
+      name: "Docker-Based Pipeline",
+      description: "Containerized workflow with Docker build and push",
+      icon: <Container className="h-5 w-5" />,
+      features: ["Docker Build", "Container Registry", "Multi-Platform", "Container Security"],
+      estimatedTime: "12-18 minutes",
+      complexity: "High",
+      cost: "High",
     },
     {
-      id: 'minimal',
-      name: 'Minimal Pipeline',
-      description: 'Lightweight pipeline for simple projects',
+      id: "minimal",
+      name: "Minimal Pipeline",
+      description: "Lightweight pipeline for simple projects",
       icon: <FileText className="h-5 w-5" />,
-      features: ['Basic Build', 'Simple Testing'],
-      estimatedTime: '3-5 minutes',
-      complexity: 'Low',
-      cost: 'Very Low'
-    }
+      features: ["Basic Build", "Simple Testing"],
+      estimatedTime: "3-5 minutes",
+      complexity: "Low",
+      cost: "Very Low",
+    },
   ];
 
   const generateWorkflow = (templateId, options) => {
     const templates = {
-      'basic-ci': generateBasicCI(options),
-      'full-ci-cd': generateFullCICD(options),
-      'security-focused': generateSecurityFocused(options),
-      'performance-optimized': generatePerformanceOptimized(options),
-      'docker-based': generateDockerBased(options),
-      'minimal': generateMinimal(options)
+      "basic-ci": generateBasicCI(options),
+      "full-ci-cd": generateFullCICD(options),
+      "security-focused": generateSecurityFocused(options),
+      "performance-optimized": generatePerformanceOptimized(options),
+      "docker-based": generateDockerBased(options),
+      minimal: generateMinimal(options),
     };
 
-    return templates[templateId] || '';
+    return templates[templateId] || "";
   };
 
   const generateBasicCI = (options) => {
@@ -739,7 +750,7 @@ jobs:
   const handleTemplateSelect = (template) => {
     setSelectedTemplate(template);
     setIsGenerating(true);
-    
+
     // Simulate generation delay
     setTimeout(() => {
       const workflow = generateWorkflow(template.id, customizationOptions);
@@ -749,9 +760,9 @@ jobs:
   };
 
   const handleCustomizationChange = (key, value) => {
-    setCustomizationOptions(prev => ({
+    setCustomizationOptions((prev) => ({
       ...prev,
-      [key]: value
+      [key]: value,
     }));
   };
 
@@ -761,36 +772,45 @@ jobs:
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy: ', err);
+      console.error("Failed to copy: ", err);
     }
   };
 
   const downloadWorkflow = () => {
-    const blob = new Blob([generatedWorkflow], { type: 'text/yaml' });
+    const blob = new Blob([generatedWorkflow], { type: "text/yaml" });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.download = `${selectedTemplate?.id || 'workflow'}.yml`;
+    link.download = `${selectedTemplate?.id || "workflow"}.yml`;
     link.click();
     URL.revokeObjectURL(url);
   };
 
   const getComplexityColor = (complexity) => {
     switch (complexity) {
-      case 'Low': return 'bg-green-100 text-green-800';
-      case 'Medium': return 'bg-yellow-100 text-yellow-800';
-      case 'High': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "Low":
+        return "bg-green-100 text-green-800";
+      case "Medium":
+        return "bg-yellow-100 text-yellow-800";
+      case "High":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getCostColor = (cost) => {
     switch (cost) {
-      case 'Very Low': return 'bg-green-100 text-green-800';
-      case 'Low': return 'bg-blue-100 text-blue-800';
-      case 'Medium': return 'bg-yellow-100 text-yellow-800';
-      case 'High': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "Very Low":
+        return "bg-green-100 text-green-800";
+      case "Low":
+        return "bg-blue-100 text-blue-800";
+      case "Medium":
+        return "bg-yellow-100 text-yellow-800";
+      case "High":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -810,7 +830,9 @@ jobs:
               <div
                 key={template.id}
                 className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                  selectedTemplate?.id === template.id ? 'border-blue-500 bg-blue-50' : 'hover:bg-gray-50'
+                  selectedTemplate?.id === template.id
+                    ? "border-blue-500 bg-blue-50"
+                    : "hover:bg-gray-50"
                 }`}
                 onClick={() => handleTemplateSelect(template)}
               >
@@ -818,9 +840,7 @@ jobs:
                   <div className="text-blue-500">{template.icon}</div>
                   <div className="flex-1">
                     <h3 className="font-semibold">{template.name}</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {template.description}
-                    </p>
+                    <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
                     <div className="space-y-2">
                       <div className="flex flex-wrap gap-1">
                         {template.features.map((feature, index) => (
@@ -838,9 +858,7 @@ jobs:
                           <Badge className={getComplexityColor(template.complexity)}>
                             {template.complexity}
                           </Badge>
-                          <Badge className={getCostColor(template.cost)}>
-                            {template.cost}
-                          </Badge>
+                          <Badge className={getCostColor(template.cost)}>{template.cost}</Badge>
                         </div>
                       </div>
                     </div>
@@ -857,9 +875,7 @@ jobs:
         <Card>
           <CardHeader>
             <CardTitle>Customization Options</CardTitle>
-            <CardDescription>
-              Customize your workflow before generation
-            </CardDescription>
+            <CardDescription>Customize your workflow before generation</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -867,7 +883,7 @@ jobs:
                 <Label htmlFor="nodeVersion">Node.js Version</Label>
                 <Select
                   value={customizationOptions.nodeVersion}
-                  onValueChange={(value) => handleCustomizationChange('nodeVersion', value)}
+                  onValueChange={(value) => handleCustomizationChange("nodeVersion", value)}
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -884,7 +900,7 @@ jobs:
                 <Label htmlFor="os">Operating System</Label>
                 <Select
                   value={customizationOptions.os}
-                  onValueChange={(value) => handleCustomizationChange('os', value)}
+                  onValueChange={(value) => handleCustomizationChange("os", value)}
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -904,7 +920,9 @@ jobs:
                     <Checkbox
                       id="includeTests"
                       checked={customizationOptions.includeTests}
-                      onCheckedChange={(checked) => handleCustomizationChange('includeTests', checked)}
+                      onCheckedChange={(checked) =>
+                        handleCustomizationChange("includeTests", checked)
+                      }
                     />
                     <Label htmlFor="includeTests">Include Tests</Label>
                   </div>
@@ -912,7 +930,9 @@ jobs:
                     <Checkbox
                       id="includeSecurity"
                       checked={customizationOptions.includeSecurity}
-                      onCheckedChange={(checked) => handleCustomizationChange('includeSecurity', checked)}
+                      onCheckedChange={(checked) =>
+                        handleCustomizationChange("includeSecurity", checked)
+                      }
                     />
                     <Label htmlFor="includeSecurity">Include Security</Label>
                   </div>
@@ -920,7 +940,9 @@ jobs:
                     <Checkbox
                       id="includePerformance"
                       checked={customizationOptions.includePerformance}
-                      onCheckedChange={(checked) => handleCustomizationChange('includePerformance', checked)}
+                      onCheckedChange={(checked) =>
+                        handleCustomizationChange("includePerformance", checked)
+                      }
                     />
                     <Label htmlFor="includePerformance">Include Performance</Label>
                   </div>
@@ -928,7 +950,9 @@ jobs:
                     <Checkbox
                       id="includeDeployment"
                       checked={customizationOptions.includeDeployment}
-                      onCheckedChange={(checked) => handleCustomizationChange('includeDeployment', checked)}
+                      onCheckedChange={(checked) =>
+                        handleCustomizationChange("includeDeployment", checked)
+                      }
                     />
                     <Label htmlFor="includeDeployment">Include Deployment</Label>
                   </div>
@@ -966,9 +990,7 @@ jobs:
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Generated Workflow</CardTitle>
-                <CardDescription>
-                  Your customized GitHub Actions workflow is ready
-                </CardDescription>
+                <CardDescription>Your customized GitHub Actions workflow is ready</CardDescription>
               </div>
               <div className="flex space-x-2">
                 <Button variant="outline" size="sm" onClick={copyToClipboard}>
@@ -1001,7 +1023,9 @@ jobs:
                 <Alert>
                   <AlertTriangle className="h-4 w-4" />
                   <AlertDescription>
-                    This workflow is ready to be saved as <code>.github/workflows/{selectedTemplate?.id || 'workflow'}.yml</code> in your repository.
+                    This workflow is ready to be saved as{" "}
+                    <code>.github/workflows/{selectedTemplate?.id || "workflow"}.yml</code> in your
+                    repository.
                   </AlertDescription>
                 </Alert>
                 <div className="p-4 bg-gray-50 rounded-lg">
@@ -1030,9 +1054,7 @@ jobs:
         <Card>
           <CardHeader>
             <CardTitle>Implementation Guide</CardTitle>
-            <CardDescription>
-              Steps to implement your generated workflow
-            </CardDescription>
+            <CardDescription>Steps to implement your generated workflow</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -1040,19 +1062,23 @@ jobs:
                 <div className="p-4 border rounded-lg">
                   <h4 className="font-medium mb-2">1. Save the Workflow</h4>
                   <p className="text-sm text-muted-foreground">
-                    Create a new file in your repository at <code>.github/workflows/{selectedTemplate.id}.yml</code> and paste the generated content.
+                    Create a new file in your repository at{" "}
+                    <code>.github/workflows/{selectedTemplate.id}.yml</code> and paste the generated
+                    content.
                   </p>
                 </div>
                 <div className="p-4 border rounded-lg">
                   <h4 className="font-medium mb-2">2. Configure Secrets</h4>
                   <p className="text-sm text-muted-foreground">
-                    Add any required secrets in your repository settings under Settings → Secrets and variables → Actions.
+                    Add any required secrets in your repository settings under Settings → Secrets
+                    and variables → Actions.
                   </p>
                 </div>
                 <div className="p-4 border rounded-lg">
                   <h4 className="font-medium mb-2">3. Test the Workflow</h4>
                   <p className="text-sm text-muted-foreground">
-                    Create a test branch and push changes to trigger the workflow and verify it works correctly.
+                    Create a test branch and push changes to trigger the workflow and verify it
+                    works correctly.
                   </p>
                 </div>
                 <div className="p-4 border rounded-lg">
