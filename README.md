@@ -1,6 +1,9 @@
-<img width="200" height="80" alt="Screenshot 2025-10-19 134029-Photoroom" src="https://github.com/user-attachments/assets/8805d023-5923-4b37-8e8c-101a431e65c8" />
+<h1 style="display: flex; align-items: center;">
+    <img width="48" height="48" alt="icon48" src="https://github.com/user-attachments/assets/2f4ade22-2913-43f2-8ef2-fd92134cdac0" />
+   en-git: Github enhancement platform and chome extension
+</h1>
 
-# **AI-Powered GitHub Analytics Platform**
+
 
 en-git transforms your GitHub data into actionable insights with advanced analytics, gamification, AI-powered career advice, and beautiful visualizations.
 
