@@ -1,13 +1,27 @@
 <img width="200" height="80" alt="Screenshot 2025-10-19 134029-Photoroom" src="https://github.com/user-attachments/assets/8805d023-5923-4b37-8e8c-101a431e65c8" />
 
-**AI-Powered GitHub Analytics Platform**
+# **AI-Powered GitHub Analytics Platform**
 
 en-git transforms your GitHub data into actionable insights with advanced analytics, gamification, AI-powered career advice, and beautiful visualizations.
 
 <p align="center">
     <img src="https://skillicons.dev/icons?i=react,vite,tailwind,nodejs,express,mongodb,git,github,vercel,postman&perline=10" />
 </p>
-
+<p align="center">
+  <h3><b>Love this project? Please leave a star ⭐ to show your support!</b></h3>
+    <div align="center">
+  <a href="https://github.com/TejasS1233/en-git/stargazers">
+    <img 
+      src="https://img.shields.io/github/stars/TejasS1233/en-git?style=for-the-badge" 
+      alt="GitHub Stars" 
+      height="100"
+    />
+  </a>
+</div>
+  </a>
+  <br />
+  
+</p>
 Get your personalized developer badge — show off your skills, top languages, and activity with a clean, shareable card.
 
 <img width="1279" height="678" alt="image" src="https://github.com/user-attachments/assets/8df56508-ab2c-49b2-b67d-73e90f14ea6a" />
@@ -127,12 +141,13 @@ Compare with peers — analyze profiles side-by-side to track your growth and be
 - Node.js 18+
 - MongoDB running (local or Atlas)
 - GitHub personal access token (optional, for higher rate limits)
+- Vercel account (for deployment)
 
 ### 1. Clone the repo
 
 ```bash
 git clone <your-repo-url>
-cd Github
+cd en-git
 ```
 
 ### 2. Install dependencies
@@ -150,6 +165,54 @@ npm install
 cd client
 npm install
 ```
+
+### 3. Environment Setup
+
+**Client Environment Variables:**
+```bash
+cp client/.env.example client/.env.local
+# Edit client/.env.local with your GitHub token
+```
+
+**Server Environment Variables:**
+```bash
+cp server/.env.example server/.env
+# Edit server/.env with your configuration
+```
+
+### 4. Start Development Servers
+
+```bash
+# Start client (runs on http://localhost:5173)
+cd client
+npm run dev
+
+# Start server (runs on http://localhost:3000)
+cd server
+npm run dev
+```
+
+### 5. Access the Application
+
+- Open http://localhost:5173 in your browser
+- Enter your GitHub username to get started!
+
+## 🚀 Deployment
+
+The project includes a complete CI/CD pipeline with **Vercel deployment**:
+
+### Automated Deployment Pipeline
+- ✅ **Staging**: Push to `develop` branch → auto-deploys to Vercel staging
+- ✅ **Production**: Push to `main` branch → auto-deploys to Vercel production
+- ✅ **Testing**: Automated testing, security scanning, and performance checks
+- ✅ **Notifications**: Slack notifications for deployment status
+
+### Manual Setup
+See [Vercel Deployment Setup Guide](./VERCEL_DEPLOYMENT_SETUP.md) for detailed instructions on:
+- Setting up Vercel projects
+- Configuring GitHub secrets
+- Environment variables
+- Troubleshooting common issues
 
 ### 3. Configure environment variables
 
