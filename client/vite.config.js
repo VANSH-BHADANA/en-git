@@ -11,18 +11,22 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       tailwindcss(),
-      sitemap({
-        hostname: "https://en-git.vercel.app",
-        dynamicRoutes: [
-          "/",
-          "/compare",
-          "/repo",
-          "/login",
-          "/signup",
-          "/dashboard",
-          "/auth/callback",
-        ],
-      }),
+      !isExtension &&
+        sitemap({
+          hostname: "https://en-git.vercel.app",
+          dynamicRoutes: [
+            "/",
+            "/compare",
+            "/repo",
+            "/login",
+            "/signup",
+            "/dashboard",
+            "/auth/callback",
+            "/privacy",
+            "/contact",
+          ],
+          robots: false,
+        }),
     ],
     resolve: {
       alias: {
