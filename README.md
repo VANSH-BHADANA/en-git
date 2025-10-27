@@ -11,41 +11,6 @@
 
 
 
-## 🧩 Project Structure
-
-```
-Github/
-├── README.md
-├── ACHIEVEMENTS.md          # 🏆 Complete achievements guide
-├── LICENSE
-│
-├── client/                  # React + Vite Frontend
-│   ├── src/
-│   │   ├── pages/          # GitHubInsights, Dashboard, Profile, etc.
-│   │   ├── components/     # Charts, heatmaps, badges, AI insights
-│   │   ├── lib/            # GitHub API, auth, utils
-│   │   └── context/        # React contexts
-│   └── package.json
-│
-├── server/                  # Node.js + Express Backend
-│   ├── src/
-│   │   ├── controllers/    # Route handlers
-│   │   ├── services/       # GitHub API, snapshots, AI
-│   │   ├── models/         # MongoDB schemas
-│   │   ├── routes/         # API endpoints
-│   │   ├── utils/          # Analytics, helpers
-│   │   └── middlewares/    # Auth, file uploads
-│   └── package.json
-│
-└── chrome-extension/        # Browser Extension
-    ├── manifest.json
-    ├── popup.html/js
-    ├── settings.html/js
-    └── content.js           # GitHub page injections
-```
-
----
-
 ## 🤝 Contributing
 
 We love contributions! Here''s how you can help:
