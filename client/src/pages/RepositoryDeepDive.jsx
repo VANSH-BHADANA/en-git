@@ -83,7 +83,17 @@ export default function RepositoryDeepDive() {
         throw new Error("Received no data for this repository.");
       }
       setData(response.data);
-      setLastUpdated(new Date(response.lastUpdated).toLocaleString());
+      // Handle lastUpdated with fallback
+      if (response.lastUpdated) {
+        const date = new Date(response.lastUpdated);
+        if (!isNaN(date.getTime())) {
+          setLastUpdated(date.toLocaleString());
+        } else {
+          setLastUpdated(new Date().toLocaleString());
+        }
+      } else {
+        setLastUpdated(new Date().toLocaleString());
+      }
     } catch (err) {
       console.error(err);
       setError("Failed to load repository data.");

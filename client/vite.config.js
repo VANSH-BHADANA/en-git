@@ -2,12 +2,28 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
+import sitemap from "vite-plugin-sitemap";
 
 export default defineConfig(({ mode }) => {
   const isExtension = mode === "extension";
 
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      sitemap({
+        hostname: "https://en-git.vercel.app",
+        dynamicRoutes: [
+          "/",
+          "/compare",
+          "/repo",
+          "/login",
+          "/signup",
+          "/dashboard",
+          "/auth/callback",
+        ],
+      }),
+    ],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
