@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import sitemap from "vite-plugin-sitemap";
+import fs from "fs";
 
 export default defineConfig(({ mode }) => {
   const isExtension = mode === "extension";
@@ -11,8 +12,8 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       tailwindcss(),
-      !isExtension &&
-        sitemap({
+      !isExtension && {
+        ...sitemap({
           hostname: "https://en-git.vercel.app",
           dynamicRoutes: [
             "/",
@@ -27,6 +28,14 @@ export default defineConfig(({ mode }) => {
           ],
           generateRobotsTxt: false,
         }),
+        configResolved(config) {
+          // Ensure dist directory exists before sitemap generation
+          const distPath = path.resolve(config.root, "dist");
+          if (!fs.existsSync(distPath)) {
+            fs.mkdirSync(distPath, { recursive: true });
+          }
+        },
+      },
     ].filter(Boolean),
     resolve: {
       alias: {
