@@ -23,6 +23,7 @@ import { Badge } from "./components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "./components/ui/avatar";
 import { Separator } from "./components/ui/separator";
 import { calculateProfileScore } from "./lib/extensionProfileScore";
+import engitIcon from "/engit-icon.png";
 
 function ExtensionApp() {
   const [username, setUsername] = useState("");
@@ -216,7 +217,11 @@ function ExtensionApp() {
       <div className="bg-gradient-to-r from-sky-600 to-blue-600 p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 flex-shrink-0">
-            <img src="/engit-icon.png" alt="en-git" className="h-6 w-auto" />
+            <img
+              src={new URL("/engit-icon.png", import.meta.url).href}
+              alt="en-git"
+              className="h-6 w-auto"
+            />
             <h1 className="text-xl font-bold text-white whitespace-nowrap">en-git</h1>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">

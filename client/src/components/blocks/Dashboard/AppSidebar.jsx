@@ -24,6 +24,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import engitIcon from "/engit-icon.png";
 
 const data = {
   user: {
@@ -34,7 +35,7 @@ const data = {
   teams: [
     {
       name: "en-git",
-      logo: "/engit-icon.png",
+      logo: engitIcon,
       plan: "Pro",
       isImage: true,
     },
