@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { getRepositoryInsights } from "@/lib/github";
 import { toast } from "sonner";
+import { RepositoryAnalysisTips } from "@/components/AnalysisTips";
 import {
   BarChart,
   Bar,
