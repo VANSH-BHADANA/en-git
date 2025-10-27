@@ -3,8 +3,6 @@
    en-git: Github enhancement platform and chome extension
 </h1>
 
-
-
 en-git transforms your GitHub data into actionable insights with advanced analytics, gamification, AI-powered career advice, and beautiful visualizations.
 
 ## 🚀 What's New
@@ -77,7 +75,7 @@ Share your GitHub achievements with beautiful formatting:
 💻 Top language: JavaScript
 👥 256 followers
 
-Check your GitHub insights at en-git.vercel.app! 🔥
+Check your GitHub insights at https://en-git.vercel.app! 🔥
 ```
 
 ---
@@ -89,11 +87,13 @@ Check your GitHub insights at en-git.vercel.app! 🔥
 A new input was added to the Repository Deep Dive page which lets users paste a GitHub repository URL (or shorthand) and have the owner and repository fields auto-filled.
 
 Supported inputs:
+
 - Full URL: `https://github.com/owner/repo`
 - SSH URL: `git@github.com:owner/repo.git`
 - Short form: `owner/repo`
 
 Behavior:
+
 - Pasting a supported value will auto-fill the `Owner` and `Repository` fields.
 - Invalid or unparsable input will show an inline error message.
 - After the fields are filled, click `Analyze Repository` to trigger the existing analysis flow.
@@ -553,7 +553,7 @@ If you find this project helpful:
 ## 📬 Contact
 
 **Project Link:** [https://github.com/TejasS1233/en-git](https://github.com/TejasS1233/en-git)  
-**Live Demo:** [https://en-git-6fjm.vercel.app](https://en-git-6fjm.vercel.app)  
+**Live Demo:** [https://en-git.vercel.app](https://en-git.vercel.app)  
 **Chrome Extension:** Coming soon to Chrome Web Store!
 
 ---

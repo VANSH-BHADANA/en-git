@@ -724,7 +724,7 @@ function addDeeperAnalysisButtonToProfile() {
         username: username,
       });
     } else {
-      window.open(`https://en-git-6fjm.vercel.app/stats/${username}`, "_blank");
+      window.open(`https://en-git.vercel.app/stats/${username}`, "_blank");
     }
   };
 
@@ -1045,10 +1045,7 @@ async function addProfileScoreBadge() {
           }
         );
       } else {
-        window.open(
-          `https://en-git-6fjm.vercel.app/stats/${username}`,
-          "_blank"
-        );
+        window.open(`https://en-git.vercel.app/stats/${username}`, "_blank");
       }
     };
 

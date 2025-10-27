@@ -8,7 +8,7 @@
     "https://api.github.com/*",
     "https://github.com/*",
     "https://en-git.onrender.com/*",
-    "https://en-git-6fjm.vercel.app/*"
+    "https://en-git.vercel.app/*"
   ],
   "action": {
     "default_popup": "popup.html",

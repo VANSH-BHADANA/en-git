@@ -109,7 +109,7 @@ Our extension requests the following Chrome permissions:
   - `https://api.github.com/*` - Fetch GitHub data
   - `https://github.com/*` - Inject analytics on GitHub pages
   - `https://en-git.onrender.com/*` - Connect to our backend for processing
-  - `https://en-git-6fjm.vercel.app/*` - Open web app for detailed analytics
+  - `https://en-git.vercel.app/*` - Open web app for detailed analytics
 
 ## Contact Us
 
@@ -117,7 +117,7 @@ If you have questions or concerns about this Privacy Policy:
 
 - **Email:** [tejas.sidhwani@gmail.com]]
 - **GitHub Issues:** https://github.com/TejasS1233/en-git/issues
-- **Website:** https://en-git-6fjm.vercel.app
+- **Website:** https://en-git.vercel.app
 
 ## Compliance
 

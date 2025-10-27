@@ -180,27 +180,27 @@ function ExtensionApp() {
     if (!username.trim()) return;
     saveToRecent(username);
     chrome.tabs.create({
-      url: `https://en-git-6fjm.vercel.app/stats/${username}`,
+      url: `https://en-git.vercel.app/stats/${username}`,
     });
   };
 
   const analyzeRepository = () => {
     if (!currentRepo) return;
     chrome.tabs.create({
-      url: `https://en-git-6fjm.vercel.app/repo/${currentRepo.owner}/${currentRepo.repo}`,
+      url: `https://en-git.vercel.app/repo/${currentRepo.owner}/${currentRepo.repo}`,
     });
   };
 
   const compareUsers = () => {
     if (!username.trim() || !username2.trim()) return;
     chrome.tabs.create({
-      url: `https://en-git-6fjm.vercel.app/compare/${username}/${username2}`,
+      url: `https://en-git.vercel.app/compare/${username}/${username2}`,
     });
   };
 
   const openDashboard = () => {
     chrome.tabs.create({
-      url: "https://en-git-6fjm.vercel.app",
+      url: "https://en-git.vercel.app",
     });
   };
 
@@ -216,17 +216,7 @@ function ExtensionApp() {
       <div className="bg-gradient-to-r from-sky-600 to-blue-600 p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 flex-shrink-0">
-            {/* Use favicon SVG inline for crisp rendering */}
-            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="popup-favicon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#38bdf8" />
-                  <stop offset="100%" stopColor="#7dd3fc" />
-                </linearGradient>
-              </defs>
-              <rect x="0" y="0" width="32" height="32" rx="6.4" fill="url(#popup-favicon-gradient)" />
-              <text x="16" y="20" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="16" fontWeight="bold" fill="white">eg</text>
-            </svg>
+            <img src="/engit-icon.png" alt="en-git" className="h-6 w-auto" />
             <h1 className="text-xl font-bold text-white whitespace-nowrap">en-git</h1>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">

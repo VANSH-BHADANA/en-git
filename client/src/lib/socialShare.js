@@ -22,7 +22,7 @@ export function generateTweetText(insights) {
     `👥 ${user.followers || 0} followers\n` +
     `🎯 Domain: ${domain || "Full-stack"}\n\n` +
     `Analyze yours with en-git! 👇\n` +
-    `https://en-git-6fjm.vercel.app/stats/${user.login}`;
+    `https://en-git.vercel.app/stats/${user.login}`;
 
   return tweet;
 }
@@ -77,7 +77,7 @@ export function generateLinkedInPost(insights) {
     `• Focus area: ${domain || "Full-stack development"}\n\n` +
     `💡 As developers, tracking our growth helps us identify strengths and areas for improvement.\n\n` +
     `Want to see your GitHub analytics? Check out en-git:\n` +
-    `https://en-git-6fjm.vercel.app\n\n` +
+    `https://en-git.vercel.app\n\n` +
     `#GitHub #DeveloperTools #CodingJourney #TechCareer`;
 
   return post;
@@ -111,7 +111,7 @@ export async function shareOnLinkedIn(urlOrInsights, title, summary) {
   // If insights object is passed as first parameter
   if (typeof urlOrInsights === "object" && urlOrInsights !== null && !title && !summary) {
     text = generateLinkedInPost(urlOrInsights);
-    const profileUrl = `https://en-git-6fjm.vercel.app/stats/${urlOrInsights.user?.login || ""}`;
+    const profileUrl = `https://en-git.vercel.app/stats/${urlOrInsights.user?.login || ""}`;
 
     // LinkedIn's share dialog - try to include both text and URL
     // Note: LinkedIn may not pre-fill text in all cases due to their API restrictions

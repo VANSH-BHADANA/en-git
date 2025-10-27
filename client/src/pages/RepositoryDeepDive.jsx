@@ -263,14 +263,14 @@ export default function RepositoryDeepDive() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Show tips when no repository has been searched yet */}
-          {!loading && !error && (
-            <div className="mt-6">
-              <RepositoryAnalysisTips />
-            </div>
-          )}
         </div>
+
+        {/* Show tips when no repository has been searched yet */}
+        {!loading && !error && (
+          <div className="mt-6">
+            <RepositoryAnalysisTips />
+          </div>
+        )}
       </div>
     );
   }
