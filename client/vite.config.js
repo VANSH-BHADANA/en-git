@@ -25,7 +25,12 @@ export default defineConfig(({ mode }) => {
             "/privacy",
             "/contact",
           ],
-          robots: false,
+          robots: [
+            {
+              userAgent: "*",
+              allow: "/",
+            },
+          ],
         }),
     ],
     resolve: {
