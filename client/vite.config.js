@@ -25,14 +25,9 @@ export default defineConfig(({ mode }) => {
             "/privacy",
             "/contact",
           ],
-          robots: [
-            {
-              userAgent: "*",
-              allow: "/",
-            },
-          ],
+          generateRobotsTxt: false,
         }),
-    ],
+    ].filter(Boolean),
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
