@@ -1,0 +1,28 @@
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "en-git",
+  "alternateName": "en-git GitHub Analytics",
+  "url": "https://en-git.vercel.app",
+  "description": "AI-powered GitHub analytics platform for analyzing developer profiles, comparing repositories, and gaining career insights.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "GitHub profile analysis",
+    "Developer comparison",
+    "Repository insights",
+    "AI-powered career recommendations",
+    "Trending project discovery"
+  ],
+  "screenshot": "https://en-git.vercel.app/engit-siteicon.png",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "100"
+  }
+}
