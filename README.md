@@ -37,12 +37,12 @@
 ## 🤝 Contributing & Documentation
 
 <p align="center">
-  <a href=".github/CONTRIBUTING.md"><strong>Contributing Guidelines</strong></a> | 
-  <a href=".github/CODE_OF_CONDUCT.md"><strong>Code of Conduct</strong></a> | 
-  <a href=".github/SECURITY.md"><strong>Security Policy</strong></a> | 
-  <a href=".github/PRIVACY-POLICY.md"><strong>Privacy Policy</strong></a> | 
-  <a href=".github/ACHIEVEMENTS.md"><strong>Attainable Achievements</strong></a> | 
-  <a href=".github/DEV_DOCS.md"><strong>Developer Documentation</strong></a>
+  <a href=".github/documentation/CONTRIBUTING.md"><strong>Contributing Guidelines</strong></a> | 
+  <a href=".github/documentation/CODE_OF_CONDUCT.md"><strong>Code of Conduct</strong></a> | 
+  <a href=".github/documentation/SECURITY.md"><strong>Security Policy</strong></a> | 
+  <a href=".github/documentation/PRIVACY-POLICY.md"><strong>Privacy Policy</strong></a> | 
+  <a href=".github/documentation/ACHIEVEMENTS.md"><strong>Attainable Achievements</strong></a> | 
+  <a href=".github/documentation/DEV_DOCS.md"><strong>Developer Documentation</strong></a>
 </p>
 
 ## 📄 License
