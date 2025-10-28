@@ -15,18 +15,12 @@ export default defineConfig(({ mode }) => {
       !isExtension && {
         ...sitemap({
           hostname: "https://en-git.vercel.app",
-          dynamicRoutes: [
-            "/",
-            "/compare",
-            "/repo",
-            "/login",
-            "/signup",
-            "/dashboard",
-            "/auth/callback",
-            "/privacy",
-            "/contact",
-          ],
+          dynamicRoutes: ["/", "/compare", "/repo", "/privacy", "/contact"],
+          exclude: ["/login", "/signup", "/dashboard", "/auth/callback", "/google54083e13ecf2e085"],
           generateRobotsTxt: false,
+          changefreq: "weekly",
+          priority: 0.7,
+          lastmod: new Date().toISOString(),
         }),
         configResolved(config) {
           // Ensure dist directory exists before sitemap generation

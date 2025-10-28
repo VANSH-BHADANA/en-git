@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /login
+Disallow: /signup
+Disallow: /dashboard
+Disallow: /auth/
 
 Sitemap: https://en-git.vercel.app/sitemap.xml
