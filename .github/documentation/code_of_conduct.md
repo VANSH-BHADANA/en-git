@@ -75,9 +75,7 @@ Maintainers who do not follow or enforce the Code of Conduct in good faith may f
 
 If you experience or witness unacceptable behavior, please report it by contacting the maintainers through:
 
-📧 **Email:** [your-email@example.com]  
-(Replace this with your preferred contact email.)
-
+📧 **Email:** [tsss1552@gmail.com]  
 All complaints will be reviewed and investigated promptly and fairly.
 
 Maintainers are obligated to respect the privacy and security of the reporter of any incident.

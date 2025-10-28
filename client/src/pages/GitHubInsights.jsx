@@ -36,6 +36,8 @@ import {
   Twitter,
   Linkedin,
   Copy,
+  Github,
+  AtSign,
 } from "lucide-react";
 import {
   getBookmarks,
@@ -290,160 +292,189 @@ export default function GitHubInsightsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
-        <div className="text-center space-y-6 pt-4 pb-3">
-          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-teal-500 via-cyan-500 to-teal-400 bg-clip-text text-transparent animate-gradient-subtle animate-fade-in">
+    <div className="min-h-screen bg-background p-3 sm:p-6">
+      <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8">
+        <div className="text-center space-y-4 sm:space-y-6 pt-4 pb-3 px-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-teal-500 via-cyan-500 to-teal-400 bg-clip-text text-transparent animate-gradient-subtle animate-fade-in">
             Analyze Any GitHub Profile
           </h1>
-          <p className="text-muted-foreground text-xl md:text-2xl max-w-3xl mx-auto font-medium">
+          <p className="text-muted-foreground text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto font-medium px-2">
             Get instant insights on languages, repos, and coding activity. Compare developers and
             track your progress.
           </p>
         </div>
 
-        <Card className="max-w-3xl mx-auto shadow-[0_20px_60px_-15px_rgba(59,130,246,0.4),0_10px_30px_-10px_rgba(147,51,234,0.3)] border-2">
-          <CardHeader className="pb-6 pt-12 text-center">
-            <CardTitle className="text-3xl md:text-4xl font-bold">Enter GitHub Username</CardTitle>
-            <CardDescription className="text-lg md:text-xl mt-4">
-              Get instant insights and recommendations for any public profile
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6 px-12 pb-12">
-            <form onSubmit={handleFetch} className="flex flex-col sm:flex-row gap-4">
-              <Input
-                placeholder="octocat"
-                value={username}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setUsername(val);
-                  const res = validateGithubUsername(val);
-                  setUsernameError(res.valid || val.trim() === "" ? "" : res.message);
-                }}
-                disabled={loading}
-                className="text-lg h-14 px-6"
-              />
-              <Button
-                type="submit"
-                disabled={loading || !!usernameError || username.trim() === ""}
-                aria-disabled={loading || !!usernameError || username.trim() === ""}
-                className="h-14 px-8 text-lg font-semibold shadow-lg"
-                size="lg"
-              >
-                {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
-                {loading ? "Analyzing..." : "Analyze Profile"}
-              </Button>
-            </form>
-            {usernameError && (
-              <p className="text-sm text-red-500 mt-1" role="alert">
-                {usernameError}
-              </p>
-            )}
-
-            {/* Search History */}
-            {searchHistory.length > 0 && !urlUsername && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <History className="h-4 w-4" />
-                    <span>Recent Searches</span>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleClearHistory}
-                    className="h-6 text-xs"
-                  >
-                    Clear
-                  </Button>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {searchHistory.map((item) => (
-                    <Badge
-                      key={item.username}
-                      variant="secondary"
-                      className="cursor-pointer hover:bg-secondary/80"
-                      onClick={() => handleHistoryClick(item.username)}
-                    >
-                      {item.username}
-                    </Badge>
-                  ))}
-                </div>
+        <div className="border-beam-wrapper max-w-3xl mx-auto shadow-[0_20px_60px_-15px_rgba(59,130,246,0.4),0_10px_30px_-10px_rgba(147,51,234,0.3)]">
+          <Card className="border-beam-card border-0">
+            <CardHeader className="pb-4 sm:pb-6 pt-8 sm:pt-12 text-center px-4 sm:px-6">
+              <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
+                <Github className="h-6 w-6 sm:h-7 sm:w-7 text-teal-500 flex-shrink-0" />
+                <CardTitle className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-mono">
+                  Enter GitHub Username
+                </CardTitle>
               </div>
-            )}
+              <CardDescription className="text-sm sm:text-base md:text-lg lg:text-xl mt-3 sm:mt-4 px-2">
+                Get instant insights and recommendations for any public profile
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-8 md:px-12 pb-8 sm:pb-12">
+              <form onSubmit={handleFetch} className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <div className="relative flex-1">
+                  <AtSign className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+                  <Input
+                    placeholder="octocat"
+                    value={username}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setUsername(val);
+                      const res = validateGithubUsername(val);
+                      setUsernameError(res.valid || val.trim() === "" ? "" : res.message);
+                    }}
+                    disabled={loading}
+                    className="text-lg sm:text-xl h-12 sm:h-14 pl-12 sm:pl-14 pr-4 sm:pr-6 font-medium"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  disabled={loading || !!usernameError || username.trim() === ""}
+                  aria-disabled={loading || !!usernameError || username.trim() === ""}
+                  className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg font-semibold shadow-lg bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 w-full sm:w-auto"
+                  size="lg"
+                >
+                  {loading && <Loader2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />}
+                  {loading ? "Analyzing..." : "Analyze Profile"}
+                </Button>
+              </form>
+              {usernameError && (
+                <p className="text-sm text-red-500 mt-1" role="alert">
+                  {usernameError}
+                </p>
+              )}
 
-            {/* Bookmarks */}
-            {bookmarks.length > 0 && !urlUsername && (
-              <div className="space-y-3 pt-4 border-t">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-base font-semibold">
-                    <Bookmark className="h-5 w-5 text-primary" />
-                    <span>Bookmarked Profiles</span>
-                    <Badge variant="secondary" className="ml-2">
-                      {getBookmarkStats().total}
-                    </Badge>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={handleExportBookmarks}>
-                      <Download className="h-4 w-4 mr-1" />
-                      Export
-                    </Button>
+              {/* Search History */}
+              {searchHistory.length > 0 && !urlUsername && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <History className="h-4 w-4" />
+                      <span>Recent Searches</span>
+                    </div>
                     <Button
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
-                      onClick={() => document.getElementById("import-bookmarks").click()}
+                      onClick={handleClearHistory}
+                      className="h-6 text-xs"
                     >
-                      <Upload className="h-4 w-4 mr-1" />
-                      Import
+                      Clear
                     </Button>
-                    <input
-                      id="import-bookmarks"
-                      type="file"
-                      accept=".json"
-                      onChange={handleImportBookmarks}
-                      style={{ display: "none" }}
-                    />
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {searchHistory.map((item) => (
+                      <Badge
+                        key={item.username}
+                        variant="secondary"
+                        className="cursor-pointer hover:bg-secondary/80"
+                        onClick={() => handleHistoryClick(item.username)}
+                      >
+                        {item.username}
+                      </Badge>
+                    ))}
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {bookmarks.map((item) => (
-                    <Badge
-                      key={item.username}
-                      variant="outline"
-                      className="cursor-pointer hover:bg-accent text-base py-2 px-3"
-                      onClick={() => handleHistoryClick(item.username)}
-                    >
-                      <Star className="h-4 w-4 mr-1 fill-current text-yellow-500" />
-                      {item.username}
-                    </Badge>
-                  ))}
+              )}
+
+              {/* Bookmarks */}
+              {bookmarks.length > 0 && !urlUsername && (
+                <div className="space-y-3 pt-4 border-t">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-base font-semibold">
+                      <Bookmark className="h-5 w-5 text-primary" />
+                      <span>Bookmarked Profiles</span>
+                      <Badge variant="secondary" className="ml-2">
+                        {getBookmarkStats().total}
+                      </Badge>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" onClick={handleExportBookmarks}>
+                        <Download className="h-4 w-4 mr-1" />
+                        Export
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => document.getElementById("import-bookmarks").click()}
+                      >
+                        <Upload className="h-4 w-4 mr-1" />
+                        Import
+                      </Button>
+                      <input
+                        id="import-bookmarks"
+                        type="file"
+                        accept=".json"
+                        onChange={handleImportBookmarks}
+                        style={{ display: "none" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {bookmarks.map((item) => (
+                      <Badge
+                        key={item.username}
+                        variant="outline"
+                        className="cursor-pointer hover:bg-accent text-base py-2 px-3"
+                        onClick={() => handleHistoryClick(item.username)}
+                      >
+                        <Star className="h-4 w-4 mr-1 fill-current text-yellow-500" />
+                        {item.username}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+              )}
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Show tips when no profile has been searched yet */}
         {!insights && !loading && !error && <ProfileAnalysisTips />}
 
         {/* Action Buttons */}
         {insights && (
-          <div className="flex justify-center items-center gap-3">
+          <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 px-4">
             <Button
               variant="outline"
               onClick={() => fetchData(insights.user.login, true)}
               disabled={loading}
+              size="sm"
+              className="text-xs sm:text-sm"
             >
-              <History className="h-4 w-4 mr-2" />
+              <History className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
               {loading ? "Refreshing..." : "Refresh"}
             </Button>
-            <Button variant="outline" onClick={toggleBookmark} disabled={loading}>
-              <Bookmark className={`h-4 w-4 mr-2 ${bookmarked ? "fill-current" : ""}`} />
-              {bookmarked ? "Bookmarked" : "Bookmark Profile"}
+            <Button
+              variant="outline"
+              onClick={toggleBookmark}
+              disabled={loading}
+              size="sm"
+              className="text-xs sm:text-sm"
+            >
+              <Bookmark
+                className={`h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 ${bookmarked ? "fill-current" : ""}`}
+              />
+              <span className="hidden sm:inline">
+                {bookmarked ? "Bookmarked" : "Bookmark Profile"}
+              </span>
+              <span className="sm:hidden">{bookmarked ? "Saved" : "Bookmark"}</span>
             </Button>
-            <Button variant="outline" onClick={handleExportPDF}>
-              <FileDown className="h-4 w-4 mr-2" />
-              Export to PDF
+            <Button
+              variant="outline"
+              onClick={handleExportPDF}
+              size="sm"
+              className="text-xs sm:text-sm"
+            >
+              <FileDown className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Export to PDF</span>
+              <span className="sm:hidden">Export</span>
             </Button>
           </div>
         )}
@@ -462,14 +493,28 @@ export default function GitHubInsightsPage() {
             />
 
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="grid w-full grid-cols-7">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="activity">Activity</TabsTrigger>
-                <TabsTrigger value="skills">Skills</TabsTrigger>
-                <TabsTrigger value="score">Profile Score</TabsTrigger>
-                <TabsTrigger value="history">History</TabsTrigger>
-                <TabsTrigger value="ai">AI Insights</TabsTrigger>
-                <TabsTrigger value="share">Share</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-1">
+                <TabsTrigger value="overview" className="text-xs sm:text-sm">
+                  Overview
+                </TabsTrigger>
+                <TabsTrigger value="activity" className="text-xs sm:text-sm">
+                  Activity
+                </TabsTrigger>
+                <TabsTrigger value="skills" className="text-xs sm:text-sm">
+                  Skills
+                </TabsTrigger>
+                <TabsTrigger value="score" className="text-xs sm:text-sm">
+                  Score
+                </TabsTrigger>
+                <TabsTrigger value="history" className="text-xs sm:text-sm">
+                  History
+                </TabsTrigger>
+                <TabsTrigger value="ai" className="text-xs sm:text-sm">
+                  AI
+                </TabsTrigger>
+                <TabsTrigger value="share" className="text-xs sm:text-sm">
+                  Share
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview" className="space-y-6 mt-6">
@@ -500,9 +545,9 @@ export default function GitHubInsightsPage() {
               </TabsContent>
 
               <TabsContent value="history" className="space-y-6 mt-6">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-2xl font-bold">Historical Stats</h2>
-                  <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <h2 className="text-xl sm:text-2xl font-bold">Historical Stats</h2>
+                  <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                     <Select
                       value={timePeriod}
                       onValueChange={(value) => {
@@ -510,7 +555,7 @@ export default function GitHubInsightsPage() {
                         if (insights) loadHistoricalData(insights.user.login);
                       }}
                     >
-                      <SelectTrigger className="w-[150px]">
+                      <SelectTrigger className="w-full sm:w-[150px]">
                         <SelectValue placeholder="Time period" />
                       </SelectTrigger>
                       <SelectContent>
@@ -521,7 +566,11 @@ export default function GitHubInsightsPage() {
                         <SelectItem value="year">Last Year</SelectItem>
                       </SelectContent>
                     </Select>
-                    <Button onClick={handleCreateSnapshot} variant="outline">
+                    <Button
+                      onClick={handleCreateSnapshot}
+                      variant="outline"
+                      className="w-full sm:w-auto"
+                    >
                       Capture Snapshot
                     </Button>
                   </div>
@@ -616,54 +665,60 @@ function ProfileSummary({ user, reposCount, domain, lastUpdated, insights }) {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row justify-between items-start">
-        <CardTitle>Profile Summary</CardTitle>
+      <CardHeader className="flex flex-col sm:flex-row justify-between items-start gap-2">
+        <CardTitle className="text-lg sm:text-xl">Profile Summary</CardTitle>
         {lastUpdated && (
-          <p className="text-sm text-muted-foreground">Last updated: {lastUpdated}</p>
+          <p className="text-xs sm:text-sm text-muted-foreground">Last updated: {lastUpdated}</p>
         )}
       </CardHeader>
-      <CardContent className="flex items-start gap-6">
-        <Avatar className="h-24 w-24">
+      <CardContent className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
+        <Avatar className="h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0">
           <AvatarImage src={user.avatar_url} alt={user.login} />
           <AvatarFallback>{user.login?.[0]?.toUpperCase()}</AvatarFallback>
         </Avatar>
-        <div className="flex-1 space-y-2">
-          <h2 className="text-2xl font-bold">{user.name || user.login}</h2>
-          <p className="text-muted-foreground">{user.bio || "No bio"}</p>
-          <div className="flex gap-4 text-sm">
-            <span>
+        <div className="flex-1 space-y-2 min-w-0 w-full">
+          <h2 className="text-xl sm:text-2xl font-bold truncate">{user.name || user.login}</h2>
+          <p className="text-muted-foreground text-sm line-clamp-2">{user.bio || "No bio"}</p>
+          <div className="flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm">
+            <span className="whitespace-nowrap">
               <strong>{user.public_repos || 0}</strong> repos
             </span>
-            <span>
+            <span className="whitespace-nowrap">
               <strong>{user.followers || 0}</strong> followers
             </span>
-            <span>
+            <span className="whitespace-nowrap">
               <strong>{user.following || 0}</strong> following
             </span>
           </div>
 
           {/* Social Share Buttons */}
-          <div className="flex gap-2 pt-2">
-            <Button variant="outline" size="sm" onClick={handleCopyTweet} className="gap-2">
-              <Copy className="h-4 w-4" />
-              Copy Stats
+          <div className="flex flex-wrap gap-2 pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleCopyTweet}
+              className="gap-1 text-xs sm:text-sm"
+            >
+              <Copy className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Copy Stats</span>
+              <span className="sm:hidden">Copy</span>
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={handleShareTwitter}
-              className="gap-2 hover:bg-blue-50 dark:hover:bg-blue-950"
+              className="gap-1 text-xs sm:text-sm hover:bg-blue-50 dark:hover:bg-blue-950"
             >
-              <Twitter className="h-4 w-4 text-blue-500" />
+              <Twitter className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500" />
               Tweet
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={handleShareLinkedIn}
-              className="gap-2 hover:bg-blue-50 dark:hover:bg-blue-950"
+              className="gap-1 text-xs sm:text-sm hover:bg-blue-50 dark:hover:bg-blue-950"
             >
-              <Linkedin className="h-4 w-4 text-blue-600" />
+              <Linkedin className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600" />
               Share
             </Button>
           </div>

@@ -49,7 +49,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="flex justify-center w-full fixed top-0 left-0 right-0 z-[999] bg-background border-b border-border px-6">
+    <div className="flex justify-center w-full fixed top-0 left-0 right-0 z-[999] bg-background border-b border-border px-3 sm:px-6">
       <nav
         id="main-nav"
         className="z-[1000]
@@ -75,11 +75,11 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Avatar className="h-9 w-9 cursor-pointer ring-2 ring-muted-foreground/20">
+                  <Avatar className="h-8 w-8 sm:h-9 sm:w-9 cursor-pointer ring-2 ring-muted-foreground/20">
                     <AvatarImage src={user.avatar} alt={user.fullname} />
                     <AvatarFallback>{user.fullname?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
                   </Avatar>
@@ -117,12 +117,17 @@ export default function Navbar() {
               <>
                 <Button
                   variant="outline"
-                  className="hidden sm:inline-flex"
+                  className="hidden sm:inline-flex text-xs sm:text-sm h-8 sm:h-9 px-3 sm:px-4"
                   onClick={() => navigate("/login")}
                 >
                   Sign In
                 </Button>
-                <Button onClick={() => navigate("/signup")}>Get Started</Button>
+                <Button
+                  onClick={() => navigate("/signup")}
+                  className="text-xs sm:text-sm h-8 sm:h-9 px-3 sm:px-4"
+                >
+                  Get Started
+                </Button>
               </>
             )}
             <ModeToggle className="hidden md:inline-flex" />

@@ -42,22 +42,27 @@ export function SkillRadarChart({ insights }) {
         <div className="h-[400px] w-full min-h-[400px]">
           <ResponsiveContainer width="100%" height={400}>
             <RadarChart data={skillData}>
-              <PolarGrid stroke="hsl(var(--border))" />
+              <PolarGrid stroke="#ffffff" strokeWidth={1.5} strokeOpacity={0.3} />
               <PolarAngleAxis
                 dataKey="skill"
-                tick={{ fill: "hsl(var(--foreground))", fontSize: 12 }}
+                tick={{ fill: "#ffffff", fontSize: 12 }}
+                stroke="#ffffff"
+                strokeOpacity={0.5}
               />
               <PolarRadiusAxis
                 angle={90}
                 domain={[0, 100]}
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                tick={{ fill: "#ffffff", fontSize: 10 }}
+                stroke="#ffffff"
+                strokeOpacity={0.5}
               />
               <Radar
                 name="Skill Level"
                 dataKey="value"
-                stroke="hsl(var(--primary))"
-                fill="hsl(var(--primary))"
-                fillOpacity={0.6}
+                stroke="#14b8a6"
+                fill="#14b8a6"
+                fillOpacity={0.4}
+                strokeWidth={2}
               />
             </RadarChart>
           </ResponsiveContainer>
