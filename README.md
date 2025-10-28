@@ -38,7 +38,7 @@
 
 <p align="center">
   <a href=".github/documentation/CONTRIBUTING.md"><strong>Contributing Guidelines</strong></a> | 
-  <a href=".github/documentation/CODE_OF_CONDUCT.md"><strong>Code of Conduct</strong></a> | 
+  <a href=".github/documentation/code_of_conduct.md"><strong>Code of Conduct</strong></a> | 
   <a href=".github/documentation/SECURITY.md"><strong>Security Policy</strong></a> | 
   <a href=".github/documentation/PRIVACY-POLICY.md"><strong>Privacy Policy</strong></a> | 
   <a href=".github/documentation/ACHIEVEMENTS.md"><strong>Attainable Achievements</strong></a> | 
