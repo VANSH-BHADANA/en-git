@@ -292,22 +292,25 @@ export default function GitHubInsightsPage() {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-8">
-        <div className="text-center space-y-4">
-          <p className="text-muted-foreground text-lg">
-            Analyze your GitHub profile, discover top languages, trending projects, and personalized
-            recommendations.
+        <div className="text-center space-y-6 pt-4 pb-3">
+          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-teal-500 via-cyan-500 to-teal-400 bg-clip-text text-transparent animate-gradient-subtle animate-fade-in">
+            Analyze Any GitHub Profile
+          </h1>
+          <p className="text-muted-foreground text-xl md:text-2xl max-w-3xl mx-auto font-medium">
+            Get instant insights on languages, repos, and coding activity. Compare developers and
+            track your progress.
           </p>
         </div>
 
-        <Card className="max-w-md mx-auto">
-          <CardHeader>
-            <CardTitle>Enter GitHub Username</CardTitle>
-            <CardDescription>
-              Get insights and recommendations for any public profile
+        <Card className="max-w-3xl mx-auto shadow-[0_20px_60px_-15px_rgba(59,130,246,0.4),0_10px_30px_-10px_rgba(147,51,234,0.3)] border-2">
+          <CardHeader className="pb-6 pt-12 text-center">
+            <CardTitle className="text-3xl md:text-4xl font-bold">Enter GitHub Username</CardTitle>
+            <CardDescription className="text-lg md:text-xl mt-4">
+              Get instant insights and recommendations for any public profile
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <form onSubmit={handleFetch} className="flex gap-2">
+          <CardContent className="space-y-6 px-12 pb-12">
+            <form onSubmit={handleFetch} className="flex flex-col sm:flex-row gap-4">
               <Input
                 placeholder="octocat"
                 value={username}
@@ -318,14 +321,17 @@ export default function GitHubInsightsPage() {
                   setUsernameError(res.valid || val.trim() === "" ? "" : res.message);
                 }}
                 disabled={loading}
+                className="text-lg h-14 px-6"
               />
               <Button
                 type="submit"
                 disabled={loading || !!usernameError || username.trim() === ""}
                 aria-disabled={loading || !!usernameError || username.trim() === ""}
+                className="h-14 px-8 text-lg font-semibold shadow-lg"
+                size="lg"
               >
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Analyze
+                {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
+                {loading ? "Analyzing..." : "Analyze Profile"}
               </Button>
             </form>
             {usernameError && (
@@ -368,18 +374,18 @@ export default function GitHubInsightsPage() {
 
             {/* Bookmarks */}
             {bookmarks.length > 0 && !urlUsername && (
-              <div className="space-y-2">
+              <div className="space-y-3 pt-4 border-t">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Bookmark className="h-4 w-4" />
+                  <div className="flex items-center gap-2 text-base font-semibold">
+                    <Bookmark className="h-5 w-5 text-primary" />
                     <span>Bookmarked Profiles</span>
-                    <span className="text-xs">
-                      ({getBookmarkStats().total} total, {getBookmarkStats().recent} this week)
-                    </span>
+                    <Badge variant="secondary" className="ml-2">
+                      {getBookmarkStats().total}
+                    </Badge>
                   </div>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" onClick={handleExportBookmarks}>
-                      <Download className="h-4 w-4 mr-2" />
+                      <Download className="h-4 w-4 mr-1" />
                       Export
                     </Button>
                     <Button
@@ -387,7 +393,7 @@ export default function GitHubInsightsPage() {
                       size="sm"
                       onClick={() => document.getElementById("import-bookmarks").click()}
                     >
-                      <Upload className="h-4 w-4 mr-2" />
+                      <Upload className="h-4 w-4 mr-1" />
                       Import
                     </Button>
                     <input
@@ -404,10 +410,10 @@ export default function GitHubInsightsPage() {
                     <Badge
                       key={item.username}
                       variant="outline"
-                      className="cursor-pointer hover:bg-accent"
+                      className="cursor-pointer hover:bg-accent text-base py-2 px-3"
                       onClick={() => handleHistoryClick(item.username)}
                     >
-                      <Star className="h-3 w-3 mr-1 fill-current" />
+                      <Star className="h-4 w-4 mr-1 fill-current text-yellow-500" />
                       {item.username}
                     </Badge>
                   ))}
