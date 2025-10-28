@@ -11,6 +11,26 @@
 
 ![ezgif-805876d1d2e3e5](https://github.com/user-attachments/assets/0a50521a-2b1b-49ca-bf6e-b21660d80bcb)
 
+## Features
+### **Website**
+* **Core Profile Analysis**: Get a complete breakdown of any user, including their top languages, contribution patterns, profile score, and detected domains (e.g., frontend, backend).
+
+* **Developer Comparison**: Place any two profiles side-by-side to instantly compare their languages, repository stats, and activity levels.
+
+* **Deep Repository Insights**: Analyze any repository for its tech stack, recent activity, and quality, and discover its most starred or active projects.
+
+* **AI & Historical Tracking**: Receive AI-powered career advice and skill suggestions based on your activity. Track your profile's growth over time with historical charts and progress reports.
+
+* **Visualization & Gamification**: See your stats in a new way with skill radar charts, contribution heatmaps, and topic clouds. Earn achievement badges and a profile score.
+
+* **Utility Features**: Bookmark favorite profiles, export reports to PDF, share stats on social media, and switch between dark/light modes.
+
+### **Chrome extension**
+* **Inline Code Quality Analysis**: Get a real-time quality score (0-100), complexity level, and issue detection (e.g., long functions, nesting, magic numbers) directly inside any GitHub file view. Perfect for PR reviews.
+* **Private Repo Bookmarking**: "Star" any repository to save it to a personal, private list—without notifying the owner or adding it to your public GitHub stars.
+* **Instant Profile Insights**: See a user's profile score, developer rating (Beginner → Elite), top 5 languages, and quick stats just by visiting their GitHub profile page.
+* **Customizable & Productive**: Personalize your themes and set custom keyboard shortcuts to analyze profiles, repos, and files in seconds, boosting your workflow.
+* **Seamless Web App Integration**: One click to send the current profile or repo to the full web app for a deep-dive analysis, developer comparison, or to view historical tracking.
 
 ## 🤝 Contributing & Documentation
 
