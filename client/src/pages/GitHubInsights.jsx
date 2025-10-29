@@ -58,6 +58,7 @@ import { AIInsights } from "@/components/AIInsights";
 import { GamificationBadges } from "@/components/GamificationBadges";
 import { SkillRadarChart } from "@/components/SkillRadarChart";
 import { TechStackBadges } from "@/components/TechStackBadges";
+import { LearningRecommendations } from "@/components/LearningRecommendations";
 import { ShareCard } from "@/components/ShareCard";
 import { ContributionHeatmap } from "@/components/ContributionHeatmap";
 import ProfileScore from "@/components/ProfileScore";
@@ -518,7 +519,7 @@ export default function GitHubInsightsPage() {
                   History
                 </TabsTrigger>
                 <TabsTrigger value="ai" className="text-xs sm:text-sm px-2 sm:px-3">
-                  AI
+                  Upskill
                 </TabsTrigger>
                 <TabsTrigger value="share" className="text-xs sm:text-sm px-2 sm:px-3">
                   Share
@@ -634,6 +635,7 @@ export default function GitHubInsightsPage() {
 
               <TabsContent value="ai" className="space-y-6">
                 <AIInsights username={insights.user.login} onInsightsGenerated={setAiInsights} />
+                <LearningRecommendations insights={insights} />
               </TabsContent>
 
               <TabsContent value="share" className="space-y-6 mt-6">
