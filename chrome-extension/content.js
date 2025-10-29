@@ -1260,6 +1260,23 @@ function addRepoDiveButton() {
   const repoInfo = getRepoInfo();
   if (!repoInfo) return;
 
+  // Don't add buttons on non-repository pages (like OAuth, settings, etc.)
+  const path = window.location.pathname;
+  const hostname = window.location.hostname;
+
+  // Skip if not on github.com or if on special pages
+  if (hostname !== "github.com") return;
+  if (
+    path.includes("/login") ||
+    path.includes("/oauth") ||
+    path.includes("/settings") ||
+    path.includes("/sessions") ||
+    path.includes("/authorize")
+  ) {
+    console.log("en-git: Skipping button injection on special page:", path);
+    return;
+  }
+
   // Check if button already exists
   if (document.querySelector(".en-git-repo-btn")) return;
 
@@ -1430,6 +1447,20 @@ function addRepoDiveButton() {
 // Run when page loads
 function init() {
   const path = window.location.pathname;
+  const hostname = window.location.hostname;
+
+  // Skip initialization on non-GitHub pages or special pages
+  if (hostname !== "github.com") return;
+  if (
+    path.includes("/login") ||
+    path.includes("/oauth") ||
+    path.includes("/settings") ||
+    path.includes("/sessions") ||
+    path.includes("/authorize")
+  ) {
+    console.log("en-git: Skipping initialization on special page:", path);
+    return;
+  }
 
   // Profile page
   if (path.match(/^\/[^\/]+\/?$/)) {
