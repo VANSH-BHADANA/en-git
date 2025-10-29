@@ -28,6 +28,7 @@ import { ScrollArea } from "./components/ui/scroll-area";
 import { Slider } from "./components/ui/slider";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./components/ui/tooltip";
 import { SettingWithTooltip } from "./components/SettingWithTooltip";
+import { ShortcutRecorder } from "./components/ShortcutRecorder";
 import { exportRepoBookmarks, importRepoBookmarks } from "./lib/bookmarkExport";
 
 const DEFAULT_SETTINGS = {
@@ -50,8 +51,9 @@ const DEFAULT_SETTINGS = {
   shortcuts: {
     enabled: true,
     quickSearch: "Ctrl+K",
-    newRepo: "Ctrl+Shift+N",
-    viewIssues: "Ctrl+Shift+I",
+    newRepo: "Ctrl+Alt+N",
+    viewIssues: "Ctrl+Alt+I",
+    viewPullRequests: "Ctrl+Alt+P",
   },
   enhancements: {
     contributionStats: true,
@@ -116,6 +118,20 @@ function SettingsApp() {
     setSettings((prev) => ({
       ...prev,
       enhancements: { ...prev.enhancements, [key]: value },
+    }));
+  };
+
+  const updateShortcut = (key, value) => {
+    setSettings((prev) => ({
+      ...prev,
+      shortcuts: { ...prev.shortcuts, [key]: value },
+    }));
+  };
+
+  const resetShortcutsToDefault = () => {
+    setSettings((prev) => ({
+      ...prev,
+      shortcuts: DEFAULT_SETTINGS.shortcuts,
     }));
   };
 
@@ -627,52 +643,96 @@ function SettingsApp() {
 
                     <Separator />
 
-                    <div className="space-y-3">
-                      <div className="p-3 bg-muted rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium text-sm">Quick Search</p>
-                            <p className="text-xs text-muted-foreground">Open search anywhere</p>
+                    {/* Testing Instructions */}
+                    <Card className="bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900">
+                      <CardContent className="pt-4">
+                        <div className="flex gap-3">
+                          <Info className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                          <div className="space-y-1 text-sm">
+                            <p className="font-medium text-amber-900 dark:text-amber-100">
+                              How to test shortcuts:
+                            </p>
+                            <ol className="text-xs text-amber-700 dark:text-amber-300 list-decimal list-inside space-y-1">
+                              <li>Click "Save Settings" below</li>
+                              <li>Go to any GitHub page (github.com)</li>
+                              <li>Press your shortcut keys</li>
+                              <li>If nothing happens, refresh the GitHub page (F5)</li>
+                            </ol>
                           </div>
-                          <kbd className="px-2 py-1 bg-background rounded text-xs">Ctrl+K</kbd>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <div className="space-y-4">
+                      <div className="p-4 bg-muted/50 rounded-lg space-y-3">
+                        <div>
+                          <p className="font-medium text-sm mb-1">Quick Search</p>
+                          <p className="text-xs text-muted-foreground mb-2">
+                            Open search anywhere on GitHub
+                          </p>
+                          <ShortcutRecorder
+                            value={settings.shortcuts.quickSearch}
+                            onChange={(value) => updateShortcut("quickSearch", value)}
+                            disabled={!settings.shortcuts.enabled}
+                            actionName="Quick Search"
+                          />
                         </div>
                       </div>
 
-                      <div className="p-3 bg-muted rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium text-sm">New Repository</p>
-                            <p className="text-xs text-muted-foreground">Create new repository</p>
-                          </div>
-                          <kbd className="px-2 py-1 bg-background rounded text-xs">
-                            Ctrl+Shift+N
-                          </kbd>
+                      <div className="p-4 bg-muted/50 rounded-lg space-y-3">
+                        <div>
+                          <p className="font-medium text-sm mb-1">New Repository</p>
+                          <p className="text-xs text-muted-foreground mb-2">
+                            Create a new repository
+                          </p>
+                          <ShortcutRecorder
+                            value={settings.shortcuts.newRepo}
+                            onChange={(value) => updateShortcut("newRepo", value)}
+                            disabled={!settings.shortcuts.enabled}
+                            actionName="New Repository"
+                          />
                         </div>
                       </div>
 
-                      <div className="p-3 bg-muted rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium text-sm">View Issues</p>
-                            <p className="text-xs text-muted-foreground">Open issues page</p>
-                          </div>
-                          <kbd className="px-2 py-1 bg-background rounded text-xs">
-                            Ctrl+Shift+I
-                          </kbd>
+                      <div className="p-4 bg-muted/50 rounded-lg space-y-3">
+                        <div>
+                          <p className="font-medium text-sm mb-1">View Issues</p>
+                          <p className="text-xs text-muted-foreground mb-2">
+                            Open issues page for current repo
+                          </p>
+                          <ShortcutRecorder
+                            value={settings.shortcuts.viewIssues}
+                            onChange={(value) => updateShortcut("viewIssues", value)}
+                            disabled={!settings.shortcuts.enabled}
+                            actionName="View Issues"
+                          />
                         </div>
                       </div>
 
-                      <div className="p-3 bg-muted rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium text-sm">Toggle Dark Mode</p>
-                            <p className="text-xs text-muted-foreground">Switch theme quickly</p>
-                          </div>
-                          <kbd className="px-2 py-1 bg-background rounded text-xs">
-                            Ctrl+Shift+D
-                          </kbd>
+                      <div className="p-4 bg-muted/50 rounded-lg space-y-3">
+                        <div>
+                          <p className="font-medium text-sm mb-1">View Pull Requests</p>
+                          <p className="text-xs text-muted-foreground mb-2">
+                            Open pull requests page for current repo
+                          </p>
+                          <ShortcutRecorder
+                            value={settings.shortcuts.viewPullRequests || "Ctrl+Alt+P"}
+                            onChange={(value) => updateShortcut("viewPullRequests", value)}
+                            disabled={!settings.shortcuts.enabled}
+                            actionName="View Pull Requests"
+                          />
                         </div>
                       </div>
+
+                      <Button
+                        variant="outline"
+                        onClick={resetShortcutsToDefault}
+                        className="w-full"
+                        disabled={!settings.shortcuts.enabled}
+                      >
+                        <RotateCcw className="h-4 w-4 mr-2" />
+                        Reset to Defaults
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>

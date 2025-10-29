@@ -380,7 +380,26 @@ let settings = null;
 chrome.storage.sync.get(["extensionSettings"], (result) => {
   if (result.extensionSettings) {
     settings = result.extensionSettings;
+
+    // Migration: Replace toggleDarkMode with viewPullRequests
+    if (settings.shortcuts && settings.shortcuts.toggleDarkMode !== undefined) {
+      console.log(
+        "en-git: Migrating old settings - replacing toggleDarkMode with viewPullRequests"
+      );
+      settings.shortcuts.viewPullRequests = "Ctrl+Alt+P";
+      delete settings.shortcuts.toggleDarkMode;
+      // Save migrated settings
+      chrome.storage.sync.set({ extensionSettings: settings }, () => {
+        console.log("en-git: Migration complete, settings saved");
+      });
+    }
+
+    console.log("en-git: Settings loaded:", settings);
+    console.log("en-git: Shortcuts enabled:", settings.shortcuts?.enabled);
+    console.log("en-git: Configured shortcuts:", settings.shortcuts);
     applySettings(settings);
+  } else {
+    console.log("en-git: No settings found in storage");
   }
 });
 
@@ -737,25 +756,94 @@ function addDeeperAnalysisButtonToProfile() {
   }
 }
 
+// Helper function to parse shortcut string
+function parseShortcut(shortcutString) {
+  if (!shortcutString) return null;
+  const parts = shortcutString.split("+").map((p) => p.trim());
+  return {
+    ctrl: parts.includes("Ctrl"),
+    shift: parts.includes("Shift"),
+    alt: parts.includes("Alt"),
+    key: parts[parts.length - 1],
+  };
+}
+
+// Helper function to check if pressed keys match shortcut
+function matchesShortcut(event, shortcut) {
+  if (!shortcut) return false;
+  return (
+    event.ctrlKey === shortcut.ctrl &&
+    event.shiftKey === shortcut.shift &&
+    event.altKey === shortcut.alt &&
+    event.key.toUpperCase() === shortcut.key.toUpperCase()
+  );
+}
+
 // Keyboard shortcuts
 document.addEventListener("keydown", (e) => {
-  if (!settings || !settings.shortcuts || !settings.shortcuts.enabled) return;
-
-  // Ctrl+K: Quick search
-  if (e.ctrlKey && e.key === "k") {
-    e.preventDefault();
-    const searchInput = document.querySelector('input[name="q"]');
-    if (searchInput) searchInput.focus();
+  if (!settings || !settings.shortcuts || !settings.shortcuts.enabled) {
+    console.log("en-git: Shortcuts disabled or settings not loaded");
+    return;
   }
 
-  // Ctrl+Shift+N: New repository
-  if (e.ctrlKey && e.shiftKey && e.key === "N") {
+  const shortcuts = settings.shortcuts;
+
+  // Debug: Log key press (skip if it's just a modifier key)
+  if (!["Control", "Shift", "Alt", "Meta"].includes(e.key)) {
+    const pressedKeys = [];
+    if (e.ctrlKey) pressedKeys.push("Ctrl");
+    if (e.shiftKey) pressedKeys.push("Shift");
+    if (e.altKey) pressedKeys.push("Alt");
+    pressedKeys.push(e.key.toUpperCase());
+    console.log("en-git: Key pressed:", pressedKeys.join("+"));
+  }
+
+  // Quick search
+  const quickSearch = parseShortcut(shortcuts.quickSearch);
+  if (quickSearch && matchesShortcut(e, quickSearch)) {
+    console.log("en-git: Quick search triggered!");
+    e.preventDefault();
+
+    // Try multiple selectors for GitHub's search input
+    const searchInput =
+      document.querySelector('input[name="q"]') ||
+      document.querySelector('input[type="search"]') ||
+      document.querySelector('[data-target="qbsearch-input.inputButton"]') ||
+      document.querySelector(".header-search-input") ||
+      document.querySelector("#query-builder-test");
+
+    if (searchInput) {
+      searchInput.focus();
+      searchInput.click();
+      console.log("en-git: Search input focused");
+    } else {
+      // Fallback: trigger GitHub's native search shortcut
+      console.log(
+        "en-git: Search input not found, trying native GitHub search"
+      );
+      const searchButton = document.querySelector(
+        '[data-target="qbsearch-input.inputButton"]'
+      );
+      if (searchButton) {
+        searchButton.click();
+      }
+    }
+    return;
+  }
+
+  // New repository
+  const newRepo = parseShortcut(shortcuts.newRepo);
+  if (newRepo && matchesShortcut(e, newRepo)) {
+    console.log("en-git: New repository triggered!");
     e.preventDefault();
     window.location.href = "https://github.com/new";
+    return;
   }
 
-  // Ctrl+Shift+I: View issues
-  if (e.ctrlKey && e.shiftKey && e.key === "I") {
+  // View issues
+  const viewIssues = parseShortcut(shortcuts.viewIssues);
+  if (viewIssues && matchesShortcut(e, viewIssues)) {
+    console.log("en-git: View issues triggered!");
     e.preventDefault();
     if (window.location.pathname.includes("/")) {
       const parts = window.location.pathname.split("/").filter(Boolean);
@@ -763,13 +851,31 @@ document.addEventListener("keydown", (e) => {
         window.location.href = `https://github.com/${parts[0]}/${parts[1]}/issues`;
       }
     }
+    return;
   }
 
-  // Ctrl+Shift+D: Toggle dark mode
-  if (e.ctrlKey && e.shiftKey && e.key === "D") {
+  // View pull requests
+  const viewPullRequests = parseShortcut(shortcuts.viewPullRequests);
+  console.log(
+    "en-git: viewPullRequests shortcut:",
+    shortcuts.viewPullRequests,
+    "parsed:",
+    viewPullRequests
+  );
+
+  if (viewPullRequests && matchesShortcut(e, viewPullRequests)) {
+    console.log("en-git: View pull requests triggered!");
     e.preventDefault();
-    const themeToggle = document.querySelector("[data-color-mode-toggle]");
-    if (themeToggle) themeToggle.click();
+    if (window.location.pathname.includes("/")) {
+      const parts = window.location.pathname.split("/").filter(Boolean);
+      if (parts.length >= 2) {
+        window.location.href = `https://github.com/${parts[0]}/${parts[1]}/pulls`;
+        console.log("en-git: Navigating to pull requests");
+      } else {
+        console.log("en-git: Not on a repository page");
+      }
+    }
+    return;
   }
 });
 
