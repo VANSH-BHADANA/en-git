@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 // COMPONENTS
 import Navbar from "@/components/blocks/Navbar/Navbar";
@@ -56,6 +58,8 @@ function App() {
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/contact" element={<ContactUs />} />
         </Routes>
+        <SpeedInsights />
+        <Analytics />
       </Layout>
     </Router>
   );
