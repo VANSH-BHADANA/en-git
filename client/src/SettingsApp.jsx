@@ -30,6 +30,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./comp
 import { SettingWithTooltip } from "./components/SettingWithTooltip";
 import { ShortcutRecorder } from "./components/ShortcutRecorder";
 import { exportRepoBookmarks, importRepoBookmarks } from "./lib/bookmarkExport";
+import { getAllThemePresets, applyThemePreset } from "./lib/themePresets";
 
 const DEFAULT_SETTINGS = {
   theme: {
@@ -133,6 +134,12 @@ function SettingsApp() {
       ...prev,
       shortcuts: DEFAULT_SETTINGS.shortcuts,
     }));
+  };
+
+  const handlePresetChange = (presetKey) => {
+    if (presetKey === "custom") return;
+    const updatedSettings = applyThemePreset(presetKey, settings);
+    setSettings(updatedSettings);
   };
 
   const removeBookmark = (index) => {
@@ -249,6 +256,71 @@ function SettingsApp() {
                         checked={settings.theme.enabled}
                         onCheckedChange={(checked) => updateTheme("enabled", checked)}
                       />
+                    </div>
+
+                    <Separator />
+
+                    {/* Theme Presets */}
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <Label htmlFor="theme-preset">Theme Presets</Label>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Sparkles className="h-4 w-4 text-muted-foreground cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            <p>
+                              Choose from popular pre-made themes. Selecting a preset will
+                              automatically update all color values.
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                      <select
+                        id="theme-preset"
+                        onChange={(e) => handlePresetChange(e.target.value)}
+                        disabled={!settings.theme.enabled}
+                        className="w-full p-2 rounded-md border bg-background text-sm"
+                      >
+                        <option value="custom">Custom (Manual Colors)</option>
+                        <optgroup label="GitHub Official">
+                          <option value="github-dark">GitHub Dark</option>
+                          <option value="github-light">GitHub Light</option>
+                        </optgroup>
+                        <optgroup label="Popular Dark Themes">
+                          <option value="dracula">Dracula</option>
+                          <option value="one-dark">One Dark Pro</option>
+                          <option value="nord">Nord</option>
+                          <option value="monokai">Monokai</option>
+                          <option value="tokyo-night">Tokyo Night</option>
+                          <option value="night-owl">Night Owl</option>
+                          <option value="palenight">Palenight</option>
+                          <option value="material-dark">Material Dark</option>
+                          <option value="gruvbox-dark">Gruvbox Dark</option>
+                          <option value="ayu-dark">Ayu Dark</option>
+                          <option value="ayu-mirage">Ayu Mirage</option>
+                          <option value="solarized-dark">Solarized Dark</option>
+                        </optgroup>
+                        <optgroup label="Popular Light Themes">
+                          <option value="solarized-light">Solarized Light</option>
+                          <option value="material-light">Material Light</option>
+                          <option value="gruvbox-light">Gruvbox Light</option>
+                        </optgroup>
+                        <optgroup label="Unique Themes">
+                          <option value="cobalt2">Cobalt2</option>
+                          <option value="synthwave-84">Synthwave '84</option>
+                          <option value="shades-of-purple">Shades of Purple</option>
+                          <option value="oceanic-next">Oceanic Next</option>
+                          <option value="horizon">Horizon</option>
+                          <option value="moonlight">Moonlight</option>
+                          <option value="catppuccin-mocha">Catppuccin Mocha</option>
+                          <option value="rose-pine">Rosé Pine</option>
+                        </optgroup>
+                      </select>
+                      <p className="text-xs text-muted-foreground">
+                        💡 Select a preset to instantly apply popular themes, or choose "Custom" to
+                        manually adjust colors below
+                      </p>
                     </div>
 
                     <Separator />
