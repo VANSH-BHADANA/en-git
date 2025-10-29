@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -42,6 +43,13 @@ export default function CompareUsers() {
   const [user2Input, setUser2Input] = useState(urlUser2 || "");
   const [user1Data, setUser1Data] = useState(null);
   const [user2Data, setUser2Data] = useState(null);
+
+  // Set dynamic page title
+  usePageTitle(
+    user1Data && user2Data
+      ? `${user1Data.user.login} vs ${user2Data.user.login} - Compare GitHub Developers`
+      : "Compare GitHub Developers"
+  );
   const [loading, setLoading] = useState(false);
   const [winner, setWinner] = useState(null);
   const [user1LastUpdated, setUser1LastUpdated] = useState("");
@@ -460,16 +468,16 @@ export default function CompareUsers() {
 
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
-          <TabsTrigger value="overview" className="text-xs sm:text-sm">
+          <TabsTrigger value="overview" className="text-xs sm:text-sm px-3 sm:px-4">
             Overview
           </TabsTrigger>
-          <TabsTrigger value="languages" className="text-xs sm:text-sm">
+          <TabsTrigger value="languages" className="text-xs sm:text-sm px-3 sm:px-4">
             Languages
           </TabsTrigger>
-          <TabsTrigger value="activity" className="text-xs sm:text-sm">
+          <TabsTrigger value="activity" className="text-xs sm:text-sm px-3 sm:px-4">
             Activity
           </TabsTrigger>
-          <TabsTrigger value="radar" className="text-xs sm:text-sm">
+          <TabsTrigger value="radar" className="text-xs sm:text-sm px-3 sm:px-4">
             Radar
           </TabsTrigger>
         </TabsList>

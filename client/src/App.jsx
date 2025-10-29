@@ -7,7 +7,7 @@ import ChatBotButton from "@/components/ChatBotButton";
 import { Toaster } from "sonner";
 
 // PAGES
-import Home from "@/pages/Home";
+
 import Login from "@/pages/Login";
 import SignUp from "@/pages/SignUp";
 import Dashboard from "@/pages/Dashboard";

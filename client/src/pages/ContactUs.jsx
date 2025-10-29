@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MailIcon, MessageCircle, Github, ExternalLink, Bug, Star } from "lucide-react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 const contactDetails = [
   {
@@ -53,78 +54,82 @@ const contactDetails = [
   },
 ];
 
-const ContactPage = () => (
-  <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div className="max-w-6xl mx-auto">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Get in Touch</h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Have questions, found a bug, or want to contribute? We'd love to hear from you!
-        </p>
-      </div>
+const ContactPage = () => {
+  usePageTitle("Contact Us");
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {contactDetails.map((item, idx) => (
-          <Card key={idx} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="h-12 w-12 flex items-center justify-center bg-primary/10 text-primary rounded-lg mb-4">
-                <item.icon className="h-6 w-6" />
-              </div>
-              <CardTitle className="text-xl">{item.title}</CardTitle>
-              <CardDescription>{item.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button asChild variant="outline" className="w-full">
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2"
-                >
-                  {item.buttonText}
-                  <ExternalLink className="h-4 w-4" />
-                </a>
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+  return (
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Get in Touch</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Have questions, found a bug, or want to contribute? We'd love to hear from you!
+          </p>
+        </div>
 
-      <Card className="mt-12 border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Open Source Project</CardTitle>
-          <CardDescription className="text-base">
-            en-git is an open-source project. Contributions, bug reports, and feature requests are
-            welcome!
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button asChild size="lg">
-            <a
-              href="https://github.com/TejasS1233/en-git"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2"
-            >
-              <Github className="h-5 w-5" />
-              View on GitHub
-            </a>
-          </Button>
-          <Button asChild variant="outline" size="lg">
-            <a
-              href="https://github.com/TejasS1233/en-git/issues/new"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2"
-            >
-              <Bug className="h-5 w-5" />
-              Report an Issue
-            </a>
-          </Button>
-        </CardContent>
-      </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {contactDetails.map((item, idx) => (
+            <Card key={idx} className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="h-12 w-12 flex items-center justify-center bg-primary/10 text-primary rounded-lg mb-4">
+                  <item.icon className="h-6 w-6" />
+                </div>
+                <CardTitle className="text-xl">{item.title}</CardTitle>
+                <CardDescription>{item.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button asChild variant="outline" className="w-full">
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2"
+                  >
+                    {item.buttonText}
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <Card className="mt-12 border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">Open Source Project</CardTitle>
+            <CardDescription className="text-base">
+              en-git is an open-source project. Contributions, bug reports, and feature requests are
+              welcome!
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg">
+              <a
+                href="https://github.com/TejasS1233/en-git"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2"
+              >
+                <Github className="h-5 w-5" />
+                View on GitHub
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <a
+                href="https://github.com/TejasS1233/en-git/issues/new"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2"
+              >
+                <Bug className="h-5 w-5" />
+                Report an Issue
+              </a>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default ContactPage;

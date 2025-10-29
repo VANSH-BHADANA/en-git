@@ -10,8 +10,11 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useLocation, Link } from "react-router-dom";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 export default function Page() {
+  usePageTitle("Dashboard");
+
   const location = useLocation();
   const pathSegments = location.pathname.split("/").filter(Boolean);
 

@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "@/lib/axios";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,6 +27,8 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+  usePageTitle("Login");
+
   const navigate = useNavigate();
   const { setUser } = useAuth();
   const [searchParams] = useSearchParams();

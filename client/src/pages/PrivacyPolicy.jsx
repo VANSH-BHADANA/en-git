@@ -1,7 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield } from "lucide-react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 export default function PrivacyPolicy() {
+  usePageTitle("Privacy Policy");
+
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-4xl">
       <Card>

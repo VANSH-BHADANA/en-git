@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getGithubInsights, getGithubRecommendations } from "@/lib/github";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -95,6 +96,13 @@ export default function GitHubInsightsPage() {
   const [username, setUsername] = useState(urlUsername || "");
   const [loading, setLoading] = useState(false);
   const [insights, setInsights] = useState(null);
+
+  // Set dynamic page title
+  usePageTitle(
+    insights?.user?.login
+      ? `${insights.user.login} - GitHub Profile Insights`
+      : "GitHub Analytics & Profile Insights"
+  );
   const [recommendations, setRecommendations] = useState(null);
   const [aiInsights, setAiInsights] = useState(null);
   const [bookmarked, setBookmarked] = useState(false);
@@ -493,26 +501,26 @@ export default function GitHubInsightsPage() {
             />
 
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-1">
-                <TabsTrigger value="overview" className="text-xs sm:text-sm">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-1">
+                <TabsTrigger value="overview" className="text-xs sm:text-sm px-2 sm:px-3">
                   Overview
                 </TabsTrigger>
-                <TabsTrigger value="activity" className="text-xs sm:text-sm">
+                <TabsTrigger value="activity" className="text-xs sm:text-sm px-2 sm:px-3">
                   Activity
                 </TabsTrigger>
-                <TabsTrigger value="skills" className="text-xs sm:text-sm">
+                <TabsTrigger value="skills" className="text-xs sm:text-sm px-2 sm:px-3">
                   Skills
                 </TabsTrigger>
-                <TabsTrigger value="score" className="text-xs sm:text-sm">
+                <TabsTrigger value="score" className="text-xs sm:text-sm px-2 sm:px-3">
                   Score
                 </TabsTrigger>
-                <TabsTrigger value="history" className="text-xs sm:text-sm">
+                <TabsTrigger value="history" className="text-xs sm:text-sm px-2 sm:px-3">
                   History
                 </TabsTrigger>
-                <TabsTrigger value="ai" className="text-xs sm:text-sm">
+                <TabsTrigger value="ai" className="text-xs sm:text-sm px-2 sm:px-3">
                   AI
                 </TabsTrigger>
-                <TabsTrigger value="share" className="text-xs sm:text-sm">
+                <TabsTrigger value="share" className="text-xs sm:text-sm px-2 sm:px-3">
                   Share
                 </TabsTrigger>
               </TabsList>
@@ -1140,41 +1148,43 @@ function RecommendationsSection({ recommendations }) {
           </CardContent>
         </Card>
       )}
-  {trendingSample && trendingSample.length > 0 && (
-  <Card>
-    <CardHeader>
-      <CardTitle>Currently Trending on GitHub</CardTitle>
-      <CardDescription>Today's popular repositories</CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div className="space-y-2">
-        {trendingSample.slice(0, 5).map((item, i) => (
-  <div key={i} className="p-3 border rounded hover:bg-accent transition group"> {/* Added 'group' */}
-    <a
-      href={item.url}
-      target="_blank"
-      rel="noopener noreferrer"
-       // Added 'dark:group-hover:text-white'
-      className="font-semibold text-primary hover:underline dark:group-hover:text-white"
-    >
-      {item.fullName}
-    </a>
-            <p className="text-sm text-muted-foreground">
-              {item.description || "No description"}
-            </p>
-            <div className="flex gap-2 mt-2">
-              {item.language && <Badge variant="secondary">{item.language}</Badge>}
-              <Badge variant="outline" className="flex items-center gap-1">
-                <Star className="h-3 w-3" />
-                {item.stars}
-              </Badge>
+      {trendingSample && trendingSample.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Currently Trending on GitHub</CardTitle>
+            <CardDescription>Today's popular repositories</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {trendingSample.slice(0, 5).map((item, i) => (
+                <div key={i} className="p-3 border rounded hover:bg-accent transition group">
+                  {" "}
+                  {/* Added 'group' */}
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    // Added 'dark:group-hover:text-white'
+                    className="font-semibold text-primary hover:underline dark:group-hover:text-white"
+                  >
+                    {item.fullName}
+                  </a>
+                  <p className="text-sm text-muted-foreground">
+                    {item.description || "No description"}
+                  </p>
+                  <div className="flex gap-2 mt-2">
+                    {item.language && <Badge variant="secondary">{item.language}</Badge>}
+                    <Badge variant="outline" className="flex items-center gap-1">
+                      <Star className="h-3 w-3" />
+                      {item.stars}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-        ))}
-      </div>
-    </CardContent>
-  </Card>
-)}
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -55,6 +56,13 @@ export default function RepositoryDeepDive() {
   const [urlError, setUrlError] = useState("");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
+
+  // Set dynamic page title
+  usePageTitle(
+    data?.repository
+      ? `${data.repository.full_name} - GitHub Repository Insights`
+      : "GitHub Repository Insights"
+  );
   const [lastUpdated, setLastUpdated] = useState("");
   const [error, setError] = useState(null); // Add error state
   const [ownerError, setOwnerError] = useState("");
@@ -565,19 +573,19 @@ export default function RepositoryDeepDive() {
 
       <Tabs defaultValue="languages" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1">
-          <TabsTrigger value="languages" className="text-xs sm:text-sm">
+          <TabsTrigger value="languages" className="text-xs sm:text-sm px-2 sm:px-3">
             Languages
           </TabsTrigger>
-          <TabsTrigger value="commits" className="text-xs sm:text-sm">
+          <TabsTrigger value="commits" className="text-xs sm:text-sm px-2 sm:px-3">
             Commits
           </TabsTrigger>
-          <TabsTrigger value="contributors" className="text-xs sm:text-sm">
+          <TabsTrigger value="contributors" className="text-xs sm:text-sm px-2 sm:px-3">
             Contributors
           </TabsTrigger>
-          <TabsTrigger value="issues" className="text-xs sm:text-sm">
+          <TabsTrigger value="issues" className="text-xs sm:text-sm px-2 sm:px-3">
             Issues & PRs
           </TabsTrigger>
-          <TabsTrigger value="activity" className="text-xs sm:text-sm">
+          <TabsTrigger value="activity" className="text-xs sm:text-sm px-2 sm:px-3">
             Activity
           </TabsTrigger>
         </TabsList>

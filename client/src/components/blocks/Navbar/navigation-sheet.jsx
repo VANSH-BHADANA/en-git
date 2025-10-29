@@ -51,21 +51,34 @@ export const NavigationSheet = () => {
             </span>
           </div>
           <nav className="space-y-4">
-            {NAV_LINKS.map((link) => (
-              <NavLink
-                key={link.href}
-                to={link.href}
-                onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  cn(
-                    "block text-base font-medium transition-colors duration-200",
-                    isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                  )
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
+            {NAV_LINKS.map((link) =>
+              link.external ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="block text-base font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <NavLink
+                  key={link.href}
+                  to={link.href}
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    cn(
+                      "block text-base font-medium transition-colors duration-200",
+                      isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                    )
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              )
+            )}
           </nav>
         </div>
 

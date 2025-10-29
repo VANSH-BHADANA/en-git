@@ -1,6 +1,7 @@
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import {
   Form,
   FormControl,
@@ -37,6 +38,8 @@ const formSchema = z.object({
 });
 
 const SignUp = () => {
+  usePageTitle("Sign Up");
+
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -90,7 +93,6 @@ const SignUp = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background transition-colors px-4">
       <div className="w-full max-w-md rounded-2xl border border-border bg-card shadow-md p-8 transition-colors">
-
         <div className="flex flex-col items-center">
           <Logo className="h-9 w-9" />
           <p className="mt-4 text-xl font-bold tracking-tight">Sign up</p>
@@ -123,7 +125,7 @@ const SignUp = () => {
             </Button>
 
             <div className="my-6 flex items-center justify-center overflow-hidden">
-              <Separator/>
+              <Separator />
               <span className="text-sm px-2 text-muted-foreground">OR</span>
               <Separator />
             </div>
@@ -290,7 +292,13 @@ const SignUp = () => {
 
 /* SVG Logos */
 const GoogleLogo = () => (
-  <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    width="1.2em"
+    height="1.2em"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       d="M15.6823 8.18368C15.6823 7.63986 15.6382 7.0931 15.5442 6.55811H7.99829V9.63876H12.3194C12.1401 10.6323 11.564 11.5113 10.7203 12.0698V14.0687H13.2983C14.8122 12.6753 15.6823 10.6176 15.6823 8.18368Z"
       fill="#4285F4"
@@ -310,6 +318,23 @@ const GoogleLogo = () => (
   </svg>
 );
 
-const GitHubLogo = () => (<svg width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block shrink-0 align-sub text-[inherit]" > <path fillRule="evenodd" clipRule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52 -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64 -3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.66 7.66 0 012-.27c.68.003 1.36.092 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" fill="currentColor" /> </svg>);
+const GitHubLogo = () => (
+  <svg
+    width="1.2em"
+    height="1.2em"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="inline-block shrink-0 align-sub text-[inherit]"
+  >
+    {" "}
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52 -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64 -3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.66 7.66 0 012-.27c.68.003 1.36.092 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+      fill="currentColor"
+    />{" "}
+  </svg>
+);
 
 export default SignUp;

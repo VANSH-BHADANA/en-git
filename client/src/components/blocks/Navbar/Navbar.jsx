@@ -62,16 +62,27 @@ export default function Navbar() {
           <ul className="hidden md:flex gap-8">
             {NAV_LINKS.map((item) => (
               <li key={item.href}>
-                <Link
-                  to={item.href}
-                  className={`transition-colors ${
-                    activePath === item.href
-                      ? "text-foreground font-medium"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {item.label}
-                </Link>
+                {item.external ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link
+                    to={item.href}
+                    className={`transition-colors ${
+                      activePath === item.href
+                        ? "text-foreground font-medium"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
